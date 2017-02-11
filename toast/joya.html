@@ -1,0 +1,12 @@
+<div id="main">
+
+	<nav v-bind:class="active" v-on:click.prevent>
+
+		<a href="#" class="home" v-on:click="makeActive('home')">Accueil</a>
+		<a href="#" class="projects" v-on:click="makeActive('projects')">TenAMarreDeTonWallpaper?</a>
+		<a href="#" class="services" v-on:click="makeActive('services')">Rejoins nous!</a>
+		<a href="#" class="contact" v-on:click="makeActive('contact')">Contact</a>
+	</nav>
+
+	<p> TEST PAGE <b>{{active}}</b></p>
+</div>
