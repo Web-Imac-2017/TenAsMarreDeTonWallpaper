@@ -1,0 +1,32 @@
+*{
+    box-sizing: border-box;
+}
+
+html{
+    height: 100%;
+}
+
+body{
+    height: 100%;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.counter{
+    display: flex; align-items: center; justify-content: center;
+    width: 400px; height: 400px;
+    background: #ddd;
+    color: #222;
+    text-shadow: 0 2px #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    font-family: "Comic Sans MS", cursive;
+}
+.counter::selection{
+    background: none;
+}
+
+.counter.active{
+    transition: font-size ease-out 1s, color ease-out 1s;
+    font-size: 16rem;
+    color: rgba(16, 16, 16, 0.1);
+}
