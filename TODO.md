@@ -1,3 +1,5 @@
+*Ce fichier s'affiche mieux en text brut*
+
 - Faire le perso
 - Installer Imagick
 
