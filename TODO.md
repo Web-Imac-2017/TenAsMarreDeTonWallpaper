@@ -1,9 +1,10 @@
-*Ce fichier se lit mieux en text brut ??*  
+*Ce fichier se lit mieux en format text brut...*  
 
-**Trucs à faire en continu :**  
+### Trucs à faire en continu
 - Tests de sécurité
 - Tests sur différents navigateurs
-  
+
+### Todo
 - Création de la BDD, et tests
   - Stockage des wallpapers (blob dans la BDD ou fichier à nom unique ?)
 - Installer Imagick
@@ -22,6 +23,7 @@
   - Aboutissement, téléchargement du wallpaper avec plusieurs résolutions (générées à la volée);
 - Implémenter le retour en arrière dans les réponses
 
+###
 - Page de création de compte
   - Validation par mail ???
 - Se connecter à un compte et se déconnecter
