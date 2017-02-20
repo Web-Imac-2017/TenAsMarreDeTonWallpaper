@@ -1,0 +1,14 @@
+<script src="joya.js"></script>
+
+<div id="main">
+
+	<nav v-bind:class="active" v-on:click.prevent>
+
+		<a href="#" class="home" v-on:click="makeActive('titresite')">Titre du Site</a>
+		<a href="#" class="abandonner" v-on:click="makeActive('projects')">Abandonner</a>
+		<a href="#" class="proposer" v-on:click="makeActive('services')">Proposer un Contenu</a>
+		<a href="#" class="nb points" v-on:click="makeActive('contact')">Nb Points</a>
+	</nav>
+
+	<p> Header sans css <b></b></p>
+</div>
