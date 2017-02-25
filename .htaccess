@@ -1,0 +1,12 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+# On gère l'api
+RewriteRule ^api/(.*)$ api.php/$1 [END]
+
+# On raccourci le front
+RewriteCond %{REQUEST_URI} !www/index.html
+RewriteRule ^www/(.*)$ front/www/$1 [L]
+
+# Pour les autres requetes, on renvoie sur index.php
+RewriteRule ^((?!api).)*$ index.php/$1 [END]
