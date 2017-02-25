@@ -5,8 +5,8 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
-const question = Vue.extend({
+const Page1 = Vue.extend({
   template,
 });
 
-export default question;
+export default Page1;

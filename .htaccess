@@ -7,10 +7,11 @@ RewriteRule ^api/ api.php/$1 [END]
 
 # Redirection de l'application front
 
-RewriteRule ^www/(.*)$ front/www/$1 [END]
+RewriteRule ^www/index.html index.php [END]
+RewriteRule ^www/(.*)$ front/www/assets/$1 [L]
 
 # Redirection des médias
-# Se fait dans les dossiers adéquats front/build/ , media/ et upload/
+# Se fait dans les dossiers adéquats front/ , media/ et upload/
 
 # Redirection par défaut (vers l'application)
 RewriteRule ^(.*)$ index.php/$1 [END]

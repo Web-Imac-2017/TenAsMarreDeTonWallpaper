@@ -1,0 +1,23 @@
+<div class="header">
+  	<ul class="vertical-menu">
+		<li><a href="#"></a></li>
+		<li><a href="#"></a></li>
+		<li><a href="#"></a></li>
+		<li><a href="#"></a></li>
+	</ul>
+</div>
+
+<!-- wpp pour wallpaper, mel pour mise en ligne -->
+<div class="MEL_wpp">
+	<ul class="list_wpp_validate">
+		<li is="wpp_item" v-for="(wpp, index) in wpps" v-bind:title="wpp" v-on:remove="wpps.splice(index, 1)"> 
+			<img id="wpp_min" src="assets/MonthyPython.png"></img>
+		</li>
+	</ul>
+</div>
+
+<div class=".button-dark-purple">
+	<p> Test SCSS </p>
+</div>
+
+
