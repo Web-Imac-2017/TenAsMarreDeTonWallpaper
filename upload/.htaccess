@@ -1,0 +1,12 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+# Si le fichier n'existe pas, on retourne à la réécriture par défaut : ../index.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ ../index.php/$1 [END]
+
+# Idem si c'est une route vide
+RewriteRule ^$ ../index.php [END]
+
+# Sinon on charge le fichier !
