@@ -1,0 +1,9 @@
+<div>
+  <ul>
+    <li v-for="item in list">
+      <router-link :to="{ name: 'page3', params: { item_id: item.id }}">
+        {{ item.name }}
+      </router-link>
+    </li>
+  </ul>
+</div>

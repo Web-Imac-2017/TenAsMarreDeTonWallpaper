@@ -2,8 +2,8 @@
 
 import VueRouter from 'vue-router';
 
-import Page1 from '../components/page1'
-import Page2 from '../components/page2'
+import Page1 from '../components/question'
+import Page2 from '../components/background'
 import Page3 from '../components/page3'
 
 const router = new VueRouter({
@@ -11,13 +11,13 @@ const router = new VueRouter({
   base  : '/',
   routes: [
     {
-      name     : 'page1',
-      path     : '/page1',
+      name     : 'question',
+      path     : '/question',
       component: Page1,
     },
     {
-      name     : 'page2',
-      path     : '/page2',
+      name     : 'background',
+      path     : '/background',
       component: Page2,
     },
     {
