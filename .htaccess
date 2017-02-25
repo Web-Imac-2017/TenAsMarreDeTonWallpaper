@@ -1,0 +1,16 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+# Redirection vers l'api
+
+RewriteRule ^api/ api.php/$1 [END]
+
+# Redirection de l'application front
+
+RewriteRule ^www/(.*)$ front/www/$1 [END]
+
+# Redirection des médias
+# Se fait dans les dossiers adéquats front/build/ , media/ et upload/
+
+# Redirection par défaut (vers l'application)
+RewriteRule ^(.*)$ index.php/$1 [END]
