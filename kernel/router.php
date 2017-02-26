@@ -1,26 +1,27 @@
 <?php
 
-// Page router.php
-require_once 'controllers/ControleurName.php';
+/**
+ * @brief Stocke la requête parsée de l'utilisateur.
+ */
+class Router
+{
+    
+    public $url;
+    public $controller;
+    public $action;
+    public $params = array();
+    
+    function __construct()
+    {
+        
+    }
+      
+    public static function getClientUrl() {
+        return trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+    }
 
-$str_json = file_get_contents('php://input');
-$obj = json_decode($str_json);
+    public function getRequest() {
 
-class Router {
-
-	// A titre d'exemple ; il y aura autant de variables que de controlleurs
-	private $ctrlControllerName;
-
-	public function __construct() {
-	    $this->ctrlControllerName = new ControllerName();
-	}
-
-	public function routerRequete() {
-		foreach($obj as $requeteName) {
-			if ($requeteName == 'name') {
-				// do things ..
-			}
-		}
-	}
+    }
 
 }
