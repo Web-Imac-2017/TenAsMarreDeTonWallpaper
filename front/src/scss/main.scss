@@ -1,16 +1,10 @@
 @import './reset';
 
+@import './utils';
+
 $title-font: bold 24px/1.5 'Arial', sans-serif;
 $sub-title-font: normal 18px/1.5 'Arial', sans-serif;
 $normal-font: normal 13px/1.5 'Times New Roman', sans-serif;
-
-$color-dark-brown: #020202;
-$color-dark-purple: #3f264d;
-$color-light-purple: #5d2747;
-$color-dark-red: #9f3647;
-$color-light-red: #db4648;
-$color-light-orange: #fb9553;
-
 
 $box-shadow-bottom-only: 0 2px 1px 0 rgba(0, 0, 0, 0.2);
 //$box-shadow-top-only: 0 2px 1px 0 rgba(0, 0, 0, 0.2);
