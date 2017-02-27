@@ -80,7 +80,7 @@
 		$sql = 'DELETE FROM WallpaperCategories WHERE wallpaper_id=?';
 		$req = $bdd->prepare($sql);
 		$req->execute(array($wallpaperID));
-	}
+	}	
 
 	// Renvoie toutes les catégories
 	function getCategories() {
@@ -102,25 +102,9 @@
 		return $categories;
 	}
 
-	function tirage_question() {
-		
-	}
-
-	function tirage_wallpapers($reponse) {
-
-		/* 
-
-		SELECT * FROM wallpaper
-		INNER JOIN question, categorie, wallpaper_categories et question_categories
-
-		WHERE categorie=$reponse
-
-		ORDER BY popularite DESC LIMIT 10
-
-		puis tirer au sort 3 wallpapers parmi les 10
 
 
-		*/
 
-	}
+
+
 ?>
