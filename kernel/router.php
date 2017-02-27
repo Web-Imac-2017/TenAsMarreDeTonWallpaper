@@ -6,6 +6,7 @@
 class Router {
     
     public $url;
+    public $request;
     public $controller;
     public $action;
     public $params = array();
@@ -16,7 +17,7 @@ class Router {
     }
       
     public static function getClientUrl() {
-        return trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+        $request = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
     }
 
     public static function analyze( $query ) {
@@ -38,6 +39,10 @@ class Router {
             }
         }
         return $result;
+    }
+
+    public function parse($url) {
+
     }
 
 }
