@@ -15,7 +15,8 @@ var config = {
   scss      : './src/scss/*',         // Les fichiers à watch
   main_scss       : './src/scss/main.scss', // Le fichier principal
   outputDir : './www/assets/css',     // Le dossier ou le build sera généré
-  outputFile: 'style.css',             // Le nom du fichier build,
+  outputFile: 'style.css',             // Le nom du fichier build
+  components_css: './src/js/**/*.scss'  // Les fichiers scss des components à watcher
 };
 
 // La tache pour générer le build scss.
@@ -42,5 +43,5 @@ gulp.task('sass', function() {
 
 // Task pour watch les modifications sur les fichiers scss
 gulp.task('watch', ['sass'], function() {
-	gulp.watch(config.main_scss, ['sass']);
+	gulp.watch([config.main_scss, config.components_css], ['sass']);
 })

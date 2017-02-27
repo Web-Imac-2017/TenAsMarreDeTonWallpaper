@@ -1,6 +1,5 @@
-@import '../../../../../scss/utils.scss';
-
 .default-layout{
     color: $color-sunset-yellow;
-    min-height: 100%;
+    display: flex; flex-wrap: column nowrap; align-items: stretch;
+    width: 100%;
 }

@@ -2,6 +2,8 @@
 
 @import './utils';
 
+// Ne pas utiliser les classes et mixins ci-dessous
+
 $title-font: bold 24px/1.5 'Arial', sans-serif;
 $sub-title-font: normal 18px/1.5 'Arial', sans-serif;
 $normal-font: normal 13px/1.5 'Times New Roman', sans-serif;
@@ -58,6 +60,10 @@ h1.title {
 
 }
 
+/*************************************************************************************************************************************
+**************************** CI-DESSOUS CLASSES REUTILISABLES
+**************************************************************************************************************************************/
+
 /**********************************************************************
 SIZING
 **********************************************************************/
@@ -93,6 +99,7 @@ LOAD COMPONENTS
 
 /* layouts */
 @import '../js/vuejs/components/layouts/default-layout/style';
+@import '../js/vuejs/components/layouts/mr-wallmatch-content/style';
 
 /* pages */
 @import '../js/vuejs/components/pages/home/style';
