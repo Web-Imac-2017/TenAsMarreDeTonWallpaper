@@ -187,4 +187,13 @@
 		else
 			throw new Exception("Aucune question ne correspond à l'identifiant '$categorieID'");
 	}
+	function getQuestionsby($categorie,$orderby,$sens,$limit){
+        $selector= 'SELECT ID,question_courte,question_longue,importance,nb_apparition
+        FROM question, categorie_question 
+        WHERE ID=question_id AND categorie_id=? ORDER BY ? ? LIMIT ?';
+        $reponsebdd = $bddpdo->prepare($selector);
+        $reponsebdd->execute(array($categorie,$orderby,$sens,$limit));
+        return $reponsebdd;
+
+    }
 ?>

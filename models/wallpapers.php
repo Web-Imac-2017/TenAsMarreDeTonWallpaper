@@ -101,6 +101,22 @@
 
 		return $categories;
 	}
+	 /*$urls est un tableau de url, $tabcategories est une matrice de categories
+    dont chaque ligne renseigne les catégories à associer à l'url correspondante*/
+    function addWallpapers($urls, $estapparent, $tabcategories){
+        $i=0;
+        for($i;i<count($urls);i++) {
+            $url=$urls[i];
+            $categories=$tabcategories[i];
+            $bdd = getBdd();
+            $sql = 'INSERT INTO wallpaper VALUES(NULL, ?, ?)';
+            $req = $bdd->prepare($sql);
+            $req->execute(array($url, $estapparent));
+    
+            $id = getIdLastWallpaper(); // on récupère l'id du nouvel wallpaper
+            setWallpaperCategories($id, $categories); // on associe le wallpaper aux différentes catégories
+        }
+    }
 
 	function tirage_question() {
 		
