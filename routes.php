@@ -27,8 +27,8 @@ Router::connect('/user/login', 'user/login', array());
 Router::connect('/user/logout', 'user/logout', array());
 Router::connect('/user/get/:id', 'user/get/:id', array('id' => '[0-9]+'));
 Router::connect('/user/delete/:id', 'user/delete/:id', array('id' => '[0-9]+'));
-Router::connect('/user/ban/:id', 'user/ban/:id', array('id' => '[0-9]+')));
-Router::connect('/user/change/:id', 'user/change/:id', array('id' => '[0-9]+')));
+Router::connect('/user/ban/:id', 'user/ban/:id', array('id' => '[0-9]+'));
+Router::connect('/user/change/:id', 'user/change/:id', array('id' => '[0-9]+'));
 
 // Wallpaper
 Router::connect('/wallpaper/add', 'wallpaper/add', array());

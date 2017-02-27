@@ -5,51 +5,39 @@
  */
 class Router {
     
-    public $url;
-    public $request;
-    public $controller;
-    public $action;
-    public $params = array();
+    public static $routes = array(); //*< Tableau des routes par pattern
     
     function __construct()
     {
         
     }
-      
-    public static function getClientUrl() {
-        $request = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+
+    /**
+     * @brief Crée une route.
+     * @param in string $pat La route au format user-friendly.
+     * @param in string $url L'url directement compréhensible par le dispatcher.
+     * @param in array $elems Les élémens de l'url en clés et leur format PCRE en valeur
+     * @return Description of returned value.
+     */
+    public static function connect($pat, $url, $elems)
+    {
+        $r = array();
+        // Récupération du pattern
+        $r['pattern'] = $pat;
+        $r['patternR'] = self::regexize($pat, $elems);
+        //debug($r['patternR']);
+        
+        // Récupération de la destination
+        $r['url'] = $url;
+        $r['urlR'] = self::regexize($url, $elems);
+        //debug($r['urlR']);
+        
+        // Récupération des éléments
+        $r['elems'] = $elems;
+        
+        // Insertion de la route (On utilise $pat comme index pour éviter les multis)
+        self::$routes[$pat] = $r;
+
+        var_dump($r);
     }
-
-    public static function analyze( $query ) {
-        $result = array(
-            "controller" => "Error",
-            "action" => "error404",
-            "params" => array()
-        );
-        if( $query === "" || $query === "/" ) {
-            $result["controller"] = "Index";
-            $result["action"] = "display";
-        } 
-        else {
-            $parts = explode("/", $query);
-            if($parts[0] == "item" && count($parts) == 2) {
-                $result["controller"] = "Item";
-                $result["action"] = "display";
-                $result["params"]["slug"] = $parts[1];            
-            }
-        }
-        return $result;
-    }
-
-    public function parse($url) {
-
-    }
-
 }
-
-$router = new Router();
-$query = $router->getClientUrl();
-echo $query;
-echo "<br>";
-print_r($router->analyze($query));
-//echo ROOT;
