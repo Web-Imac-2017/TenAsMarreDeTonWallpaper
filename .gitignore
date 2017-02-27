@@ -41,3 +41,4 @@ jspm_packages
 
 # Front build
 front/www/assets
+!front/www/assets/fonts

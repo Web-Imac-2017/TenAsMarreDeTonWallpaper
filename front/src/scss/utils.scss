@@ -29,3 +29,15 @@ $color-light-red: #db4648;
 $color-light-orange: #fb9553;
 
 /* Typographie ----------------------------------------------------------------------------- */
+
+@font-face{ /* Black */
+    font-family: 'brandon grotesque';
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_blk.otf');
+    font-weight: 900;
+}
+
+@mixin typo-brandon-sc-black() {
+    font-family: 'brandon grosteque', sans-serif;
+    font-weight: 900;
+    font-variant: small-caps;
+}

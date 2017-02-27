@@ -1,0 +1,9 @@
+@import '../../../../../scss/utils.scss';
+
+.presentation{
+
+    .mr-wallmatch-says{
+        @include typo-brandon-sc-black();
+    }
+
+}
