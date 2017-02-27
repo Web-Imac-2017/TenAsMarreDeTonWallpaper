@@ -66,6 +66,10 @@ SIZING
 
 html{
 	font-size: 24px; // base font-size.
+	line-height: 24px;
+}
+html, body{	// full-viewport html
+	height: 100%;
 }
 
 /**********************************************************************
@@ -74,9 +78,10 @@ GENERIC ELEMENTS
 
 button, a.abutton{
 	display: inline-block;
-	padding: 0.5rem 1rem;
+	padding: 0.6rem 1rem;
 	background: $color-foreground;
 	color: $color-background;
+	cursor: pointer;
 }
 
 /**********************************************************************
@@ -84,6 +89,7 @@ LOAD COMPONENTS
 **********************************************************************/
 
 /* app */
+@import '../js/vuejs/components/app/style';
 
 /* layouts */
 @import '../js/vuejs/components/layouts/default-layout/style';
