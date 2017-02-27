@@ -62,3 +62,19 @@ h1.title {
 	font-weight: bold;
 
 }
+
+/**********************************************************************
+LOAD COMPONENTS
+**********************************************************************/
+
+/* app */
+
+/* layouts */
+@import '../js/vuejs/components/layouts/default-layout/style';
+
+/* pages */
+@import '../js/vuejs/components/pages/home/style';
+
+/* sections */
+
+/* widgets */
