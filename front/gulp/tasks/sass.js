@@ -13,15 +13,19 @@ var mapError     = require('../error');
 
 var config = {
   scss      : './src/scss/*',         // Les fichiers à watch
-  src       : './src/scss/main.scss', // Le fichier principal
+  main_scss       : './src/scss/main.scss', // Le fichier principal
   outputDir : './www/assets/css',     // Le dossier ou le build sera généré
-  outputFile: 'style.css'             // Le nom du fichier build
+  outputFile: 'style.css',             // Le nom du fichier build,
 };
 
 // La tache pour générer le build scss.
 // C'est un peu similaire à la tache js.
 gulp.task('sass', function() {
-  return gulp.src(config.src)
+  return gulp.src(config.main_scss)
+    .pipe(notify({
+        onLast: true,
+        message: 'Start generating file: <%= file.relative %>',
+    }))
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sass())
     .on('error', mapError)
@@ -38,5 +42,5 @@ gulp.task('sass', function() {
 
 // Task pour watch les modifications sur les fichiers scss
 gulp.task('watch', ['sass'], function() {
-	gulp.watch(config.scss, ['sass']);
+	gulp.watch(config.main_scss, ['sass']);
 })

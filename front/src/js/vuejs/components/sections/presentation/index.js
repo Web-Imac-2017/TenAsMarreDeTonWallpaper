@@ -5,7 +5,7 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
-let MrWallmatchContent = require('../../layouts/mr-wallmatch-content/index.js');
+import MrWallmatchContent from '../../layouts/mr-wallmatch-content/index.js';
 
 const Presentation = Vue.extend({
   template,

@@ -3,3 +3,5 @@
 
 var_dump('Ceci est api.php');
 var_dump($_SERVER);
+
+var_dump($_GET);

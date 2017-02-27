@@ -48,6 +48,10 @@ gulp.task('browserify', function() {
       .bundle()
       .on('error', mapError)                   // Map error reporting
       .pipe(source('main.js'))                 // Set source name
+      .pipe(notify({
+        onLast: true,
+        message: 'Start generating file: <%= file.relative %>',
+      }))
       .pipe(buffer())                          // Convert to gulp pipeline
       .pipe(rename(config.outputFile))         // Rename the output file
       .pipe(sourcemaps.init({loadMaps: true})) // Extract the inline sourcemaps

@@ -5,8 +5,8 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
-let DefaultLayout = require('../../layouts/default-layout/index.js');
-let Presentation = require('../../sections/presentation/index.js');
+import DefaultLayout from '../../layouts/default-layout/index.js';
+import Presentation from '../../sections/presentation/index.js';
 
 const Home = Vue.extend({
   template,
