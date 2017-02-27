@@ -13,6 +13,9 @@ RewriteRule ^(.*)$ ../index.php/$1 [END]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ ../index.php/$1 [END]
 
+# Idem si on veut index.html
+RewriteRule ^www/index.html index.php [END]
+
 # Idem si c'est une route vide
 RewriteRule ^$ ../index.php [END]
 

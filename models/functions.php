@@ -1,26 +1,6 @@
 <?php
 
 require "../../connexion.php";
-function permission(){
-        $bdd = getBdd();
-        $sql = 'SELECT est_admin,est_modo FROM Membre WHERE id=?';
-        $req = $bdd->prepare($sql);
-        $req->execute(array($_SESSION['id']));
-    
-        if($req){
-            $res=$req->fetch();
-            if ($res['est_admin']) {
-                return 2;
-            }elseif ($res['est_modo']) {
-                return 1;
-            }else{
-                echo 'no permission'
-                return 0;
-            }
-        }else{
-            return -1;
-        }
-    }
 
 function findMemberByLogin($login) {
 	$dbh = getBdd();

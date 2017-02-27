@@ -8,12 +8,12 @@
 		$login = getLoginLocal();
 		try
 		{
-			$bdd = new PDO('mysql:host='.$login[0].';dbname='.$login[1].';charset=utf8', $login[2], $login[3]);
-			return $bdd;
+			$bdd = new PDO('mysql:host='.$login['url'].';dbname='.$login['dbname'].';charset=utf8', $login['user'], $login['pass']);
 		}
 		catch(PDOException $e)
 		{
 			die('Erreur : '.$e->getMessage());
 		}
+		return $bdd;
 	}
 ?>
