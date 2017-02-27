@@ -31,13 +31,92 @@ $color-light-orange: #fb9553;
 /* Typographie ----------------------------------------------------------------------------- */
 
 @font-face{ /* Black */
-    font-family: 'brandon grotesque';
-    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_blk.otf');
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_blk.otf') format("opentype");
     font-weight: 900;
 }
-
-@mixin typo-brandon-sc-black() {
-    font-family: 'brandon grosteque', sans-serif;
+@font-face{ /* Black italic */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_blk_it.otf') format("opentype");
     font-weight: 900;
-    font-variant: small-caps;
+    font-style: italic;
+}
+@font-face{ /* Medium */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_med.otf') format("opentype");
+    font-weight: 500;
+}
+@font-face{ /* Medium italic */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_med_it.otf') format("opentype");
+    font-weight: 500;
+    font-style: italic;
+}
+@font-face{ /* Light */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_light.otf') format("opentype");
+    font-weight: 300;
+}
+@font-face{ /* Light italic */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_light_it.otf') format("opentype");
+    font-weight: 300;
+    font-style: italic;
+}
+
+@mixin typo-brandon-black() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900;
+}
+@mixin typo-brandon-black-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic;
+}
+@mixin typo-brandon-sc-black() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-variant: small-caps;
+}
+@mixin typo-brandon-sc-black-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; font-variant: small-caps;
+}
+@mixin typo-brandon-up-black() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; text-transform: uppercase;
+}
+@mixin typo-brandon-up-black-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase;
+}
+
+@mixin typo-brandon-medium() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500;
+}
+@mixin typo-brandon-medium-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic;
+}
+@mixin typo-brandon-sc-medium() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-variant: small-caps;
+}
+@mixin typo-brandon-sc-medium-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; font-variant: small-caps;
+}
+@mixin typo-brandon-up-medium() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; text-transform: uppercase;
+}
+@mixin typo-brandon-up-medium-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; text-transform: uppercase;
+}
+
+@mixin typo-brandon-light() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300;
+}
+@mixin typo-brandon-light-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic;
+}
+@mixin typo-brandon-sc-light() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-variant: small-caps;
+}
+@mixin typo-brandon-sc-light-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; font-variant: small-caps;
+}
+@mixin typo-brandon-up-light() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; text-transform: uppercase;
+}
+@mixin typo-brandon-up-light-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; text-transform: uppercase;
 }
