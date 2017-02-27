@@ -1,6 +1,7 @@
 'use strict';
 
 import Vue from 'vue/dist/vue';
+import Slider_wpp_home from '../slider_wpp_home';
 
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
@@ -10,12 +11,13 @@ const App = Vue.extend({
 
   data() {
     return {
-      list: [
-        { name: 'item 1', id: 'item1' },
-        { name: 'item 2', id: 'item2' },
-      ],
     };
   },
+
+  components: {
+  	'slider': Slider_wpp_home
+  },
+
 });
 
 export default App;

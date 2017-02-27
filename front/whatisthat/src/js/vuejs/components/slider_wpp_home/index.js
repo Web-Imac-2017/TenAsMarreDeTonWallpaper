@@ -5,8 +5,16 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
-const Page1 = Vue.extend({
+const Slider_wpp_home = Vue.extend({
+  name: 'slider',
   template,
+
+  data() {
+    return {
+    };
+  },
+
+
 });
 
-export default Page1;
+export default Slider_wpp_home;

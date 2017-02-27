@@ -1,0 +1,62 @@
+$title-font: bold 24px/1.5 'Arial', sans-serif;
+$sub-title-font: normal 18px/1.5 'Arial', sans-serif;
+$normal-font: normal 13px/1.5 'Times New Roman', sans-serif;
+
+$color-dark-brown: #020202;
+$color-dark-purple: #3f264d;
+$color-light-purple: #5d2747;
+$color-dark-red: #9f3647;
+$color-light-red: #db4648;
+$color-light-orange: #fb9553;
+
+
+$box-shadow-bottom-only: 0 2px 1px 0 rgba(0, 0, 0, 0.2);
+//$box-shadow-top-only: 0 2px 1px 0 rgba(0, 0, 0, 0.2);
+//$box-shadow-left-only: 0 2px 1px 0 rgba(0, 0, 0, 0.2);
+$box-shadow-all-around: 2px 2px 1px 1px rgba(0, 0, 0, 0.2);
+
+
+@mixin box-with-shadow ($width, $height, $color) {
+  width: $width;
+  height: $height;
+  background-color: $color;
+  box-shadow: $box-shadow-all-around;
+}
+
+@mixin transform-scale() {
+  $scale: scale(1.1,1.1);
+
+  -webkit-transform: $scale; /* Ch <36, Saf 5.1+, iOS, An =<4.4.4 */
+      -ms-transform: $scale; /* IE 9 */
+          transform: $scale; /* IE 10, Fx 16+, Op 12.1+ */
+}
+
+h1.title {
+	font: $title-font;
+	color: $color-dark-brown;
+}
+
+.button-dark-purple {
+	@include box-with-shadow (70px, 100px, $color-dark-red);
+	&:hover {
+		@include transform-scale; 
+	} 
+
+	p {
+		font: $normal-font;
+		color: $color-light-orange;
+	}
+}
+
+
+.question {
+	display: block;
+	width: 15%;
+	height: 10%;
+	margin-left: 75%;
+	margin-top: 45%;
+	text-align: center;
+	background-color: blue;
+	font-weight: bold;
+
+}
