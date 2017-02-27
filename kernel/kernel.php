@@ -1,5 +1,7 @@
 <?php
 
+require_once("router.php");
+
 class Kernel {
 
    public static function autoload($class) {
@@ -16,7 +18,11 @@ class Kernel {
       // Autoload
       spl_autoload_register(array("Kernel", "autoload"));
       // Analyser la requete
-      $query = isset($_GET["query"]) ? $_GET["query"] : "";
+      $query = isset($_SERVER["REQUEST_URI"]) ? trim($_SERVER['REQUEST_URI'], "/") : "";
+      $query = preg_replace('#([/w]*)api#', "", $query);
+      echo "</br>";
+      echo $query;
+      echo "</br>";
       $route = Router::analyze( $query );
       // Instancier le controleur et
       // executer l'action
@@ -32,6 +38,7 @@ class Kernel {
    
 }
 
+/*
 $kernel = new Kernel();
 $kernel->autoload('model');
-$kernel->run();
+$kernel->run();*/
