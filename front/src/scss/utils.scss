@@ -120,3 +120,12 @@ $color-light-orange: #fb9553;
 @mixin typo-brandon-up-light-it() {
     font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; text-transform: uppercase;
 }
+
+/* Font sizes ----------------------------------------------------------------------------- */
+
+@mixin font-size-small(){ font-size: 16rem / 24; }
+@mixin font-size-normal(){ font-size: 1rem; }
+@mixin font-size-large(){ font-size: 26rem / 24; }
+@mixin font-size-larger(){ font-size: 32rem / 24; }
+@mixin font-size-largest(){ font-size: 60rem / 24; }
+@mixin font-size-giant(){ font-size: 320rem / 24; }
