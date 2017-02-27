@@ -2,7 +2,7 @@
 # RewriteEngine on
 
 # On gère l'api
-# RewriteRule ^api/(.*)$ api.php/$1 [END]
+# RewriteRule ^api/(.*)$ api.php/query=$1 [END]
 
 # On raccourci le front
 # RewriteCond %{REQUEST_URI} !www/index.html
