@@ -65,60 +65,64 @@ $color-light-orange: #fb9553;
 }
 
 @mixin typo-brandon-black() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 900;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; @include brandon-line-height();
 }
 @mixin typo-brandon-black-it() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; @include brandon-line-height();
 }
 @mixin typo-brandon-sc-black() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-variant: small-caps;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-variant: small-caps; @include brandon-line-height();
 }
 @mixin typo-brandon-sc-black-it() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; font-variant: small-caps;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; font-variant: small-caps; @include brandon-line-height();
 }
 @mixin typo-brandon-up-black() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 900; text-transform: uppercase;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; text-transform: uppercase; @include brandon-line-height();
 }
 @mixin typo-brandon-up-black-it() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; @include brandon-line-height();
 }
 
 @mixin typo-brandon-medium() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 500;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; @include brandon-line-height();
 }
 @mixin typo-brandon-medium-it() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; @include brandon-line-height();
 }
 @mixin typo-brandon-sc-medium() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-variant: small-caps;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-variant: small-caps; @include brandon-line-height();
 }
 @mixin typo-brandon-sc-medium-it() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; font-variant: small-caps;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; font-variant: small-caps; @include brandon-line-height();
 }
 @mixin typo-brandon-up-medium() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 500; text-transform: uppercase;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; text-transform: uppercase; @include brandon-line-height();
 }
 @mixin typo-brandon-up-medium-it() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; text-transform: uppercase;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; text-transform: uppercase; @include brandon-line-height();
 }
 
 @mixin typo-brandon-light() {
     font-family: BrandonGrotesque, sans-serif; font-weight: 300;
 }
 @mixin typo-brandon-light-it() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; @include brandon-line-height();
 }
 @mixin typo-brandon-sc-light() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-variant: small-caps;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-variant: small-caps; @include brandon-line-height();
 }
 @mixin typo-brandon-sc-light-it() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; font-variant: small-caps;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; font-variant: small-caps; @include brandon-line-height();
 }
 @mixin typo-brandon-up-light() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 300; text-transform: uppercase;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; text-transform: uppercase; @include brandon-line-height();
 }
 @mixin typo-brandon-up-light-it() {
-    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; text-transform: uppercase;
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; text-transform: uppercase; @include brandon-line-height();
+}
+
+@mixin brandon-line-height(){
+    line-height: 1.2em;
 }
 
 /* Font sizes ----------------------------------------------------------------------------- */
@@ -129,3 +133,23 @@ $color-light-orange: #fb9553;
 @mixin font-size-larger(){ font-size: 32rem / 24; }
 @mixin font-size-largest(){ font-size: 60rem / 24; }
 @mixin font-size-giant(){ font-size: 320rem / 24; }
+
+/* Element sizing ----------------------------------------------------------------------------- */
+
+// code from https://css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin/
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+  > .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}

@@ -5,9 +5,7 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
-import MrWallmatch from '../../widgets/mr-wallmatch/index.js';
-
-const MrWallmatchContent = Vue.extend({
+const MrWallmatch = Vue.extend({
   template,
 
   props: {
@@ -19,13 +17,9 @@ const MrWallmatchContent = Vue.extend({
     };
   },
 
-  components: {
-    'mr-wallmatch': MrWallmatch
-  },
-
   created() {
       
   }
 });
 
-export default MrWallmatchContent;
+export default MrWallmatch;

@@ -1,6 +1,19 @@
 .mr-wallmatch-content{
+
+    $left-part-width: 25%;
+
     background: red;
 
     display: flex; flex-wrap: row nowrap; align-items: stretch;
     width: 100%;
+
+    .left-part{
+        flex: 0 1 $left-part-width;
+        min-width: 10rem;
+        background: rgba(255,255,255,0.4);
+        display: flex; flex-flow: row nowrap; align-items: flex-start; justify-content: center;
+    }
+    .right-part{
+        flex: auto;
+    }
 }
