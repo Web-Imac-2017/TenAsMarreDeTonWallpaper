@@ -1,6 +1,6 @@
 <?php
 
-require_once "./kernel/controller.php";
+require_once "../kernel/controller.php";
 
 class Welcome extends Controller {
 
@@ -10,6 +10,6 @@ class Welcome extends Controller {
 
 	public function index() {
         $data['title'] = 'Accueil';
-        return $data;
+        return json_encode($data);
 	}
 }
