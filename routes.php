@@ -28,7 +28,7 @@ Router::connect('/user/logout', 'user/logout', array());
 Router::connect('/user/get/:id', 'user/get/:id', array('id' => '[0-9]+'));
 Router::connect('/user/delete/:id', 'user/delete/:id', array('id' => '[0-9]+'));
 Router::connect('/user/ban/:id', 'user/ban/:id', array('id' => '[0-9]+'));
-Router::connect('/user/change/:id', 'user/change/:id', array('id' => '[0-9]+'));
+Router::connect('/user/changeRole/:id', 'user/changeRole/:id', array('id' => '[0-9]+'));
 
 // Wallpaper
 Router::connect('/wallpaper/add', 'wallpaper/add', array());
@@ -51,5 +51,9 @@ Router::connect('/categorie/getAll', 'categorie/getAll', array());
 Router::connect('/categorie/change/:id', 'categorie/change/:id', array('id' => '[0-9]+'));
 Router::connect('/categorie/delete', 'categorie/delete', array());
 
+// Algo (non définitif, en attente des fonctions par David)
+Router::connect('/algo/getQuestion', 'algo/getQuestion', array());
+Router::connect('/algo/sendRep', 'algo/sendRep', array());
+Router::connect('/algo/getWallpapers', 'algo/getWallpapers', array());
 
 
