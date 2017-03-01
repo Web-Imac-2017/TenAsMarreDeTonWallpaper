@@ -1,0 +1,9 @@
+<div class="museum-background">
+    <div class="wallpaper-row" v-bind:style="offsetStyle">
+        <div v-for="picture in wallpapers" class="wallpaper-frame">
+            <div class="wallpaper-frame-picture"
+                 v-bind:style="getThumbnailCss(picture)"
+            ></div>
+        </div>
+    </div>
+</div>

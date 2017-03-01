@@ -6,11 +6,13 @@ let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
 import MrWallmatch from '../../widgets/mr-wallmatch/index.js';
+import MuseumBackground from '../../sections/museum-background/index.js';
 
 const MrWallmatchContent = Vue.extend({
   template,
 
   props: {
+    'showBackground': {type: Boolean, default: function(){ return true; }}
   },
 
   data() {
@@ -20,7 +22,8 @@ const MrWallmatchContent = Vue.extend({
   },
 
   components: {
-    'mr-wallmatch': MrWallmatch
+    'mr-wallmatch': MrWallmatch,
+    'museum-background': MuseumBackground
   },
 
   created() {
