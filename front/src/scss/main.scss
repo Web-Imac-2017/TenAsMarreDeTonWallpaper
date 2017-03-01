@@ -111,8 +111,9 @@ LOAD COMPONENTS
 @import '../js/vuejs/components/pages/home/style';
 
 /* sections */
-@import '../js/vuejs/components/sections/presentation/style';
+@import '../js/vuejs/components/sections/header-main/style';
 @import '../js/vuejs/components/sections/museum-background/style';
+@import '../js/vuejs/components/sections/presentation/style';
 
 /* widgets */
 @import '../js/vuejs/components/widgets/mr-wallmatch/style';

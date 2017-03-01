@@ -2,8 +2,9 @@
 
     $left-part-width: 25%;
 
-    display: flex; flex-wrap: row nowrap; align-items: stretch;
+    display: flex; flex-flow: row nowrap; align-items: stretch;
     width: 100%;
+    position: relative;
 
     .left-part{
         flex: 0 1 $left-part-width;

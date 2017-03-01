@@ -1,0 +1,11 @@
+.header-main{
+    display: flex; flex-flow: column nowrap; align-items: stretch;
+    width: 100%; height: $header-main-height;
+
+    position: fixed; z-index: 100;
+    top: 0; left: 0;
+
+    nav{
+        display: flex; flex-flow: row nowrap; align-items: stretch;
+    }
+}

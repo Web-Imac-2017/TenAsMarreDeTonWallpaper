@@ -1,4 +1,6 @@
 .default-layout{
-    display: flex; flex-wrap: column nowrap; align-items: stretch;
+    padding-top: $header-main-height;
+    display: flex; flex-flow: column nowrap; align-items: stretch;
     width: 100%;
+    position: relative;
 }
