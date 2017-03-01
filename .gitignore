@@ -40,6 +40,5 @@ jspm_packages
 .vscode
 
 # Front build
-front/www/assets
-!front/www/assets/fonts
-!front/www/assets/img
+front/www/assets/css
+front/www/assets/js
