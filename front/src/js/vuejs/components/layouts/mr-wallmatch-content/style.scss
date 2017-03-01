@@ -3,7 +3,7 @@
     $left-part-width: 25%;
 
     display: flex; flex-flow: row nowrap; align-items: stretch;
-    width: 100%;
+    width: 100%; flex: 1 0 auto;
     position: relative;
 
     .left-part{

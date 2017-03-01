@@ -3,4 +3,5 @@
     display: flex; flex-flow: column nowrap; align-items: stretch;
     width: 100%;
     position: relative;
+    flex: 1 0 calc(100vh - #{$header-main-height});
 }
