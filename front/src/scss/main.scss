@@ -76,11 +76,17 @@ html{
 }
 html, body{	// full-viewport html
 	height: 100%;
+	color: $color-foreground;
 }
 
 /**********************************************************************
 GENERIC ELEMENTS
 **********************************************************************/
+
+h1{ @include typo-brandon-sc-black(); @include font-size-largest(); }
+h2{ @include typo-brandon-sc-black(); @include font-size-larger(); }
+h3{ @include typo-brandon-sc-black(); @include font-size-large(); }
+h4{ @include typo-brandon-sc-medium(); @include font-size-large(); }
 
 button, a.abutton{
 	display: inline-block;

@@ -122,17 +122,17 @@ $color-light-orange: #fb9553;
 }
 
 @mixin brandon-line-height(){
-    line-height: 1.2em;
+    line-height: 1.4em;
 }
 
 /* Font sizes ----------------------------------------------------------------------------- */
 
-@mixin font-size-small(){ font-size: 16rem / 24; }
+@mixin font-size-small(){ font-size: (16rem / 24); }
 @mixin font-size-normal(){ font-size: 1rem; }
-@mixin font-size-large(){ font-size: 26rem / 24; }
-@mixin font-size-larger(){ font-size: 32rem / 24; }
-@mixin font-size-largest(){ font-size: 60rem / 24; }
-@mixin font-size-giant(){ font-size: 320rem / 24; }
+@mixin font-size-large(){ font-size: (26rem / 24); }
+@mixin font-size-larger(){ font-size: (32rem / 24); }
+@mixin font-size-largest(){ font-size: (60rem / 24); }
+@mixin font-size-giant(){ font-size: (320rem / 24); }
 
 /* Element sizing ----------------------------------------------------------------------------- */
 
@@ -152,4 +152,12 @@ $color-light-orange: #fb9553;
     right: 0;
     bottom: 0;
   }
+}
+
+/* Margins ----------------------------------------------------------------------------- */
+
+$mr-wallmatch-content-base-margin: 4rem;
+
+@mixin mr-wallmatch-content-margin-right(){
+    margin-right: $mr-wallmatch-content-base-margin;
 }
