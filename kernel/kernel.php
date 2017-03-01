@@ -8,10 +8,6 @@ require_once KERNEL . "app.php";
 
 require_once ROOT . "routes.php";
 
-// Start session
-
-session_start();
-
 $app = new App();
 
 /*c lass Kernel {

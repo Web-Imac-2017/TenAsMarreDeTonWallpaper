@@ -31,3 +31,7 @@ define('ACTION_404', 'error404');
 // Base Url for internal links
 define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/' . MAINDIR);
 define('BASE_URL_S', 'https://' . $_SERVER['HTTP_HOST'] . '/' . MAINDIR);
+
+// Start session
+
+session_start();

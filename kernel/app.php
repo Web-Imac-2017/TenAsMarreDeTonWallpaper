@@ -10,9 +10,8 @@ class App {
 
    public function __construct() {
 
-      $url = $this->parseUrl();
-
-      print_r($url);
+      // Verification et parsage de l'url
+      $url = Router::parseUrl(isset($_GET['url']) ? $_GET['url'] : "home/index");
 
       if(file_exists(ROOT . CONTROLLER_DIR . $url[0] . '.php')) {
          $this->controller = $url[0];
@@ -34,16 +33,8 @@ class App {
 
       $this->params = $url ? array_values($url) : [];
 
-      print_r($this->params);
-
       call_user_func_array([$this->controller, $this->method], $this->params);
 
-   }
-
-   public function parseUrl() {
-      if (isset($_GET['url'])) {
-         return $url = explode("/", filter_var(trim($_GET['url'], "/"), FILTER_SANITIZE_URL));
-      }
    }
 
 }
