@@ -1,39 +1,4 @@
-
-<!--
-<div class="home">
-  <div class="header">
-    <h1>Home component</h1>
-    <nav>
-      <ul>
-        <li>
-          <router-link :to="{ path: '/' }">
-            Home
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'question'}">
-            Question
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'background'}">
-            Background
-          </router-link>
-        </li>
-      </ul>
-    </nav>
-  </div>
-
-  <router-view :list="list"></router-view>
-</div>
--->
-
-<div>
-
-  <div class="button-dark-purple">
-    <p> Test SCSS </p>
-  </div>
-
-  <slider> </slider>
-
+<div class="app">
+  <router-view></router-view>
+  <home></home>
 </div>

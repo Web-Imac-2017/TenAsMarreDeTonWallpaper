@@ -1,0 +1,163 @@
+
+/* Palette de couleurs --------------------------------------------------------------------- */
+
+$color-white: #fff;
+$color-grey-dark: #141414;
+$color-grey-medium-dark: #1e1e1e;
+$color-grey-medium: #282828;
+$color-grey-medium-light: #6e6e6e;
+$color-grey-light: #787878;
+
+$color-sunset-purple: #3f264d;
+$color-sunset-pink: #5d2747;
+$color-sunset-red: #9f3647;
+$color-sunset-orange: #db4648;
+$color-sunset-yellow: #fb9553;
+
+    /* aliases */
+
+$color-foreground: $color-grey-dark;
+$color-background: $color-white;
+
+    /* legacy */
+
+$color-dark-brown: #020202;
+$color-dark-purple: #3f264d;
+$color-light-purple: #5d2747;
+$color-dark-red: #9f3647;
+$color-light-red: #db4648;
+$color-light-orange: #fb9553;
+
+/* Typographie ----------------------------------------------------------------------------- */
+
+@font-face{ /* Black */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_blk.otf') format("opentype");
+    font-weight: 900;
+}
+@font-face{ /* Black italic */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_blk_it.otf') format("opentype");
+    font-weight: 900;
+    font-style: italic;
+}
+@font-face{ /* Medium */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_med.otf') format("opentype");
+    font-weight: 500;
+}
+@font-face{ /* Medium italic */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_med_it.otf') format("opentype");
+    font-weight: 500;
+    font-style: italic;
+}
+@font-face{ /* Light */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_light.otf') format("opentype");
+    font-weight: 300;
+}
+@font-face{ /* Light italic */
+    font-family: BrandonGrotesque;
+    src: url('/TenAsMarreDeTonWallpaper/www/assets/fonts/Brandon_light_it.otf') format("opentype");
+    font-weight: 300;
+    font-style: italic;
+}
+
+@mixin typo-brandon-black() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; @include brandon-line-height();
+}
+@mixin typo-brandon-black-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; @include brandon-line-height();
+}
+@mixin typo-brandon-sc-black() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-variant: small-caps; @include brandon-line-height();
+}
+@mixin typo-brandon-sc-black-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; font-variant: small-caps; @include brandon-line-height();
+}
+@mixin typo-brandon-up-black() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; text-transform: uppercase; @include brandon-line-height();
+}
+@mixin typo-brandon-up-black-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; @include brandon-line-height();
+}
+
+@mixin typo-brandon-medium() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; @include brandon-line-height();
+}
+@mixin typo-brandon-medium-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; @include brandon-line-height();
+}
+@mixin typo-brandon-sc-medium() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-variant: small-caps; @include brandon-line-height();
+}
+@mixin typo-brandon-sc-medium-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; font-variant: small-caps; @include brandon-line-height();
+}
+@mixin typo-brandon-up-medium() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; text-transform: uppercase; @include brandon-line-height();
+}
+@mixin typo-brandon-up-medium-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 500; font-style: italic; text-transform: uppercase; @include brandon-line-height();
+}
+
+@mixin typo-brandon-light() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300;
+}
+@mixin typo-brandon-light-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; @include brandon-line-height();
+}
+@mixin typo-brandon-sc-light() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-variant: small-caps; @include brandon-line-height();
+}
+@mixin typo-brandon-sc-light-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; font-variant: small-caps; @include brandon-line-height();
+}
+@mixin typo-brandon-up-light() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; text-transform: uppercase; @include brandon-line-height();
+}
+@mixin typo-brandon-up-light-it() {
+    font-family: BrandonGrotesque, sans-serif; font-weight: 300; font-style: italic; text-transform: uppercase; @include brandon-line-height();
+}
+
+@mixin brandon-line-height(){
+    line-height: 1.4em;
+}
+
+/* Font sizes ----------------------------------------------------------------------------- */
+
+@mixin font-size-small(){ font-size: (16rem / 24); }
+@mixin font-size-normal(){ font-size: 1rem; }
+@mixin font-size-large(){ font-size: (26rem / 24); }
+@mixin font-size-larger(){ font-size: (32rem / 24); }
+@mixin font-size-largest(){ font-size: (60rem / 24); }
+@mixin font-size-giant(){ font-size: (320rem / 24); }
+
+/* Element sizing ----------------------------------------------------------------------------- */
+
+// code from https://css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin/
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+  > .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/* Margins ----------------------------------------------------------------------------- */
+
+$mr-wallmatch-content-base-margin: 4rem;
+
+@mixin mr-wallmatch-content-margin-right(){
+    margin-right: $mr-wallmatch-content-base-margin;
+}

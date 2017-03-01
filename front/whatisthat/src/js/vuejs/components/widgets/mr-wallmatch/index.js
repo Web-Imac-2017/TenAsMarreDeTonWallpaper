@@ -5,15 +5,21 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
-const Page2 = Vue.extend({
+const MrWallmatch = Vue.extend({
   template,
 
   props: {
-    list: {
-      type    : Array,
-      required: true,
-    },
   },
+
+  data() {
+    return {
+
+    };
+  },
+
+  created() {
+      
+  }
 });
 
-export default Page2;
+export default MrWallmatch;
