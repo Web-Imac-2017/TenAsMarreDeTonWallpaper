@@ -6,7 +6,16 @@
         <ul class="menu-right">
             <li><a href="#">Abandonner</a></li>
             <li><a href="#">Participer</a></li>
-            <li><a href="#" v-on:click.prevent="onToggleSidebarButton">Connexion<span class="login-arrow"></span></a></li>
+            <li>
+                <a href="#" v-on:click.prevent="onToggleSidebarButton">
+                    <template v-if="bus.isUserLoggedIn">
+                        <img class="user-avatar" alt="avatar" :src="bus.userLoggedIn.avatar"/>
+                        <span>{{bus.userLoggedIn.pseudo}}</span>
+                    </template>
+                    <span v-else>Connexion</span>
+                    <span class="login-arrow"></span>
+                </a>
+            </li>
         </ul>
     </nav>
     <rainbow-bar></rainbow-bar>

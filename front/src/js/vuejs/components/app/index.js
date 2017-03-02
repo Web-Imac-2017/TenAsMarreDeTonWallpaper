@@ -5,11 +5,11 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
-const App = Vue.extend({
+const App = Vue.component('app', {
   template,
 
   data(){ return{
-    preload: true
+    preload: true,            // empêche les animation de s'effectuer au chargement de la page
   };},
 
   mounted: function(){

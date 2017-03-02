@@ -4,12 +4,6 @@
     .login-form-login>*:first-child{ margin-top: 0; }
     .login-form-register>*:last-child{ margin-bottom: 0; }
 
-    h2{
-        @include typo-brandon-up-black();
-        @include font-size-large();
-        color: $color-sunset-yellow;
-        margin: 1.2em 0 0.6em;
-    }
     input{
         display: block;
         margin: 0 0 0.4em 0;

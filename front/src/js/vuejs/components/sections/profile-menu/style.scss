@@ -1,0 +1,11 @@
+.profile-menu{
+    padding: $base-margin;
+
+    a{
+        color: $color-sunset-yellow;
+        @include typo-brandon-sc-medium();
+        display: block;
+        width: 100%;
+    }
+    a:hover{ color: $color-background; }
+}

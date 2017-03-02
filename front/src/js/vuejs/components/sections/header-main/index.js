@@ -5,6 +5,7 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
+import bus from '../../bus/index.js';
 import RainbowBar from '../../widgets/rainbow-bar/index.js';
 
 const HeaderMain = Vue.extend({
@@ -12,6 +13,10 @@ const HeaderMain = Vue.extend({
 
   components: {
     'rainbow-bar': RainbowBar
+  },
+
+  computed:{
+    bus: function(){ return bus; }
   },
 
   methods:{

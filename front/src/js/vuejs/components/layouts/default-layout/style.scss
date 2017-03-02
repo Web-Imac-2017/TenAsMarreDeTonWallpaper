@@ -28,6 +28,13 @@
             animation: sidebarShow $timing-function $transition-duration;
             right: 0;
         }
+
+        h2{
+            @include typo-brandon-up-black();
+            @include font-size-large();
+            color: $color-sunset-yellow;
+            margin: 1.2em 0 0.6em;
+        }
     }
 
     @keyframes sidebarShow {

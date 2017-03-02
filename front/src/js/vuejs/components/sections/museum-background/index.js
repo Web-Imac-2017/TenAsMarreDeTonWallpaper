@@ -16,10 +16,10 @@ const MuseumBackground = Vue.extend({
     return {
         offset: 0, // left offset (negative).
         wallpapers:[
-            { thumbnail: '/TenAsMarreDeTonWallpaper/media/sunset.jpg', width: 1920, height: 1080 },
-            { thumbnail: '/TenAsMarreDeTonWallpaper/media/nyan-cat.jpg', width: 1920, height: 1080 },
-            { thumbnail: '/TenAsMarreDeTonWallpaper/media/rain.png', width: 2000, height: 1500 },
-            { thumbnail: '/TenAsMarreDeTonWallpaper/media/the_guardian_of_the_stars.png', width: 2560, height: 1440 }
+            { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', width: 1920, height: 1080 },
+            { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/nyan-cat.jpg', width: 1920, height: 1080 },
+            { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', width: 2000, height: 1500 },
+            { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png', width: 2560, height: 1440 }
         ]
     };
   },

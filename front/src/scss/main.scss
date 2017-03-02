@@ -114,6 +114,16 @@ input[type=number]{
 	background: none;
 }
 
+a{
+	text-decoration: none;
+	display: inline-block;
+	color: $color-sunset-red;
+	:hover{
+		color: $color-sunset-orange;
+		box-shadow: $color-sunset-red -1px 0 inset;
+	}
+}
+
 /**********************************************************************
 LOAD COMPONENTS
 **********************************************************************/
@@ -133,6 +143,7 @@ LOAD COMPONENTS
 @import '../js/vuejs/components/sections/login-form/style';
 @import '../js/vuejs/components/sections/museum-background/style';
 @import '../js/vuejs/components/sections/presentation/style';
+@import '../js/vuejs/components/sections/profile-menu/style';
 
 /* widgets */
 @import '../js/vuejs/components/widgets/mr-wallmatch/style';

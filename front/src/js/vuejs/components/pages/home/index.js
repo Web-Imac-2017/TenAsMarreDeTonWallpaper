@@ -11,22 +11,9 @@ import Presentation from '../../sections/presentation/index.js';
 const Home = Vue.extend({
   template,
 
-  props: {
-  },
-
-  data() {
-    return {
-
-    };
-  },
-
   components: {
       'default-layout': DefaultLayout,
       'presentation': Presentation
-  },
-
-  created() {
-
   }
 });
 
