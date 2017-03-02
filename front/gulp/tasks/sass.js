@@ -43,5 +43,5 @@ gulp.task('sass', function() {
 
 // Task pour watch les modifications sur les fichiers scss
 gulp.task('watch', ['sass'], function() {
-	gulp.watch([config.main_scss, config.components_css], ['sass']);
+	gulp.watch([config.main_scss, config.components_css], {readDelay: 500}, ['sass']);
 })

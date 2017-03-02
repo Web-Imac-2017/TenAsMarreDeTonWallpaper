@@ -6,6 +6,7 @@ let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
 import HeaderMain from '../../sections/header-main/index.js';
+import LoginForm from '../../sections/login-form/index.js';
 
 const DefaultLayout = Vue.extend({
   template,
@@ -16,6 +17,7 @@ const DefaultLayout = Vue.extend({
 
   components: {
     'header-main': HeaderMain,
+    'login-form': LoginForm,
   },
 
   methods: {

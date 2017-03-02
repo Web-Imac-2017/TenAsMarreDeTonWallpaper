@@ -88,12 +88,30 @@ h2{ @include typo-brandon-sc-black(); @include font-size-larger(); }
 h3{ @include typo-brandon-sc-black(); @include font-size-large(); }
 h4{ @include typo-brandon-sc-medium(); @include font-size-large(); }
 
-button, a.abutton{
+button, a.abutton, input[type=submit]{
 	display: inline-block;
 	padding: 0.6rem 1rem;
 	background: $color-foreground;
 	color: $color-background;
 	cursor: pointer;
+}
+
+input[type=text],
+input[type=password],
+input[type=file],
+input[type=tel],
+input[type=url],
+input[type=email],
+input[type=search],
+input[type=date],
+input[type=time],
+input[type=month],
+input[type=week],
+input[type=number]{
+	@include typo-brandon-sc-black;
+	@include font-size-normal;
+	border: none; border-bottom: solid 1px;
+	background: none;
 }
 
 /**********************************************************************
@@ -112,6 +130,7 @@ LOAD COMPONENTS
 
 /* sections */
 @import '../js/vuejs/components/sections/header-main/style';
+@import '../js/vuejs/components/sections/login-form/style';
 @import '../js/vuejs/components/sections/museum-background/style';
 @import '../js/vuejs/components/sections/presentation/style';
 

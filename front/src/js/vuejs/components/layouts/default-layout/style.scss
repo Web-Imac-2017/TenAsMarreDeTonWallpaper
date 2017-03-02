@@ -21,6 +21,9 @@
 
         animation: sidebarHide $timing-function $transition-duration;
 
+        color: $color-background;
+        overflow-y: auto;
+
         &.active{
             animation: sidebarShow $timing-function $transition-duration;
             right: 0;

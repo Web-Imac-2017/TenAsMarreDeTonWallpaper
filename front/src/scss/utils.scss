@@ -169,6 +169,9 @@ $mr-wallmatch-content-base-margin: 4rem;
     margin-right: $mr-wallmatch-content-base-margin;
 }
 
+$base-margin: (40rem / 24);
+$base-margin-half: (20rem / 24);
+
 /* Math ----------------------------------------------------------------------------- */
 // Code from https://unindented.org/articles/trigonometry-in-sass/
 
