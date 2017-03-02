@@ -1,7 +1,35 @@
 .default-layout{
+    $sidebar-width: 16rem;
+
     padding-top: $header-main-height;
     display: flex; flex-flow: column nowrap; align-items: stretch;
     width: 100%;
     position: relative;
     flex: 1 0 calc(100vh - #{$header-main-height});
+
+    .sidebar{
+        position: fixed; z-index: 200;
+        right: -$sidebar-width; top: $header-nav-height;
+        width: $sidebar-width; height: calc(100vh - #{$header-nav-height});
+
+        background: rgba($color-foreground, $opacity-overlay);
+
+        animation: sidebarHide $timing-function $transition-duration;
+
+        &.active{
+            animation: sidebarShow $timing-function $transition-duration;
+            right: 0;
+        }
+    }
+
+    @keyframes sidebarShow {
+        0% { display: none; right: -$sidebar-width; }
+        1% { display: flex; right: -$sidebar-width; }
+        100% { display: flex; right: 0; }
+    }
+    @keyframes sidebarHide {
+        0% { display: flex; right: 0; }
+        99% { display: flex; right: -$sidebar-width; }
+        100% { display: none; right: -$sidebar-width; }
+    }
 }
