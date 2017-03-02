@@ -7,6 +7,11 @@
     position: relative;
     flex: 1 0 calc(100vh - #{$header-main-height});
 
+    .content{
+        display: flex; flex-flow: column nowrap; align-items: stretch;
+        flex: 1;
+    }
+
     .sidebar{
         position: fixed; z-index: 200;
         right: -$sidebar-width; top: $header-nav-height;

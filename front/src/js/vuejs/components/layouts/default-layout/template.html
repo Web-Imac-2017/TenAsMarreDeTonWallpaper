@@ -3,5 +3,7 @@
     <div class="sidebar" :class="{active: sidebarOpen}">
 
     </div>
-    <slot>Aucun slot</slot>
+    <div class="content" v-on:click="hideSidebar">
+        <slot>Aucun slot</slot>
+    </div>
 </div>

@@ -21,6 +21,9 @@ const DefaultLayout = Vue.extend({
   methods: {
     toggleSidebar: function(){
       this.sidebarOpen = !this.sidebarOpen;
+    },
+    hideSidebar: function(){
+      this.sidebarOpen = false;
     }
   }
 });
