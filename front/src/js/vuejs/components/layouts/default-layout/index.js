@@ -16,6 +16,12 @@ const DefaultLayout = Vue.extend({
 
   components: {
     'header-main': HeaderMain,
+  },
+
+  methods: {
+    toggleSidebar: function(){
+      this.sidebarOpen = !this.sidebarOpen;
+    }
   }
 });
 

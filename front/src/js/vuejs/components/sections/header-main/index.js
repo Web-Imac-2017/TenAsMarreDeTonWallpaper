@@ -13,6 +13,12 @@ const HeaderMain = Vue.extend({
   components: {
     'rainbow-bar': RainbowBar
   },
+
+  methods:{
+    onToggleSidebarButton : function(){
+      this.$emit('toggle-sidebar');
+    }
+  }
 });
 
 export default HeaderMain;
