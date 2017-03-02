@@ -2,12 +2,12 @@
 
 require "../../connexion.php";
 
-function findMemberByLogin($login) {
+function findMemberBypseudo($pseudo) {
 	$dbh = getBdd();
 
-    $login = $dbh->quote($login);
+    $pseudo = $dbh->quote($pseudo);
 
-	$sqlQuery = "SELECT COUNT(*) from membre WHERE login LIKE" . $login;
+	$sqlQuery = "SELECT COUNT(*) from membre WHERE pseudo LIKE" . $pseudo;
 	$stmt = $dbh->prepare($sqlQuery);
 	$stmt->execute();
 
@@ -17,22 +17,22 @@ function findMemberByLogin($login) {
 
 }
 
-function registerMember($login, $password, $mailAdress) {
+function registerMember($pseudo, $password, $mailAdress) {
 	$dbh = getBdd();
 
 	$result = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
-	if (findMemberByLogin($login) != 0) {
+	if (findMemberBypseudo($pseudo) != 0) {
 		$result['returnCode'] = 0;
-		$result['returnMessage'] = 'Le login existe déjà';
+		$result['returnMessage'] = 'Le pseudo existe déjà';
 		return ($result);
 	}
 
-    $login = $dbh->quote($login);
+    $pseudo = $dbh->quote($pseudo);
 	$password = sha1($password);
     $password = $dbh->quote($password);
 	$mailAdress = $dbh->quote($mailAdress);
-	$sqlQuery = "INSERT INTO membre (login, psword, mail_address) VALUES (" . $login . ", " . $password .", " . $mailAdress . ") ";
+	$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail) VALUES (" . $pseudo . ", " . $password .", " . $mailAdress . ") ";
 	$stmt = $dbh->prepare($sqlQuery);
 	$success = $stmt->execute();
 
@@ -55,15 +55,15 @@ function registerMember($login, $password, $mailAdress) {
 	return $result;
 }
 
-function loginMember($login, $password) {
+function pseudoMember($pseudo, $password) {
 	$dbh = getBdd();
 
 	$result = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
-    $login = $dbh->quote($login);
+    $pseudo = $dbh->quote($pseudo);
 	$password = sha1($password);
     $password = $dbh->quote($password);
-	$sqlQuery = "SELECT * FROM membre WHERE login LIKE " . $login . " AND psword LIKE " . $password;
+	$sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE " . $pseudo . " AND mdp LIKE " . $password;
 	$stmt = $dbh->prepare($sqlQuery);
 	$success = $stmt->execute();
 	$bddResult = $stmt->fetchAll();

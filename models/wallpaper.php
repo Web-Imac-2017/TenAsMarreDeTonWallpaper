@@ -25,14 +25,14 @@
 	}
 	
 	// Ajoute un nouveau wallpaper
-	function addWallpaper($url, $estapparent, $categories) {
+	function addWallpaper($url, $nb_apparition, $categories) {
 		$bdd = getBdd();
 		$sql = 'INSERT INTO wallpaper VALUES(NULL, ?, ?)';
 		$req = $bdd->prepare($sql);
-		$req->execute(array($url, $estapparent));
+		$req->execute(array($url, $nb_apparition));
 
 		$id = getIdLastWallpaper(); // on récupère l'id du nouvel wallpaper
-		setWallpaperCategories($id, $categories); // on associe le wallpaper aux différentes catégories
+		setcategorie_wallpaper($id, $categories); // on associe le wallpaper aux différentes catégories
 	}
 
 	// Renvoie l'id du dernier wallpaper inséré
@@ -55,38 +55,38 @@
 	}
 
 	// Associe des catégories à un wallpaper
-	function setWallpaperCategories($wallpaperID, $categories) {
+	function setcategorie_wallpaper($wallpaperID, $categories) {
 		foreach ($categories as $cat) {
 			$bdd = getBdd();
-			$sql = 'INSERT INTO WallpaperCategories VALUES(?,?)';
+			$sql = 'INSERT INTO categorie_wallpaper VALUES(?,?)';
 			$req = $bdd->prepare($sql);
 			$req->execute(array($wallpaperID, $cat));
 		}
 	}
 	
 	// Modifie un wallpaper
-	function changewallpaper($wallpaperID, $url, $estapparent, $categories) {
+	function changewallpaper($wallpaperID, $url, $nb_apparition, $categories) {
 		$bdd = getBdd();
-		$sql = 'UPDATE Wallpaper SET url=?, estapparent=? WHERE id=?';
+		$sql = 'UPDATE wallpaper SET url=?, nb_apparition=? WHERE id=?';
 		$req = $bdd->prepare($sql);
-		$req->execute(array($url, $estapparent, $wallpaperID));
+		$req->execute(array($url, $nb_apparition, $wallpaperID));
 
-		deleteWallpaperCategories($wallpaperID);
-		setWallpaperCategories($wallpaperID, $categories);
+		deletecategorie_wallpaper($wallpaperID);
+		setcategorie_wallpaper($wallpaperID, $categories);
 	}
 	
 	// Supprimer toutes les catégories d'un wallpaper
-	function deleteWallpaperCategories($wallpaperID) {
+	function deletecategorie_wallpaper($wallpaperID) {
 		$bdd = getBdd();
-		$sql = 'DELETE FROM WallpaperCategories WHERE wallpaper_id=?';
+		$sql = 'DELETE FROM categorie_wallpaper WHERE wallpaper_id=?';
 		$req = $bdd->prepare($sql);
 		$req->execute(array($wallpaperID));
 	}
 
 	// Renvoie toutes les catégories
-	function getCategories() {
+	function getcategories() {
 		$bdd = getBdd();
-		$sql = 'SELECT * FROM Categorie';
+		$sql = 'SELECT * FROM categorie';
 		$categories = $bdd->prepare($sql);
 		$categories->execute();
 
@@ -94,9 +94,9 @@
 	}
 
 	// Renvoie les catégories d'un wallpaper
-	function getWallpaperCategories($wallpaperID) {
+	function getcategorie_wallpaper($wallpaperID) {
 		$bdd = getBdd();
-		$sql = 'SELECT * FROM WallpaperCategories INNER JOIN categorie ON categorie_id = Categorie.id WHERE wallpaper_id=?';
+		$sql = 'SELECT * FROM categorie_wallpaper INNER JOIN categorie ON categorie_id = categorie.id WHERE wallpaper_id=?';
 		$categories = $bdd->prepare($sql);
 		$categories->execute(array($wallpaperID));
 

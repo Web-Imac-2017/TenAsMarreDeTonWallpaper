@@ -1,6 +1,6 @@
 <?php
     function getQuestionsby($categorie,$orderby,$sens,$limit){
-        $selector= 'SELECT ID,question_courte,question_longue,importance,nb_apparition
+        $selector= 'SELECT ID,q_courte,q_longue,importance,nb_apparition
         FROM question, categorie_question 
         WHERE ID=question_id AND categorie_id=? ORDER BY ? ? LIMIT ?';
         $reponsebdd = $bddpdo->prepare($selector);
@@ -27,15 +27,15 @@
     /*veiller à sauvegarder dans la session l'id du visiteur*/
     function permission(){
         $bdd = getBdd();
-        $sql = 'SELECT est_admin,est_modo FROM Membre WHERE id=?';
+        $sql = 'SELECT admin,moderateur FROM membre WHERE id=?';
         $req = $bdd->prepare($sql);
         $req->execute(array($_SESSION['id']));
     
         if($req){
             $res=$req->fetch();
-            if ($res['est_admin']) {
+            if ($res['admin']) {
                 return 2;
-            }elseif ($res['est_modo']) {
+            }elseif ($res['moderateur']) {
                 return 1;
             }else{
                 echo 'no permission'
@@ -57,7 +57,7 @@
     function setWallpaperCategories($wallpaperID, $categories) {
         foreach ($categories as $cat) {
             $bdd = getBdd();
-            $sql = 'INSERT INTO WallpaperCategories VALUES(?,?)';
+            $sql = 'INSERT INTO categorie_wallpaper VALUES(?,?)';
             $req = $bdd->prepare($sql);
             $req->execute(array($wallpaperID, $cat));
         }
