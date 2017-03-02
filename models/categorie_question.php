@@ -1,5 +1,5 @@
 <?php
-	require('db_connect.php');
+	require('controllers/db_connect.php');
 	
 	/* GESTION DES QUESTIONS */
 	
@@ -46,6 +46,16 @@
 			$req = $bdd->prepare($sql);
 			$req->execute(array($questionID, $cat));
 		}
+	}
+	
+	function setImportance($questionID)
+	{
+		$bdd = getBdd();
+		$sql = 'SELECT wallpaper_id, COUNT( * ) AS nb_wpp FROM categorie_wallpaper AS c_w INNER JOIN c_w.categorie_question ON categorie_id = categorie_question.categorie_id WHERE question_id=? GROUP BY wallpaper_id';
+		$importance = $bdd->prepare($sql);
+		$importance->execute(array($questionID));
+
+		return $importance;
 	}
 	
 	// Supprime une question
@@ -130,7 +140,9 @@
 	function getCategories() {
 		$bdd = getBdd();
 		$sql = 'SELECT id AS id, nom AS nom FROM categorie';
-		$categories = $bdd->query($sql);
+		$req = $bdd->prepare($sql);
+		$req->execute();
+		$categories = $req->fetchAll();
 		return $categories;
 	}
 	

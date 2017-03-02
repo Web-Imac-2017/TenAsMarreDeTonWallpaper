@@ -1,6 +1,6 @@
 <?php
 
-require('db_pseudo.php');
+require('db_login.php');
 
 class Membre {
 

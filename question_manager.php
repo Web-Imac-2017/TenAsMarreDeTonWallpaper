@@ -22,7 +22,7 @@ session_start();
         <fieldset>
             <legend>DISPLAY QUESTIONS</legend>
 			<?php
-				require('controller/questions_categories.php');
+				require('models/categorie_question.php');
 			?>
 			<form action="" method="post">
                 <table>
@@ -39,6 +39,7 @@ session_start();
 						?>
 						</select>
                     </tr>
+					<?php print_r($questions); ?>
                     <tr>
                         <td></td>
                         <td><input type="submit" value="Voir la question" name="search" /></td>
