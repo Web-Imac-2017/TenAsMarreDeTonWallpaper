@@ -11,11 +11,23 @@ class Router {
         
     }
 
+    public function getRoute() {
+        return Self::$routes;
+    }
+
 
     public static function parseUrl($url) {
 
-        // On retourne l'url en un array, avec chaque variables qui étaient séparées par des "/"
-        return $url = explode("/", filter_var(trim($_GET['url'], "/"), FILTER_SANITIZE_URL));
+        // Si on se rend sur la page d'accueil
+        if (preg_match("#^/$#", $url)) {
+            return array("codeSucces" => "1", "url" => $url, "controller" => array('/', 'welcome/index', array()));   
+        }
+        else {
+            // Vérification si la route est dans notre fichier de route & récupération du controller correspondant
+            $urlInfo = Self::checkInRoutes($url);
+            var_dump($urlInfo);
+            return $urlInfo;
+        }
     }
 
     /**
@@ -42,7 +54,7 @@ class Router {
         $r['elems'] = $elems;
         
         // Insertion de la route (On utilise $pat comme index pour éviter les multis)
-        self::$routes[$pat] = $r;
+        Self::$routes[$pat] = $r;
     }
 
     /**
@@ -52,19 +64,27 @@ class Router {
      * @return retourne la regex générée.
      */
     public static function regexize($pat, $elems) {
-        return  '#^' . 
+        return  '#' . 
             preg_replace_callback(
                 '#:([a-z]+)#', 
                 function ($matches) use ($elems)
                 {
                     if(isset($elems[$matches[1]]))
-                        return '(?P<' . $matches[1] . '>' . $elems[$matches[1]] . ')';
+                        return '(' . $elems[$matches[1]] . ')';
                     else
                         return $matches[0];
                 },
                 $pat
             )
-            . '$#';
+            . '#';
+    }
+
+    public static function checkInRoutes($url) {
+        foreach (Self::$routes as $route) {
+            if (preg_match($route['urlR'], $url))
+                return array("codeSucces" => "1", "url" => $url, "controller" => $route);
+        }
+        return array("codeSucces" => "0", "url" => $url, "controller" => "");
     }
 
     /**

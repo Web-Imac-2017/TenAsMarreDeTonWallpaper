@@ -20,7 +20,6 @@
 // Index
 Router::connect('/', 'welcome/index', array());
 
-
 // User
 Router::connect('/user/add', 'user/add', array());
 Router::connect('/user/login', 'user/login', array());
@@ -55,5 +54,3 @@ Router::connect('/categorie/delete', 'categorie/delete', array());
 Router::connect('/algo/getQuestion', 'algo/getQuestion', array());
 Router::connect('/algo/sendRep', 'algo/sendRep', array());
 Router::connect('/algo/getWallpapers', 'algo/getWallpapers', array());
-
-

@@ -55,7 +55,6 @@ class Membre {
 			$result['returnMessage'] = 'Echec de la requête';	// Changer pour le message de PDO	
 		}
 
-		var_dump($result);
 		return $result;
 	}
 
@@ -82,7 +81,6 @@ class Membre {
 			$result['returnMessage'] = 'Echec de la requête';	// Changer pour le message de PDO	
 		}
 
-		var_dump($result);
 		return $result;
 	}
 
