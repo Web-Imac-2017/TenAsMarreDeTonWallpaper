@@ -2,7 +2,7 @@
 
 require('db_login.php');
 
-class Membre {
+class Membre extends Model {
 
 	public function __construct() {}
 

@@ -1,6 +1,5 @@
 <?php
 
-require_once "../kernel/controller.php";
 require_once "../kernel/database.php";
 
 class Welcome extends Controller {

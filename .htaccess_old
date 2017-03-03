@@ -1,6 +1,0 @@
-# Options +FollowSymlinks
-RewriteEngine on
-
-# On gère l'api
-#RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^api/(.*)$ api.php [END]

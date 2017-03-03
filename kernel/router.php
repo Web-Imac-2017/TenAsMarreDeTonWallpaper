@@ -11,26 +11,13 @@ class Router {
         
     }
 
+    // Récupérer toutes les routes
     public function getRoute() {
         return Self::$routes;
     }
 
-
-    public static function parseUrl($url) {
-
-        // Si on se rend sur la page d'accueil
-        if (preg_match("#^/$#", $url)) {
-            return array("codeSucces" => "1", "url" => $url, "controller" => array('/', 'welcome/index', array()));   
-        }
-        else {
-            // Vérification si la route est dans notre fichier de route & récupération du controller correspondant
-            $urlInfo = Self::checkInRoutes($url);
-            var_dump($urlInfo);
-            return $urlInfo;
-        }
-    }
-
     /**
+     * Sert de setter
      * Utilisé par le fichier "routes.php"
      * @brief Crée une route.
      * @param in string $pat La route au format user-friendly.
@@ -57,6 +44,30 @@ class Router {
         Self::$routes[$pat] = $r;
     }
 
+    // Cette fonction créé à partir de l'url donnée, un array contenant le controlleur utiliser ainsi que l'action
+    public static function parseUrl($url) {
+
+        // Si on se rend sur la page d'accueil
+        if (preg_match("#^/$#", $url)) {
+            return array("codeSucces" => "1", "url" => $url, "controller" => array('/', 'welcome/index', array()));   
+        }
+        else {
+            // Vérification si la route est dans notre fichier de route & récupération du controller correspondant
+            $urlInfo = Self::checkInRoutes($url);
+            var_dump($urlInfo);
+            return $urlInfo;
+        }
+    }
+
+    // Vérifie que la route existe 
+    public static function checkInRoutes($url) {
+        foreach (Self::$routes as $route) {
+            if (preg_match($route['urlR'], $url))
+                return array("codeSucces" => "1", "url" => $url, "controller" => $route);
+        }
+        return array("codeSucces" => "0", "url" => $url, "controller" => "");
+    }
+
     /**
      * @brief Transforme la route $pat en regex en utilisant les valeurs du tableau $elems
      * @param in string $pat La route à transformer
@@ -77,14 +88,6 @@ class Router {
                 $pat
             )
             . '#';
-    }
-
-    public static function checkInRoutes($url) {
-        foreach (Self::$routes as $route) {
-            if (preg_match($route['urlR'], $url))
-                return array("codeSucces" => "1", "url" => $url, "controller" => $route);
-        }
-        return array("codeSucces" => "0", "url" => $url, "controller" => "");
     }
 
     /**

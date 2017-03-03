@@ -12,6 +12,11 @@ class App {
 
    public function __construct() {
 
+   }
+
+   public function launch() {
+      
+
       $this->router = new Router();
 
       // Verification et parsage de l'url, et récupération des controllers/actions a exécuter
@@ -49,15 +54,13 @@ class App {
 
          // On vérifie que l'action est définie dans la classe
          if (isset($url[1]) && isset($urlR[1])) {
-            {
-               if(method_exists($this->controller, $urlR[1])) {
-                  $this->method = $urlR[1];
-                  unset($url[1]);
-               }
-               else {
-                  // RETOURNER UN 404
-               }
+            if(method_exists($this->controller, $urlR[1])) {
+               $this->method = $urlR[1];
+               unset($url[1]);
             }
+            else {
+               // RETOURNER UN 404
+            }     
          }
 
          // On récupère les paramètres
@@ -68,9 +71,11 @@ class App {
       }
 
       else {
-         // Renvoyer un 404
+         $this->controller = "controller";
+         $this->method = "error";
+         $this->params = [];
+         call_user_func_array([$this->controller, $this->method], $this->params);
       }
-
    }
 
 }
