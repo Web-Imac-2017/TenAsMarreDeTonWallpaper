@@ -22,7 +22,7 @@ session_start();
 		require('models/categorie_question.php');
 		require('models/scenario_functions.php');
 		$_SESSION['num_question'] = 1;
-		if($_SESSION['num_question']==1 && !(isset($_POST['sub'])))
+		if($_SESSION['num_question']==1 && !(isset($_POST['sub1'])))
 		{
 			$_SESSION['firstQuestion'] = firstQuestion();
 	?>
@@ -31,42 +31,42 @@ session_start();
 			<form action="" method="post">
                 <table>
 					<tr>
-                        <td> <label><?php echo $_SESSION['firstQuestion'][0]; ?></label></td>
+                        <td> <label><?php echo $_SESSION['firstQuestion']['question']; ?></label></td>
 						<td>
-						  <input type="radio" name="categorie" value="0"> <?php echo $_SESSION['firstQuestion'][1][0]; ?>
-						  <input type="radio" name="categorie" value="1"> <?php echo $_SESSION['firstQuestion'][1][1]; ?>
-						  <input type="radio" name="categorie" value="2"> <?php echo $_SESSION['firstQuestion'][1][2]; ?>
-						  <input type="radio" name="categorie" value="3"> <?php echo $_SESSION['firstQuestion'][1][3]; ?>
-						  <input type="radio" name="categorie" value="4"> <?php echo $_SESSION['firstQuestion'][1][4]; ?>
+						  <input type="radio" name="categorie" value="0"> <?php echo $_SESSION['firstQuestion']['reponses'][0]; ?>
+						  <input type="radio" name="categorie" value="1"> <?php echo $_SESSION['firstQuestion']['reponses'][1]; ?>
+						  <input type="radio" name="categorie" value="2"> <?php echo $_SESSION['firstQuestion']['reponses'][2]; ?>
+						  <input type="radio" name="categorie" value="3"> <?php echo $_SESSION['firstQuestion']['reponses'][3]; ?>
+						  <input type="radio" name="categorie" value="4"> <?php echo $_SESSION['firstQuestion']['reponses'][4]; ?>
 						</td>
                     </tr>
                     <tr>
-                        <td><input type="submit" value="Valider" name="sub" /></td>
+                        <td><input type="submit" value="Valider" name="sub<?php echo $_SESSION['num_question']; ?>" /></td>
                     </tr>
                 </table>
             </form>
 		</fieldset>	
 	<?php
 		}
-		if(isset($_POST['sub']))
+		if(isset($_POST['sub'.$_SESSION['num_question']]))
 		{
-			$_SESSION['categories'] = $_SESSION['firstQuestion'][2][$_POST['categorie']];
+			$_SESSION['categories'] = $_SESSION['firstQuestion']['values'][$_POST['categorie']];
 			$_SESSION['importance'] = 50;
 			$_SESSION['num_question']++;
-			$nextQuestion = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
+			$_SESSION['nextQuestion'] = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
 	?>
 	    <fieldset>
             <legend>QUESTION <?php echo $_SESSION['num_question']; ?></legend>
 			<form action="" method="post">
                 <table>
 					<tr>
-                        <td> <label><?php echo $nextQuestion[0][0]; ?></label></td>
+                        <td> <label><?php echo $_SESSION['nextQuestion']['questions'][0]; ?></label></td>
 						<td>
-						  <input type="radio" name="categorie" value="0"> Non
-						  <input type="radio" name="categorie" value="25"> Probablement pas
-						  <input type="radio" name="categorie" value="50"> Peut-être
-						  <input type="radio" name="categorie" value="75"> Probablement oui
-						  <input type="radio" name="categorie" value="100"> Oui
+						  <input type="radio" name="reponse" value="0"> Non
+						  <input type="radio" name="reponse" value="25"> Probablement pas
+						  <input type="radio" name="reponse" value="50"> Peut-être
+						  <input type="radio" name="reponse" value="75"> Probablement oui
+						  <input type="radio" name="reponse" value="100"> Oui
 						</td>
                     </tr>
                     <tr>
@@ -76,6 +76,17 @@ session_start();
             </form>
 		</fieldset>
 	<?php
+		}
+		//if(isset($_POST['sub'.$_SESSION['num_question']]))
+		if(isset($_POST['sub2']))
+		{
+			$_SESSION['reponse'] = $_POST['reponse'];
+			$wppLeft = answerQuestion($_SESSION['nextQuestion']['id'][0],$_SESSION['reponse'],"");
+			print_r($wppLeft);
+			if($wppLeft['nb_wpp_left']<10)
+			{
+				stopGame($wppLeft['id']);
+			}
 		}
 	?>
     </body>
