@@ -21,13 +21,13 @@
 Router::connect('/', 'welcome/index', array());
 
 // User
-Router::connect('/user/add', 'user/add', array());
-Router::connect('/user/login', 'user/login', array());
-Router::connect('/user/logout', 'user/logout', array());
-Router::connect('/user/get/:id', 'user/get/:id', array('id' => '[0-9]+'));
-Router::connect('/user/delete/:id', 'user/delete/:id', array('id' => '[0-9]+'));
-Router::connect('/user/ban/:id', 'user/ban/:id', array('id' => '[0-9]+'));
-Router::connect('/user/changeRole/:id', 'user/changeRole/:id', array('id' => '[0-9]+'));
+Router::connect('/membre/add', 'membre/add', array());
+Router::connect('/membre/login', 'membre/login', array());
+Router::connect('/membre/logout', 'membre/logout', array());
+Router::connect('/membre/get/:id', 'membre/get/:id', array('id' => '[0-9]+'));
+Router::connect('/membre/delete/:id', 'membre/delete/:id', array('id' => '[0-9]+'));
+Router::connect('/membre/ban/:id', 'membre/ban/:id', array('id' => '[0-9]+'));
+Router::connect('/membre/changeRole/:id', 'membre/changeRole/:id', array('id' => '[0-9]+'));
 
 // Wallpaper
 Router::connect('/wallpaper/add', 'wallpaper/add', array());

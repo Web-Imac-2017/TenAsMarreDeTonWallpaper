@@ -2,3 +2,5 @@
 // METTEZ PLEIN DE TRUCS
 require_once "config.php";
 require_once "./kernel/kernel.php";
+
+$app = new App();

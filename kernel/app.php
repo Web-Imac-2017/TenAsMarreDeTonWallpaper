@@ -23,7 +23,6 @@ class App {
       $urlInfo = Router::parseUrl(isset($_GET['url']) && !empty($_GET['url']) ? $_GET['url'] : "/");
 
       $codeSucces = $urlInfo['codeSucces'];
-      var_dump($urlInfo);
 
       // Si la route existe
       if ($codeSucces) {
@@ -36,10 +35,11 @@ class App {
          $url = explode("/", filter_var(trim($url, "/"), FILTER_SANITIZE_URL));
          // Notre url de base, en forme d'array pour avoir les actions/controllers/valeurs des parametres (l'url l'url n'ont pas forcément les mêmes noms au niveau des controller/action)
          $urlR = explode("/", filter_var(trim($urlR, "/"), FILTER_SANITIZE_URL));
+      
 
          // On vérifie que le fichier de controller existe
-         if(file_exists(ROOT . CONTROLLER_DIR . $urlR[0] . 'Controller.php')) {
-            $this->controller = $urlR[0];
+         if(file_exists(CONTROLLER_DIR . $urlR[0] . 'Controller.php')) {
+            $this->controller = $urlR[0] . 'Controller';
             unset($url[0]);
          }
          else {
@@ -47,11 +47,11 @@ class App {
             $this->method = "error";
             $this->params = [];
             call_user_func_array([$this->controller, $this->method], $this->params);
+            return;
          }
 
          // On récupère le controller correspondant
-         require_once ROOT . CONTROLLER_DIR . $this->controller . '.php';
-      
+         require_once CONTROLLER_DIR . $this->controller . '.php';
          // Instanciation
          $this->controller = new $this->controller;
 
@@ -66,6 +66,7 @@ class App {
                $this->method = "error";
                $this->params = [];
                call_user_func_array([$this->controller, $this->method], $this->params);
+               return;
             }     
          }
 
@@ -81,6 +82,7 @@ class App {
          $this->method = "error";
          $this->params = [];
          call_user_func_array([$this->controller, $this->method], $this->params);
+         return;
       }
    }
 

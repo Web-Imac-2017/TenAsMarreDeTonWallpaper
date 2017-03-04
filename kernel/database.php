@@ -1,11 +1,18 @@
 <?php
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
+require_once KERNEL . 'kernel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/DbConfig.php';
+
 class Database {
     private static $instance = null; // instance
     
     public $base = null; // objet PDO
     
-    public function __construct($config) {
+    public function __construct() {
+        $dbConfig = new DbConfig();
+        $config = DbConfig::$config;
+        var_dump($config);
         try {
             $this->base = new PDO(
                 'mysql:dbname='.$config['dbname'].';host='.$config['url'], $config['user'], $config['pass'],
@@ -14,9 +21,9 @@ class Database {
             );
         }
         catch (PDOException $e) {
-            if(isdebug('db'))
+            /*if(isdebug('db'))
                 echo 'Connexion échouée : ' . $e->getMessage();
-            else
+            else*/
                 echo 'Echec de connexion à la BDD.';
             exit();
         }

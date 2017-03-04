@@ -10,8 +10,8 @@ define('MAINDIR', 'TenAsMarreDeTonWallpaper/');
 define('ROOT', HOSTROOT . '/' . MAINDIR);
 
 // Directories
-define('CONTROLLER_DIR', 'controllers/');
-define('MODEL_DIR', 'models/');
+define('CONTROLLER_DIR', ROOT . 'controllers/');
+define('MODEL_DIR', ROOT . 'models/');
 
 // Kernel
 define('KERNEL', ROOT . 'kernel/');

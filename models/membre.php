@@ -1,18 +1,22 @@
 <?php
 
-require('db_login.php');
+require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
+require_once KERNEL . 'kernel.php';
 
 class Membre extends Model {
 
-	public function __construct() {}
+	public function __construct() {
+		
+	}
 
-	public function findMemberBypseudo($pseudo) {
-		$dbh = getBdd();
+	// Retourne le nombre d'apparition du pseudo dans la base
+	public function getCountOfPseudo($pseudo) {
+		$bdd = Database::get();
 
-	    $pseudo = $dbh->quote($pseudo);
+	    $pseudo = $bdd->quote($pseudo);
 
 		$sqlQuery = "SELECT COUNT(*) from membre WHERE pseudo LIKE" . $pseudo;
-		$stmt = $dbh->prepare($sqlQuery);
+		$stmt = $bdd->prepare($sqlQuery);
 		$stmt->execute();
 
 		$result = $stmt->fetchAll();
@@ -21,27 +25,28 @@ class Membre extends Model {
 
 	}
 
+	// Enregistre un nouveau membre dans la bse
 	public function registerMember($pseudo, $password, $mailAdress) {
-		$dbh = getBdd();
+		$bdd = Database::get();
 
 		$result = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
-		if (findMemberBypseudo($pseudo) != 0) {
+		if (getCountOfPseudo($pseudo) != 0) {
 			$result['returnCode'] = 0;
 			$result['returnMessage'] = 'Le pseudo existe déjà';
 			return ($result);
 		}
 
-	    $pseudo = $dbh->quote($pseudo);
+	    $pseudo = $bdd->quote($pseudo);
 		$password = sha1($password);
-	    $password = $dbh->quote($password);
-		$mailAdress = $dbh->quote($mailAdress);
-		$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail) VALUES (" . $pseudo . ", " . $password .", " . $mailAdress . ") ";
-		$stmt = $dbh->prepare($sqlQuery);
+	    $password = $bdd->quote($password);
+		$mailAdress = $bdd->quote($mailAdress);
+		$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (" . $pseudo . ", " . $password .", " . $mailAdress . "0, 0) ";
+		$stmt = $bdd->prepare($sqlQuery);
 		$success = $stmt->execute();
 
 		$sqlQuery = "SELECT * FROM membre WHERE id = MAX(id) ";
-		$stmt = $dbh->prepare($sqlQuery);
+		$stmt = $bdd->prepare($sqlQuery);
 		$stmt->execute();
 		$bddResult = $stmt->fetchAll();
 
@@ -58,16 +63,17 @@ class Membre extends Model {
 		return $result;
 	}
 
-	public function pseudoMember($pseudo, $password) {
-		$dbh = getBdd();
+	// Permet à un utilisateur de se connecter
+	public function loginMember($pseudo, $password) {
+		$bdd = Database::get();
 
 		$result = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
-	    $pseudo = $dbh->quote($pseudo);
+	    $pseudo = $bdd->quote($pseudo);
 		$password = sha1($password);
-	    $password = $dbh->quote($password);
+	    $password = $bdd->quote($password);
 		$sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE " . $pseudo . " AND mdp LIKE " . $password;
-		$stmt = $dbh->prepare($sqlQuery);
+		$stmt = $bdd->prepare($sqlQuery);
 		$success = $stmt->execute();
 		$bddResult = $stmt->fetchAll();
 
@@ -83,6 +89,17 @@ class Membre extends Model {
 
 		return $result;
 	}
+
+	// Obtenir les informations sur un membre avec son pseudo
+	public function getMemberByPseudo($pseudo) {
+
+	}
+
+	// Obtenir les informations sur un membre avec son id
+	public function getMemberById($id) {
+
+	}
+
 
 	public function logoutMember() {
 		session_destroy();
