@@ -12,7 +12,6 @@ class Database {
     public function __construct() {
         $dbConfig = new DbConfig();
         $config = DbConfig::$config;
-        var_dump($config);
         try {
             $this->base = new PDO(
                 'mysql:dbname='.$config['dbname'].';host='.$config['url'], $config['user'], $config['pass'],

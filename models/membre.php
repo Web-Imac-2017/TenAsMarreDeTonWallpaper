@@ -31,7 +31,7 @@ class Membre extends Model {
 
 		$result = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
-		if (getCountOfPseudo($pseudo) != 0) {
+		if ($this->getCountOfPseudo($pseudo) != 0) {
 			$result['returnCode'] = 0;
 			$result['returnMessage'] = 'Le pseudo existe déjà';
 			return ($result);
@@ -41,11 +41,11 @@ class Membre extends Model {
 		$password = sha1($password);
 	    $password = $bdd->quote($password);
 		$mailAdress = $bdd->quote($mailAdress);
-		$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (" . $pseudo . ", " . $password .", " . $mailAdress . "0, 0) ";
+		$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (" . $pseudo . ", " . $password .", " . $mailAdress . ", 0, 0) ";
 		$stmt = $bdd->prepare($sqlQuery);
 		$success = $stmt->execute();
 
-		$sqlQuery = "SELECT * FROM membre WHERE id = MAX(id) ";
+		$sqlQuery = "SELECT * FROM membre WHERE id = (SELECT MAX(id) FROM membre)";
 		$stmt = $bdd->prepare($sqlQuery);
 		$stmt->execute();
 		$bddResult = $stmt->fetchAll();

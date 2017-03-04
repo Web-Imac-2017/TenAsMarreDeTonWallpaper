@@ -32,12 +32,12 @@ class membreController extends Controller {
 	public function add() {
 		$myModel = new Membre();
 		if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['mailAdress'])) {
-			$pseudo = json_decode($_POST['pseudo']);
-			$password = json_decode($_POST['password']);
-			$mailAdress = json_decode($_POST['mailAdress']);
+			$pseudo = $_POST['pseudo'];
+			$password = $_POST['password'];
+			$mailAdress = $_POST['mailAdress'];
 			$data = $myModel->registerMember($pseudo, $password, $mailAdress);
 
-			echo json_decode($data);
+			echo json_encode($data);
 		}
 	}
 
@@ -52,11 +52,11 @@ class membreController extends Controller {
 	public function login() {
 		$myModel = new Membre();
 		if (isset($_POST['pseudo']) && isset($_POST['password'])) {
-			$pseudo = json_decode($_POST['pseudo']);
-			$password = json_decode($_POST['pseudo']);
+			$pseudo = $_POST['pseudo'];
+			$password = $_POST['pseudo'];
 			$data = $myModel->loginMember($pseudo, $password);
 
-			echo json_decode($data);
+			echo json_encode($data);
 		}
 	}
 
