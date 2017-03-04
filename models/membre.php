@@ -74,7 +74,7 @@ class Membre extends Model {
 		$sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE ? AND mdp LIKE ?";
 		$stmt = $bdd->prepare($sqlQuery);
 		$success = $stmt->execute([$pseudo, $password]);
-		$bddResult = $stmt->fetchAll();
+		$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		if ($success) {
 			$result['returnCode'] = 1;
