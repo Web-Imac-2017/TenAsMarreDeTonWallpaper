@@ -56,7 +56,7 @@ class App {
          $this->controller = new $this->controller;
 
          // On vérifie que l'action est définie dans la classe
-         if (isset($url[1]) && isset($urlR[1])) {
+         if (isset($urlR[1])) {
             if(method_exists($this->controller, $urlR[1])) {
                $this->method = $urlR[1];
                unset($url[1]);

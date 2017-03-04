@@ -49,7 +49,7 @@ class Router {
 
         // Si on se rend sur la page d'accueil
         if (preg_match("#^/$#", $url)) {
-            $myRoute;
+            echo "breh";
             foreach(Self::$routes as $route) {
                 if (preg_match("#^/$#", $route['pattern'])) {
                     $myRoute = $route;

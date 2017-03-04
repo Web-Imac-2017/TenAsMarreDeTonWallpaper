@@ -27,7 +27,7 @@ Router::connect('/membre/logout', 'membre/logout', array());
 Router::connect('/membre/get/:id', 'membre/get/:id', array('id' => '[0-9]+'));
 Router::connect('/membre/delete/:id', 'membre/delete/:id', array('id' => '[0-9]+'));
 Router::connect('/membre/ban/:id', 'membre/ban/:id', array('id' => '[0-9]+'));
-Router::connect('/membre/changeRole/:id', 'membre/changeRole/:id/:role', array('id' => '[0-9]+', 'role' => ['0-2']));
+Router::connect('/membre/changeRole/:id', 'membre/changeRole/:id/:role', array('id' => '[0-9]+', 'role' => '[0-2]'));
 
 // Wallpaper
 Router::connect('/wallpaper/add', 'wallpaper/add', array());
