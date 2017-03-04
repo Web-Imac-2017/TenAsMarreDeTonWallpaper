@@ -47,7 +47,7 @@ class membreController extends Controller {
 		$myModel = new Membre();
 		if (isset($_POST['pseudo']) && !empty($_POST['pseudo']) && isset($_POST['password'])  && !empty($_POST['password'])) {
 			$pseudo = $_POST['pseudo'];
-			$password = $_POST['pseudo'];
+			$password = $_POST['password'];
 			$data = $myModel->loginMember($pseudo, $password);
 
 			echo json_encode($data);
