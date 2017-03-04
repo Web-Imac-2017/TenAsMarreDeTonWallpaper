@@ -1,12 +1,9 @@
-Options +FollowSymlinks
-RewriteEngine on
+Options -MultiViews
+RewriteEngine On
 
-# On gère l'api
-RewriteRule ^api/(.*)$ api.php/$1 [END]
+RewriteBase /TenAsMarreDeTonWallpaper
 
-# On raccourci le front
-RewriteCond %{REQUEST_URI} !www/index.html
-RewriteRule ^www/(.*)$ front/www/$1 [L]
+RewriteCond ${REQUEST_FILENAME} !-d
+RewriteCond ${REQUEST_FILENAME} !-f
 
-# Pour les autres requetes, on renvoie sur index.php
-RewriteRule ^((?!api).)*$ index.php/$1 [END]
+RewriteRule ^api/(.*)$ api.php?url=$1 [QSA,L]

@@ -2,7 +2,7 @@
 
 require('db_login.php');
 
-class Membre {
+class Membre extends Model {
 
 	public function __construct() {}
 
@@ -55,7 +55,6 @@ class Membre {
 			$result['returnMessage'] = 'Echec de la requête';	// Changer pour le message de PDO	
 		}
 
-		var_dump($result);
 		return $result;
 	}
 
@@ -82,7 +81,6 @@ class Membre {
 			$result['returnMessage'] = 'Echec de la requête';	// Changer pour le message de PDO	
 		}
 
-		var_dump($result);
 		return $result;
 	}
 
