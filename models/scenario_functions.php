@@ -72,6 +72,7 @@
 		$req->execute();
 		$selection = $req->fetchAll();
 		$nb_q = count($selection);
+		// Si on trouve au moins une question on stock les infos dans des tableaux
 		if ($nb_q > 0)
 		{
 			$selected = array();
@@ -109,19 +110,26 @@
 	// Renvoie le nombre de wpp correspondant à la requete actuelle
 	function answerQuestion($question_id, $reponse, $requete)
 	{
-		$wppLeft;
-		
 		$bdd = getBdd();
-		// On select les wpp qui correspondent aux reponses choisies
+		// On select les wpp qui correspondent aux reponses choisies de la question actuelle
 		$sql = "SELECT DISTINCT wallpaper_id FROM reponse AS r 
 				WHERE question_id =".$question_id."
 				AND (val_min <=".$reponse." AND val_max>=".$reponse.")";
+		// On fait une union avec les anciens select s'il y en a déjà eu
+		if ($requete)
+		{
+			$sql .= " UNION ".$requete;
+		}
 		$req = $bdd->prepare($sql);
 		$req->execute();
-		$selection = $req->fetchAll(PDO::FETCH_ASSOC);
-		
+		$selection = $req->fetchAll(PDO::FETCH_ASSOC);		
 		$nb_wpp_left = count($selection);
-		$wppLeft = array("nb_wpp_left"=>$nb_wpp_left, "id"=>$selection, "requete"=>$requete);
+		$id = array();
+		foreach ($selection as $selection)
+		{
+			array_push($id, $selection['wallpaper_id']);
+		}
+		$wppLeft = array("nb_wpp_left"=>$nb_wpp_left, "id"=>$id, "requete"=>$sql);
 		
 		return $wppLeft;
 	}
@@ -131,7 +139,56 @@
 	// Renvoie le nombre de wpp correspondant à la requete actuelle
 	function stopGame($wpp_id)
 	{		
+		$i = 0;
+		$bdd = getBdd();
+		foreach ($wpp_id as $wpp_id)
+		{
+			$id = $wpp_id;
+			// Provisoire //
+			$sql = 'SELECT * FROM wallpaper WHERE id=:id';
+			$req = $bdd->prepare($sql);
+			$req->bindParam(':id', $id);
+			$req->execute();
+			$selection = $req->fetchAll(PDO::FETCH_ASSOC);
+			
+			$nb_apparition = $selection[$i]['nb_apparition']+1;
+			$sql2 = 'UPDATE wallpaper SET nb_apparition=:nb_apparition WHERE id=:id';
+			$req2 = $bdd->prepare($sql2);
+			$req2->bindParam(':nb_apparition', $nb_apparition);
+			$req2->bindParam(':id', $id);
+			$req2->execute();
+			
+			$i++;
+		}
 		
-		return $wpp_id;
+		return $selection;
+	}
+	
+	// Check si la question peut fournir des wpp
+	function checkQuestion($question_id, $requete)
+	{		
+		$wpp_left = array();
+		$reponse;
+		for ($reponse = 0; $reponse <= 100; $reponse+=25)
+		{
+			$wpp = answerQuestion($question_id, $reponse, $requete);
+			array_push($wpp_left, $wpp['nb_wpp_left']);
+		}
+		if ($wpp_left[0] >= 10 && $wpp_left[1] >= 10 && $wpp_left[2] >= 10 && $wpp_left[3] >= 10 && $wpp_left[4] >= 10)
+		{
+			$continue = true;
+		}
+		else
+		{
+			$continue = false;
+		}
+		$checkQuestion = array('wpp_left'=>$wpp_left, 'continue'=>$continue);
+		return $checkQuestion;
+	}
+	
+	// Incremente l'importance de -5
+	function updateImportance($importance)
+	{
+		return $importance-5;
 	}
 ?>
