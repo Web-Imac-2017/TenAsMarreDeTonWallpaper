@@ -71,23 +71,33 @@ class Membre extends Model {
 		$result = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
 		$password = sha1($password);
-		$sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE ? AND mdp LIKE ?";
-		$stmt = $bdd->prepare($sqlQuery);
-		$success = $stmt->execute([$pseudo, $password]);
-		$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE ? AND mdp = ?";
 
-		if ($success) {
-			$result['returnCode'] = 1;
-			$result['returnMessage'] = 'Connexion réussie !';
-			$result['data'] = $bddResult[0];
+		try {
+			$stmt = $bdd->prepare($sqlQuery);
+			$success = $stmt->execute([$pseudo, $password]);
+			$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			
+
+			if (!empty($bddResult)) {
+				$result['data'] = $bddResult[0];
+				$result['returnCode'] = 1;
+				$result['returnMessage'] = 'Connexion réussie !';
+			}
+			else {
+				$result['returnCode'] = 0;
+				$result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
+			}
+
+			// S'il n'y a pas de session démarrée
+			session_status() == PHP_SESSION_ACTIVE ? "" : session_start();
 		}
-		else {
+
+		catch (PDOException $e) {
 			$result['returnCode'] = 0;
-			$result['returnMessage'] = 'Echec de la requête';	// Changer pour le message de PDO	
+			$result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
 		}
-
-		// S'il n'y a pas de session démarrée
-		session_status() == PHP_SESSION_ACTIVE ? "" : session_start();
 
 		return $result;
 	}
@@ -103,9 +113,3 @@ class Membre extends Model {
 	}
 
 }
-/*
-$membre = new Membre();
-$membre->getCountOfPseudo("David");
-$membre->registerMember("raoul", "raoul", "raoul");
-var_dump($membre->loginMember("raoul", "raoul"));
-var_dump(session_status() == PHP_SESSION_ACTIVE ? 1 : 0);*/
