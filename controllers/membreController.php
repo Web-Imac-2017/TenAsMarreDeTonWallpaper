@@ -25,7 +25,7 @@ class membreController extends Controller {
 	*/
 	public function add() {
 		$myModel = new Membre();
-		if (isset($_POST['pseudo']) && !empty(isset($_POST['pseudo']) && isset($_POST['password']) && !empty(isset($_POST['password']) && isset($_POST['mailAdress'])  && !empty(isset($_POST['mailAdress'])) {
+		if (isset($_POST['pseudo']) && !empty($_POST['pseudo']) && isset($_POST['password']) && !empty($_POST['password']) && isset($_POST['mailAdress'])  && !empty($_POST['mailAdress'])) {
 			$pseudo = $_POST['pseudo'];
 			$password = $_POST['password'];
 			$mailAdress = $_POST['mailAdress'];
@@ -45,13 +45,19 @@ class membreController extends Controller {
 	*/
 	public function login() {
 		$myModel = new Membre();
-		if (isset($_POST['pseudo']) && isset($_POST['password'])) {
+		if (isset($_POST['pseudo']) && !empty($_POST['pseudo']) && isset($_POST['password'])  && !empty($_POST['password'])) {
 			$pseudo = $_POST['pseudo'];
 			$password = $_POST['pseudo'];
 			$data = $myModel->loginMember($pseudo, $password);
 
 			echo json_encode($data);
 		}
+	}
+
+	public function logout() {
+		session_destroy();
+		$data = ['returnCode' => '1', 'data' => '', 'returnMessage' => 'Utilisateur déconnecté'];
+		echo json_encode($data);
 	}
 
 }

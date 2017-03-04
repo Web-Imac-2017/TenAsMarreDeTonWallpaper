@@ -37,7 +37,7 @@ class Membre extends Model {
 
 		$password = sha1($password);
 
-		
+
 		$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (?, ?, ?, 0, 0)";
 		$stmt = $bdd->prepare($sqlQuery);
 		$success = $stmt->execute([$pseudo, $password, $mailAdress]);
@@ -86,6 +86,9 @@ class Membre extends Model {
 			$result['returnMessage'] = 'Echec de la requête';	// Changer pour le message de PDO	
 		}
 
+		// S'il n'y a pas de session démarrée
+		session_status() == PHP_SESSION_ACTIVE ? "" : session_start();
+
 		return $result;
 	}
 
@@ -99,13 +102,10 @@ class Membre extends Model {
 
 	}
 
-
-	public function logoutMember() {
-		session_destroy();
-	}
-
 }
-
+/*
 $membre = new Membre();
 $membre->getCountOfPseudo("David");
 $membre->registerMember("raoul", "raoul", "raoul");
+var_dump($membre->loginMember("raoul", "raoul"));
+var_dump(session_status() == PHP_SESSION_ACTIVE ? 1 : 0);*/
