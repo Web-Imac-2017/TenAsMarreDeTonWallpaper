@@ -49,7 +49,7 @@ class Membre extends Model {
 		$stmt->execute([$lastInsertId]);
 		$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		var_dump($bddResult);
+		//var_dump($bddResult);
 
 		if ($success) {
 			$result['returnCode'] = 1;

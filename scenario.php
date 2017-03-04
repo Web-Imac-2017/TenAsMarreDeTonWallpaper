@@ -22,6 +22,8 @@ session_start();
 		require('models/categorie_question.php');
 		require('models/scenario_functions.php');
 		$_SESSION['num_question'] = 1;
+		$_SESSION['importance'] = 50;
+		$_SESSION['requete'] = "";
 		if($_SESSION['num_question']==1 && !(isset($_POST['sub1'])))
 		{
 			$_SESSION['firstQuestion'] = firstQuestion();
@@ -51,7 +53,6 @@ session_start();
 		if(isset($_POST['sub'.$_SESSION['num_question']]))
 		{
 			$_SESSION['categories'] = $_SESSION['firstQuestion']['values'][$_POST['categorie']];
-			$_SESSION['importance'] = 50;
 			$_SESSION['num_question']++;
 			$_SESSION['nextQuestion'] = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
 	?>
@@ -80,12 +81,38 @@ session_start();
 		//if(isset($_POST['sub'.$_SESSION['num_question']]))
 		if(isset($_POST['sub2']))
 		{
+			// On récupére la valeur de la réponse
 			$_SESSION['reponse'] = $_POST['reponse'];
-			$wppLeft = answerQuestion($_SESSION['nextQuestion']['id'][0],$_SESSION['reponse'],"");
-			print_r($wppLeft);
+			
+			// On compte combien de wpp on trouve et on met à jour la requete
+			$wppLeft = answerQuestion($_SESSION['nextQuestion']['id'][0],$_SESSION['reponse'],$_SESSION['requete']);
+			
+			// Si on trouve moins de 10 wpp, on arrête
 			if($wppLeft['nb_wpp_left']<10)
 			{
-				stopGame($wppLeft['id']);
+				$wallpapers = stopGame($wppLeft['id']);
+				echo "<a href='".$wallpapers[0]['url']."' download='".$wallpapers[0]['nom']."'>Télécharger l'image</a>";
+			}
+			// Sinon on passe à la question suivante
+			else {
+				// On met à jour l'importance
+				$_SESSION['importance'] = updateImportance($_SESSION['importance']);
+				
+				// On prépare la prochaine question
+				$_SESSION['nextQuestion'] = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
+				
+				// On met à jour la requete
+				$_SESSION['requete'] = $wppLeft['requete'];
+				
+				// On check si on peut trouver des wpp avec la prochaine question
+				$checkQuestion = checkQuestion($_SESSION['nextQuestion']['id'][0], $_SESSION['requete']);
+				
+				// Si on peut pas on arrête
+				if($checkQuestion['continue']==false)
+				{
+					$wallpapers = stopGame($wppLeft['id']);
+					echo "<a href='".$wallpapers[0]['url']."' download='".$wallpapers[0]['nom']."'>Télécharger l'image</a>";
+				}
 			}
 		}
 	?>
