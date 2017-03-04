@@ -6,7 +6,7 @@
 	// Renvoie toutes les catégories
 	function getCategories() {
 		$bdd = getBdd();
-		$sql = 'SELECT id AS id, nom AS nom FROM categories';
+		$sql = 'SELECT id AS id, nom AS nom FROM categorie';
 		$categories = $bdd->query($sql);
 		return $categories;
 	}
@@ -14,7 +14,7 @@
 	// Renvoie la catégorie demandée
 	function getCategorie($categorieID) {
 		$bdd = getBdd();
-		$sql = 'SELECT id AS id, nom AS nom FROM categories WHERE id =?';
+		$sql = 'SELECT id AS id, nom AS nom FROM categorie WHERE id =?';
 		$categorie = $bdd->prepare($sql);
 		$categorie->execute(array($categorieID));
 		if ($categorie->rowCount() == 1)
@@ -26,7 +26,7 @@
 	// Rajoute une catégorie
 	function addCategorie($nom) {
 		$bdd = getBdd();
-		$sql = 'INSERT INTO categories(nom) VALUES(:nom)';
+		$sql = 'INSERT INTO categorie(nom) VALUES(:nom)';
 		$req = $bdd->prepare($sql);
 		$req->bindParam(':nom', $nom);
 		$req->execute();
@@ -35,7 +35,7 @@
 	// Supprime une catégorie
 	function deleteCategorie($categorieID) {
 		$bdd = getBdd();
-		$sql = 'DELETE FROM categories WHERE id = '.$categorieID.'';
+		$sql = 'DELETE FROM categorie WHERE id = '.$categorieID.'';
 		$req = $bdd->prepare($sql);
 		$req->execute();
 	}
@@ -43,7 +43,7 @@
 	// Modifie une catégorie
 	function changeCategorie($categorieID, $nom) {
 		$bdd = getBdd();
-		$sql = 'UPDATE categories SET nom=:nom WHERE id = :categorieID';
+		$sql = 'UPDATE categorie SET nom=:nom WHERE id = :categorieID';
 		$req = $bdd->prepare($sql);
 		$req->bindParam(':nom', $nom);
 		$req->bindParam(':categorieID', $categorieID);
@@ -53,7 +53,7 @@
 	// Renvoie le nombre d'occurences d'une catégorie dans la table question_categorie
 	function getCategorieOccurences($categorieID) {
 		$bdd = getBdd();
-		$sql = 'SELECT categorie_id AS id, COUNT( categorie_id ) AS nb_cat FROM questions_categories WHERE categorie_id =?';
+		$sql = 'SELECT categorie_id AS id, COUNT( categorie_id ) AS nb_cat FROM categorie_question WHERE categorie_id =?';
 		$req = $bdd->prepare($sql);
 		$req->execute(array($categorieID));
 		if ($req->rowCount() >= 1)

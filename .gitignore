@@ -42,3 +42,6 @@ jspm_packages
 # Front build
 front/www/assets/css
 front/www/assets/js
+
+# Datas to access the database
+DbConfig.php

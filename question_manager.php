@@ -22,7 +22,7 @@ session_start();
         <fieldset>
             <legend>DISPLAY QUESTIONS</legend>
 			<?php
-				require('controller/questions_categories.php');
+				require('models/categorie_question.php');
 			?>
 			<form action="" method="post">
                 <table>
@@ -67,11 +67,11 @@ session_start();
                     </tr>
 					<tr>
                         <td> <label for="importance">Importance :</label></td>
-                        <td><input type="number" id="importance" name="importance" min="0" max="100" value="<?= $question['importance'] ?>"></td>
+                        <td><input type="number" id="importance" name="importance" min="0" max="50" value="<?= $question['importance'] ?>"></td>
                     </tr>
 					<tr>
                         <td> <label for="popularite">Popularite :</label></td>
-                        <td><input type="number" id="popularite" name="popularite" min="0" max="100" value="<?= $question['popularite'] ?>"></td>
+                        <td><input type="number" id="nb_apparition" name="nb_apparition" min="0" max="100" value="<?= $question['nb_apparition'] ?>"></td>
                     </tr>
 					<tr>
                         <td> <label for="categorie">Catégories :</label></td>
@@ -116,18 +116,18 @@ session_start();
 					{
 						$_POST['importance'] = $question['importance'];
 					}
-					if(empty($_POST['popularite']))
+					if(empty($_POST['nb_apparition']))
 					{
-						$_POST['popularite'] = $question['popularite'];
+						$_POST['nb_apparition'] = $question['nb_apparition'];
 					}
 					
 					$_SESSION['q_courte'] = $_POST['q_courte'];
 					$_SESSION['q_longue'] = $_POST['q_longue'];
 					$_SESSION['importance'] = $_POST['importance'];
-					$_SESSION['popularite'] = $_POST['popularite'];
+					$_SESSION['nb_apparition'] = $_POST['nb_apparition'];
 					$_SESSION['q_categories'] = $_POST['q_categories'];
 					print_r($_SESSION['q_categories']);
-					changeQuestion($_SESSION['q_id'], $_SESSION['q_courte'], $_SESSION['q_longue'], $_SESSION['importance'], $_SESSION['popularite']);
+					changeQuestion($_SESSION['q_id'], $_SESSION['q_courte'], $_SESSION['q_longue'], $_SESSION['importance'], $_SESSION['nb_apparition']);
 					deleteQuestionCategorie($_SESSION['q_id']);
 					addQuestionCategorie($_SESSION['q_id'], $_SESSION['q_categories']);
 					
@@ -173,11 +173,7 @@ session_start();
                     </tr>
 					<tr>
                         <td> <label for="add_importance">Importance :</label></td>
-                        <td><input type="number" id="add_importance" name="add_importance" min="0" max="100" value=""></td>
-                    </tr>
-					<tr>
-                        <td> <label for="add_popularite">Popularite :</label></td>
-                        <td><input type="number" id="add_popularite" name="add_popularite" min="0" max="100" value=""></td>
+                        <td><input type="number" id="add_importance" name="add_importance" min="0" max="50" value=""></td>
                     </tr>
 					<tr>
                         <td> <label for="categorie">Catégories :</label></td>
@@ -207,20 +203,15 @@ session_start();
 				{
 					if(empty($_POST['add_importance']))
 					{
-						$_POST['add_importance'] = 50;
-					}
-					if(empty($_POST['add_popularite']))
-					{
-						$_POST['add_popularite'] = 50;
+						$_POST['add_importance'] = 25;
 					}
 					
 					$_SESSION['add_q_courte'] = $_POST['add_q_courte'];
 					$_SESSION['add_q_longue'] = $_POST['add_q_longue'];
 					$_SESSION['add_importance'] = $_POST['add_importance'];
-					$_SESSION['add_popularite'] = $_POST['add_popularite'];
 					$_SESSION['add_categories'] = $_POST['add_categories'];
 					
-					addQuestion($_SESSION['add_q_courte'], $_SESSION['add_q_longue'], $_SESSION['add_importance'], $_SESSION['add_popularite'], $_SESSION['add_categories']);
+					addQuestion($_SESSION['add_q_courte'], $_SESSION['add_q_longue'], $_SESSION['add_importance'], 0, $_SESSION['add_categories']);
 					echo "<h3>Bravo ta question a bien été enregistrée !</h3>";
 				}
 				else
