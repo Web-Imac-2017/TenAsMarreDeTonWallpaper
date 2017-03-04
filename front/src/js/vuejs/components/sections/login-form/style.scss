@@ -1,5 +1,6 @@
 .login-form{
     padding: $base-margin;
+    position: relative;
 
     .login-form-login>*:first-child{ margin-top: 0; }
     .login-form-register>*:last-child{ margin-bottom: 0; }
@@ -18,5 +19,12 @@
             @include typo-brandon-sc-black();
             @include font-size-normal();
         }
+    }
+
+    .msg{
+        position: absolute; top: 0; left: 0;
+        width: 100%; padding: 0 0.4rem;
+        background: $color-sunset-orange;
+        @include font-size-small();
     }
 }

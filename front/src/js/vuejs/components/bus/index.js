@@ -19,6 +19,9 @@ const Bus = Vue.extend({
   methods: {
       logout: function(){
           this.userLoggedIn = null;
+      },
+      login: function(response){
+        this.userLoggedIn = response;
       }
   }
 });
