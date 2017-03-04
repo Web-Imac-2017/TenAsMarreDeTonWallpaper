@@ -23,10 +23,6 @@ var config = {
 // C'est un peu similaire à la tache js.
 gulp.task('sass', function() {
   return gulp.src(config.main_scss)
-    .pipe(notify({
-        onLast: true,
-        message: 'Start generating file: <%= file.relative %>',
-    }))
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sass())
     .on('error', mapError)

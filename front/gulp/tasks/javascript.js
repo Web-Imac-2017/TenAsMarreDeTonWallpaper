@@ -33,6 +33,7 @@ gulp.task('browserify', function() {
   // On créé un objet qui contient tout le tralala pour build
   var bundler = watchify(browserify(config.src, args));
   // On ajoute des transformations
+
   bundler
     .transform(stringify,{ appliesTo: { includeExtensions: ['.html'] }, minify: true })
     .transform(babelify, { presets: ['es2015'] }) // Babel, pour l'ES6
@@ -48,10 +49,6 @@ gulp.task('browserify', function() {
       .bundle()
       .on('error', mapError)                   // Map error reporting
       .pipe(source('main.js'))                 // Set source name
-      .pipe(notify({
-        onLast: true,
-        message: 'Start generating file: <%= file.relative %>',
-      }))
       .pipe(buffer())                          // Convert to gulp pipeline
       .pipe(rename(config.outputFile))         // Rename the output file
       .pipe(sourcemaps.init({loadMaps: true})) // Extract the inline sourcemaps
