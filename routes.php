@@ -21,7 +21,7 @@
 Router::connect('/', 'welcome/index', array());
 
 // User
-Router::connect('/membre/add', 'membre/add/:pseudo/:mdp/:mail', array('pseudo' => '[a-zA-Z]+', 'pseudo' => '[a-zA-Z]+', 'pseudo' => '[.]+'));
+Router::connect('/membre/add', 'membre/add', array());
 Router::connect('/membre/login', 'membre/login', array());
 Router::connect('/membre/logout', 'membre/logout', array());
 Router::connect('/membre/get/:id', 'membre/get/:id', array('id' => '[0-9]+'));
