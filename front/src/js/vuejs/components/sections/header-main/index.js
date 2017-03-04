@@ -16,7 +16,8 @@ const HeaderMain = Vue.extend({
   },
 
   computed:{
-    bus: function(){ return bus; }
+    bus: function(){ return bus; },
+    links: function(){ return bus.headerLinks; }
   },
 
   methods:{

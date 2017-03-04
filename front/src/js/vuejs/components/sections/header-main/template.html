@@ -4,8 +4,9 @@
             <li><a href="#"><img class="site-logo" src="http://placehold.it/32x32"><span class="site-title">WallMatch</span></a></li>
         </ul>
         <ul class="menu-right">
-            <li><a href="#">Abandonner</a></li>
-            <li><a href="#">Participer</a></li>
+            <li v-for="(curlink, keylink) in links" :key="keylink">
+                <a v-bind:href="curlink.url">{{curlink.text}}</a>
+            </li>
             <li>
                 <a href="#" v-on:click.prevent="onToggleSidebarButton">
                     <template v-if="bus.isUserLoggedIn">

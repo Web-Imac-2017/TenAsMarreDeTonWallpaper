@@ -6,7 +6,8 @@ const Bus = Vue.extend({
 
   data(){ return{
     //userLoggedIn: null    // objet contenant les information de l'utilisateur connecté. null si aucun utilisateur connecté.
-    userLoggedIn: {id: 42, pseudo: 'Thaledric', admin: true, moderateur: true, mail: 'thaledric@gmail.com', avatar: '/TenAsMarreDeTonWallpaper/media/avatars/thaledric.png'}
+    userLoggedIn: {id: 42, pseudo: 'Thaledric', admin: true, moderateur: true, mail: 'thaledric@gmail.com', avatar: '/TenAsMarreDeTonWallpaper/media/avatars/thaledric.png'},
+    headerLinks: {}
   };},
 
   computed: {
