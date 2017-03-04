@@ -33,8 +33,8 @@ class membreController extends Controller {
 		$myModel = new Membre();
 		if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['mailAdress'])) {
 			$pseudo = json_decode($_POST['pseudo']);
-			$password = json_decode($_POST['pseudo']);
-			$mailAdress = json_decode($_POST['pseudo']);
+			$password = json_decode($_POST['password']);
+			$mailAdress = json_decode($_POST['mailAdress']);
 			$data = $myModel->registerMember($pseudo, $password, $mailAdress);
 
 			echo json_decode($data);
