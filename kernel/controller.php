@@ -8,5 +8,6 @@ class Controller {
 
 	public function error() {
 		$data = "Error";
+		echo $data;
 	}
 }

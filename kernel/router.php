@@ -5,7 +5,7 @@
  */
 class Router {
     
-    public static $routes = array(); //*< Tableau des routes par pattern
+    protected static $routes = array(); //*< Tableau des routes par pattern
     
     function __construct() {
         
@@ -49,12 +49,18 @@ class Router {
 
         // Si on se rend sur la page d'accueil
         if (preg_match("#^/$#", $url)) {
-            return array("codeSucces" => "1", "url" => $url, "controller" => array('/', 'welcome/index', array()));   
+            $myRoute;
+            foreach(Self::$routes as $route) {
+                if (preg_match("#^/$#", $route['pattern'])) {
+                    $myRoute = $route;
+                    break;
+                }
+            }
+            return array("codeSucces" => "1", "url" => $url, "controller" => $myRoute);   
         }
         else {
             // Vérification si la route est dans notre fichier de route & récupération du controller correspondant
             $urlInfo = Self::checkInRoutes($url);
-            var_dump($urlInfo);
             return $urlInfo;
         }
     }
@@ -75,7 +81,7 @@ class Router {
      * @return retourne la regex générée.
      */
     public static function regexize($pat, $elems) {
-        return  '#' . 
+        return  '#^' . 
             preg_replace_callback(
                 '#:([a-z]+)#', 
                 function ($matches) use ($elems)
@@ -87,7 +93,7 @@ class Router {
                 },
                 $pat
             )
-            . '#';
+            . '$#';
     }
 
     /**
@@ -96,8 +102,7 @@ class Router {
      * @param in bool $relative Ajoute le http://<racine> devant la route finale, pour pouvoir l'utiliser directement dans un lien.
      * @return La route formattée, prête-à-utiliser.
      */
-    public static function url($url, $relative = false)
-    {
+    public static function url($url, $relative = false) {
         $ret;
         foreach(self::$routes as $r)
         {

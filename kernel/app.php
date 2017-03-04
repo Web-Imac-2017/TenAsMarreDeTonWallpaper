@@ -11,11 +11,11 @@ class App {
    protected $router;
 
    public function __construct() {
-
+      $this->launch();
    }
 
    public function launch() {
-      
+
 
       $this->router = new Router();
 
@@ -30,7 +30,7 @@ class App {
 
          // On décompose l'url en un array, avec chaque variables qui étaient séparées par des "/"
          $url = $urlInfo['url'];
-         $urlR  = $urlInfo['controller']['1'];
+         $urlR  = $urlInfo['controller']['url'];
 
          // Notre url de base, en forme d'array pour avoir les actions/controllers/valeurs des parametres
          $url = explode("/", filter_var(trim($url, "/"), FILTER_SANITIZE_URL));
@@ -43,7 +43,10 @@ class App {
             unset($url[0]);
          }
          else {
-            // RETOURNER UN 404
+            $this->controller = new Controller();
+            $this->method = "error";
+            $this->params = [];
+            call_user_func_array([$this->controller, $this->method], $this->params);
          }
 
          // On récupère le controller correspondant
@@ -59,7 +62,10 @@ class App {
                unset($url[1]);
             }
             else {
-               // RETOURNER UN 404
+               $this->controller = new Controller();
+               $this->method = "error";
+               $this->params = [];
+               call_user_func_array([$this->controller, $this->method], $this->params);
             }     
          }
 
@@ -71,7 +77,7 @@ class App {
       }
 
       else {
-         $this->controller = "controller";
+         $this->controller = new Controller();
          $this->method = "error";
          $this->params = [];
          call_user_func_array([$this->controller, $this->method], $this->params);

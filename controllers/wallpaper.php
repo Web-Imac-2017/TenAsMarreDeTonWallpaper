@@ -1,8 +1,8 @@
 <?php
 
-require_once "../kernel/database.php";
+require_once "./kernel/database.php";
 
-class Welcome extends Controller {
+class Wallpaper extends Controller {
 
 	public function __construct(){
 		parent::__construct();
