@@ -38,7 +38,7 @@ class App {
          $urlR = explode("/", filter_var(trim($urlR, "/"), FILTER_SANITIZE_URL));
 
          // On vérifie que le fichier de controller existe
-         if(file_exists(ROOT . CONTROLLER_DIR . $urlR[0] . '.php')) {
+         if(file_exists(ROOT . CONTROLLER_DIR . $urlR[0] . 'Controller.php')) {
             $this->controller = $urlR[0];
             unset($url[0]);
          }
