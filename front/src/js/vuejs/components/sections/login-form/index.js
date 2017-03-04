@@ -44,7 +44,10 @@ const LoginForm = Vue.extend({
         // Handle request errors
         .then(handleRequestError)
         // Login ok
-        .then(function(response){ _this.bus.login(response); })
+        .then(function(response){
+          if(!('data' in response)) throw Error('Données de connexion manquantes.');
+          _this.bus.login(response.data);
+        })
         // Error caught
         .catch(function(error){ _this.msgerror = error.message; console.log(error);});
     },
