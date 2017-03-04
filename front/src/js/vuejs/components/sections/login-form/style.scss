@@ -21,10 +21,13 @@
         }
     }
 
-    .msg{
+    .msgs{
         position: absolute; top: 0; left: 0;
-        width: 100%; padding: 0 0.4rem;
-        background: $color-sunset-orange;
+        width: 100%;
         @include font-size-small();
+
+        .msg-error{ background: $color-sunset-orange; }
+        .msg-ok{ background: green; }
+        .msg-error, .msg-ok{padding: 0 0.4rem;}
     }
 }

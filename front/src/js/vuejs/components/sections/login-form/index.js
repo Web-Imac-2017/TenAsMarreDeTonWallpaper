@@ -17,60 +17,57 @@ const LoginForm = Vue.extend({
   };},
 
   computed: {
-    loginFormData: function() { return new FormData(this.$refs.loginForm); },
-    registerFormData: function() { return new FormData(this.$refs.registerForm); },
     msgs: {
-      get: function() { return this.msgerror + ' ' + this.msgok; },
+      get: function() { return (this.msgerror || this.msgok);},
       set: function(newValue) { this.msgerror = newValue; this.msgok = newValue; }
     },
     bus: function(){ return bus; }
   },
 
   methods:{
+    getLoginFormData() { return new FormData(this.$refs.loginForm); },
+    getRegisterFormData() { return new FormData(this.$refs.registerForm);},
+
     tryLogin(event){
       let _this = this;
       _this.msgs = null;
-      console.log(_this.loginFormData);
 
       fetch("/TenAsMarreDeTonWallpaper/api/membre/login", {
             method: 'post',
-            body: _this.loginFormData
+            body: _this.getLoginFormData()
           }
         )
         // Handle bad http response
         .then(handleHttpError)
-        .catch(function(){ _this.msgerror = "Erreur serveur lors de la connexion."; })
         // Handle Json parse
         .then(function(response){ return response.json(); })
-        .catch(function(){ _this.msgerror = "Erreur des données reçues lors de la connexion."; })
         // Handle request errors
-        .then(handleHttpError)
-        .catch(function(error){ _this.msgerror = error.message; })
+        .then(handleRequestError)
         // Login ok
-        .then(function(response){ _this.bus.login(response); });
+        .then(function(response){ _this.bus.login(response); })
+        // Error caught
+        .catch(function(error){ _this.msgerror = error.message; console.log(error);});
     },
 
     tryRegister(event){
       let _this = this;
       _this.msgs = null;
-      console.log(_this.registerFormData);
 
       fetch("/TenAsMarreDeTonWallpaper/api/membre/add", {
             method: 'post',
-            body: _this.registerFormData
+            body: _this.getRegisterFormData()
           }
         )
         // Handle bad http response
         .then(handleHttpError)
-        .catch(function(){ _this.msgerror = "Erreur serveur lors de l'inscription."; })
         // Handle Json parse
         .then(function(response){ return response.json(); })
-        .catch(function(){ _this.msgerror = "Erreur des données reçues lors de l'inscription."; })
         // Handle request errors
-        .then(handleHttpError)
-        .catch(function(error){ _this.msgerror = error.message; })
-        // Login ok
-        .then(function(response){ _this.msgok = "Inscription terminée. Vous pouvez vous connecter."; });
+        .then(handleRequestError)
+        // Register ok
+        .then(function(response){ _this.msgok = "Inscription terminée, vous pouvez vous connecter."; _this.$refs.registerForm.reset(); })
+        // Error caught
+        .catch(function(error){ _this.msgerror = error.message; console.log(error);});
     },
     
   }
