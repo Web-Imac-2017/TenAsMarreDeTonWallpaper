@@ -61,16 +61,18 @@
 	// Supprime une question
 	function deleteQuestion($questionID) {
 		$bdd = getBdd();
-		$sql = 'DELETE FROM question WHERE id = '.$questionID.'';
+		$sql = 'DELETE FROM question WHERE id =:questionID';
 		$req = $bdd->prepare($sql);
+		$req->bindParam(':questionID', $questionID);
 		$req->execute();
 	}
 	
 	// Supprime une question de la table question_categorie
 	function deleteQuestionCategorie($questionID) {
 		$bdd = getBdd();
-		$sql = 'DELETE FROM categorie_question WHERE question_id = '.$questionID.'';
+		$sql = 'DELETE FROM categorie_question WHERE question_id =:questionID';
 		$req = $bdd->prepare($sql);
+		$req->bindParam(':questionID', $questionID);
 		$req->execute();
 	}
 	
