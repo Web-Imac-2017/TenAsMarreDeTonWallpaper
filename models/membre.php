@@ -13,15 +13,13 @@ class Membre extends Model {
 	public function getCountOfPseudo($pseudo) {
 		$bdd = Database::get();
 
-	    $pseudo = $bdd->quote($pseudo);
-
-		$sqlQuery = "SELECT COUNT(*) from membre WHERE pseudo LIKE" . $pseudo;
+		$sqlQuery = "SELECT COUNT(*) from membre WHERE pseudo LIKE ?";
 		$stmt = $bdd->prepare($sqlQuery);
-		$stmt->execute();
+		$stmt->execute([$pseudo]);
 
-		$result = $stmt->fetchAll();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		return intval($result[0][0]);
+		return intval($result[0]["COUNT(*)"]);
 
 	}
 
@@ -37,18 +35,21 @@ class Membre extends Model {
 			return ($result);
 		}
 
-	    $pseudo = $bdd->quote($pseudo);
 		$password = sha1($password);
-	    $password = $bdd->quote($password);
-		$mailAdress = $bdd->quote($mailAdress);
-		$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (" . $pseudo . ", " . $password .", " . $mailAdress . ", 0, 0) ";
-		$stmt = $bdd->prepare($sqlQuery);
-		$success = $stmt->execute();
 
-		$sqlQuery = "SELECT * FROM membre WHERE id = (SELECT MAX(id) FROM membre)";
+		
+		$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (?, ?, ?, 0, 0)";
 		$stmt = $bdd->prepare($sqlQuery);
-		$stmt->execute();
-		$bddResult = $stmt->fetchAll();
+		$success = $stmt->execute([$pseudo, $password, $mailAdress]);
+
+		$lastInsertId = $bdd->lastInsertId();
+
+		$sqlQuery = "SELECT * FROM membre WHERE id = ?";
+		$stmt = $bdd->prepare($sqlQuery);
+		$stmt->execute([$lastInsertId]);
+		$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		var_dump($bddResult);
 
 		if ($success) {
 			$result['returnCode'] = 1;
@@ -69,12 +70,10 @@ class Membre extends Model {
 
 		$result = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
-	    $pseudo = $bdd->quote($pseudo);
 		$password = sha1($password);
-	    $password = $bdd->quote($password);
-		$sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE " . $pseudo . " AND mdp LIKE " . $password;
+		$sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE ? AND mdp LIKE ?";
 		$stmt = $bdd->prepare($sqlQuery);
-		$success = $stmt->execute();
+		$success = $stmt->execute([$pseudo, $password]);
 		$bddResult = $stmt->fetchAll();
 
 		if ($success) {
@@ -106,3 +105,7 @@ class Membre extends Model {
 	}
 
 }
+
+$membre = new Membre();
+$membre->getCountOfPseudo("David");
+$membre->registerMember("raoul", "raoul", "raoul");

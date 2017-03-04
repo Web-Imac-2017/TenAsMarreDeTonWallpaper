@@ -16,12 +16,6 @@ class membreController extends Controller {
 		parent::__construct();
 	}
 
-
-	public function index() {
-        
-        //echo json_encode($data);
-	}
-
 	/**
 	* Ajout d'un nouveau membre dans l'application
 	* "Renvoie" $data au format json ayant les éléments suivants
@@ -31,7 +25,7 @@ class membreController extends Controller {
 	*/
 	public function add() {
 		$myModel = new Membre();
-		if (isset($_POST['pseudo']) && isset($_POST['password']) && isset($_POST['mailAdress'])) {
+		if (isset($_POST['pseudo']) && !empty(isset($_POST['pseudo']) && isset($_POST['password']) && !empty(isset($_POST['password']) && isset($_POST['mailAdress'])  && !empty(isset($_POST['mailAdress'])) {
 			$pseudo = $_POST['pseudo'];
 			$password = $_POST['password'];
 			$mailAdress = $_POST['mailAdress'];
