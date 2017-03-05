@@ -24,6 +24,7 @@ Router::connect('/', 'welcome/index', array());
 Router::connect('/membre/add', 'membre/add', array());
 Router::connect('/membre/login', 'membre/login', array());
 Router::connect('/membre/logout', 'membre/logout', array());
+Router::connect('/membre/logout', 'membre/getInfo', array());
 Router::connect('/membre/get/:id', 'membre/get/:id', array('id' => '[0-9]+'));
 Router::connect('/membre/delete/:id', 'membre/delete/:id', array('id' => '[0-9]+'));
 Router::connect('/membre/ban/:id', 'membre/ban/:id', array('id' => '[0-9]+'));

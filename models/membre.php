@@ -27,12 +27,11 @@ class Membre extends Model {
 	public function registerMember($pseudo, $password, $mailAdress) {
 		$bdd = Database::get();
 
-		$result = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
+		$data = "";
 
 		if ($this->getCountOfPseudo($pseudo) != 0) {
-			$result['returnCode'] = 0;
-			$result['returnMessage'] = 'Le pseudo existe déjà';
-			return ($result);
+
+			return array("returnCode" => 0, "returnMessage" => "Pseudo existant",  "data" => $data);
 		}
 
 		$password = sha1($password);
@@ -51,24 +50,21 @@ class Membre extends Model {
 			$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-			$result['returnCode'] = 1;
-			$result['returnMessage'] = 'Utilisateur enregistré !';
-			$result['data'] = $bddResult[0];
+			$data = $bddResult[0];
+
+			return array("returnCode" => 1, "returnMessage" => "utilisateur enregistré",  "data" => $data);
 		}
 
 		catch (PDOException $e) {
-			$result['returnCode'] = 0;
-			$result['returnMessage'] = 'Echec de la requête : ' . $e->getMessage();	// Changer pour le message de PDO	
+			return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
 		}
-
-		return $result;
 	}
 
 	// Permet à un utilisateur de se connecter
 	public function loginMember($pseudo, $password) {
 		$bdd = Database::get();
 
-		$result = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
+		$result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
 		$password = sha1($password);
 		$sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE ? AND mdp = ?";
@@ -82,18 +78,19 @@ class Membre extends Model {
 				$result['data'] = $bddResult[0];
 				$result['returnCode'] = 1;
 				$result['returnMessage'] = 'Connexion réussie !';
+
+				// S'il n'y a pas de session démarrée
+				session_status() == PHP_SESSION_ACTIVE ? "" : session_start();
+				$_SESSION['user'] = $bddResult[0];
 			}
 			else {
 				$result['returnCode'] = 0;
 				$result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
 			}
-
-			// S'il n'y a pas de session démarrée
-			session_status() == PHP_SESSION_ACTIVE ? "" : session_start();
 		}
 
 		catch (PDOException $e) {
-			$result['returnCode'] = 0;
+			$result['returnCode'] = -1;
 			$result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
 		}
 
