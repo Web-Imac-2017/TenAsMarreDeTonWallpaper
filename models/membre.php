@@ -23,7 +23,7 @@ class Membre extends Model {
 
 	}
 
-	// Enregistre un nouveau membre dans la bse
+	// Enregistre un nouveau membre dans la base
 	public function registerMember($pseudo, $password, $mailAdress) {
 		$bdd = Database::get();
 
@@ -95,7 +95,7 @@ class Membre extends Model {
 		}
 
 		return $result;
-	}
+	}Z
 
 	// Obtenir les informations sur un membre avec son pseudo
 	public function getMemberByPseudo($pseudo) {
