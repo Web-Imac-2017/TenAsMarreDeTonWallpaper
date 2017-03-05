@@ -40,7 +40,7 @@ const LoginForm = Vue.extend({
         // Handle bad http response
         .then(handleHttpError)
         // Handle Json parse
-        .then(function(response){ let r2 = response.clone(); console.log(r2.text()); return response.json(); })
+        .then(function(response){ return response.json(); })
         // Handle request errors
         .then(handleRequestError)
         // Login ok
@@ -64,7 +64,7 @@ const LoginForm = Vue.extend({
         // Handle bad http response
         .then(handleHttpError)
         // Handle Json parse
-        .then(function(response){ let r2 = response.clone(); console.log(r2.text()); return response.json(); })
+        .then(function(response){ return response.json(); })
         // Handle request errors
         .then(handleRequestError)
         // Register ok
