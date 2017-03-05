@@ -37,28 +37,28 @@ class Membre extends Model {
 
 		$password = sha1($password);
 
-
 		$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (?, ?, ?, 0, 0)";
-		$stmt = $bdd->prepare($sqlQuery);
-		$success = $stmt->execute([$pseudo, $password, $mailAdress]);
 
-		$lastInsertId = $bdd->lastInsertId();
+		try {
 
-		$sqlQuery = "SELECT * FROM membre WHERE id = ?";
-		$stmt = $bdd->prepare($sqlQuery);
-		$stmt->execute([$lastInsertId]);
-		$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt = $bdd->prepare($sqlQuery);
+			$success = $stmt->execute([$pseudo, $password, $mailAdress]);
 
-		var_dump($bddResult);
+			$lastInsertId = $bdd->lastInsertId();
 
-		if ($success) {
+			$sqlQuery = "SELECT * FROM membre WHERE id = ?";
+			$stmt = $bdd->prepare($sqlQuery);
+			$stmt->execute([$lastInsertId]);
+			$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 			$result['returnCode'] = 1;
 			$result['returnMessage'] = 'Utilisateur enregistré !';
 			$result['data'] = $bddResult[0];
 		}
-		else {
+
+		catch (PDOException $e) {
 			$result['returnCode'] = 0;
-			$result['returnMessage'] = 'Echec de la requête';	// Changer pour le message de PDO	
+			$result['returnMessage'] = 'Echec de la requête : ' . $e->getMessage();	// Changer pour le message de PDO	
 		}
 
 		return $result;
@@ -77,8 +77,6 @@ class Membre extends Model {
 			$stmt = $bdd->prepare($sqlQuery);
 			$success = $stmt->execute([$pseudo, $password]);
 			$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-			
 
 			if (!empty($bddResult)) {
 				$result['data'] = $bddResult[0];

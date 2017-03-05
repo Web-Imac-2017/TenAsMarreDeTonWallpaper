@@ -3,6 +3,3 @@
 
 
 echo "Bienvenue sur la page index.php";
-
-var_dump('Ceci est index.php');
-var_dump($_SERVER);

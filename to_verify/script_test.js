@@ -6,7 +6,7 @@ function myPage(){
     var me = this;
     this.start = function(){
 
-        var url = "http://localhost/TenAsMarreDeTonWallpaper/api/membre/login";
+        var url = "http://localhost/TenAsMarreDeTonWallpaper/api/membre/add";
 
         $('#myForm').submit(function(e){
 
@@ -14,12 +14,12 @@ function myPage(){
 
             var myPseudo = $('#pseudo').val();
             var myPass = $('#password').val();
-            //var myMailAdress = $('#mailAdress').val();
+            var myMailAdress = $('#mailAdress').val();
 
             var myDatas = { 
                 'pseudo' : myPseudo,
-                'password' : myPass//,
-                //'mailAdress' : myMailAdress
+                'password' : myPass,
+                'mailAdress' : myMailAdress
             };
 
             console.log(myDatas);

@@ -57,6 +57,7 @@ class membreController extends Controller {
 	public function logout() {
 		session_destroy();
 		$data = ['returnCode' => '1', 'data' => '', 'returnMessage' => 'Utilisateur déconnecté'];
+		
 		echo json_encode($data);
 	}
 
