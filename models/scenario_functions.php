@@ -47,28 +47,26 @@
 	// Renvoie 2 questions en fonction de la categorie et de l'importance
 	function nextQuestion($categories, $importance)
 	{
+		// S'il y a plusieurs catégories, on en sélectionne 1 au hasard
+		if (gettype($categories) == "array")
+		{
+			$categorie = $categories[array_rand($categories,1)];
+		}
+		else
+		{
+			$categorie = $categories;
+		}
 		$importanceUp = $importance+5;
 		$bdd = getBdd();
 		// On select les questions qui ont les categories choisies et l'importance demandée
 		$sql = "SELECT DISTINCT id, nb_apparition AS nb_a, q_longue FROM question AS q 
 				INNER JOIN categorie_question AS c_q 
 				ON q.id = c_q.question_id
-				WHERE (q.importance >= :importance AND q.importance <= ".$importanceUp.") AND (";
-		// S'il y a plusieurs catégories, on concaténe avec des OR
-		if (gettype($categories) == "array")
-		{
-			foreach($categories as $categories) {
-				$sql .= "c_q.categorie_id = ".$categories." OR ";
-			}
-			$sql = substr($sql, 0, -4);	// Pour enlever le dernier " OR "
-			$sql .= ")";
-		}
-		else
-		{
-			$sql .= "c_q.categorie_id = ".$categories.")";
-		}
+				WHERE (q.importance >= :importance AND q.importance < ".$importanceUp.")
+				AND (c_q.categorie_id = :categorie)";
 		$req = $bdd->prepare($sql);
 		$req->bindParam(':importance', $importance);
+		$req->bindParam(':categorie', $categorie);
 		$req->execute();
 		$selection = $req->fetchAll();
 		$nb_q = count($selection);
@@ -78,6 +76,7 @@
 			$selected = array();
 			$questions = array();
 			$id = array();
+			$nb_a = array();
 			// S'il y a plus de 3 questions selectionnées, on en tire 3 au hasard
 			if ($nb_q > 3)
 			{
@@ -93,16 +92,29 @@
 				array_push($selected, $selection[$random_question[$i]]);
 				array_push($questions, $selection[$i]['q_longue']);
 				array_push($id, $selection[$i]['id']);
+				array_push($nb_a, $selection[$i]['nb_a']);
 			}
-			$nextQuestion = array('nb_q'=>$nb_q, 'questions'=>$questions, 'id'=>$id);
+			$nextQuestion = array('nb_q'=>$nb_q, 'questions'=>$questions, 'id'=>$id, 'nb_a'=>$nb_a);
 		}
 		// S'il n'y a aucune question qui correspond à la requête
 		else
 		{
-			$nextQuestion = array('nb_q'=>0,'questions'=>array("Aucune question"),'id'=>array(0));
+			$nextQuestion = array('nb_q'=>0,'questions'=>array("Aucune question"),'id'=>array(0),'nb_a'=>array(0));
 		}
 
 		return $nextQuestion;
+	}
+	
+	// Met à jour le nombre d'apparition d'une question
+	function updateNb_aQ($question_id, $nb_a)
+	{
+		$nb_a++;
+		$bdd = getBdd();
+		$sql = 'UPDATE question SET nb_apparition=:nb_a WHERE id=:question_id';
+		$req = $bdd->prepare($sql);
+		$req->bindParam(':nb_a', $nb_a);
+		$req->bindParam(':question_id', $question_id);
+		$req->execute();
 	}
 	
 	/* GESTION DES REPONSES */
@@ -115,10 +127,10 @@
 		$sql = "SELECT DISTINCT wallpaper_id FROM reponse AS r 
 				WHERE question_id =".$question_id."
 				AND (val_min <=".$reponse." AND val_max>=".$reponse.")";
-		// On fait une union avec les anciens select s'il y en a déjà eu
+		// On utilise l'opérateur IN avec les anciens select s'il y en a déjà eu
 		if ($requete)
 		{
-			$sql .= " UNION ".$requete;
+			$sql .= " AND wallpaper_id IN ( ".$requete." )";
 		}
 		$req = $bdd->prepare($sql);
 		$req->execute();
@@ -140,16 +152,16 @@
 	function stopGame($wpp_id)
 	{		
 		$i = 0;
+		$selection = array();
 		$bdd = getBdd();
-		foreach ($wpp_id as $wpp_id)
+		foreach ($wpp_id as $id)
 		{
-			$id = $wpp_id;
-			// Provisoire //
 			$sql = 'SELECT * FROM wallpaper WHERE id=:id';
 			$req = $bdd->prepare($sql);
 			$req->bindParam(':id', $id);
 			$req->execute();
-			$selection = $req->fetchAll(PDO::FETCH_ASSOC);
+			$resultat = $req->fetchAll(PDO::FETCH_ASSOC);
+			array_push($selection, $resultat[0]);
 			
 			$nb_apparition = $selection[$i]['nb_apparition']+1;
 			$sql2 = 'UPDATE wallpaper SET nb_apparition=:nb_apparition WHERE id=:id';
@@ -169,15 +181,20 @@
 	{		
 		$wpp_left = array();
 		$reponse;
+		$nb_min = 1;
+		// On recupere le nombre de wpp qu'on peut trouver pour chaque reponse fournie
 		for ($reponse = 0; $reponse <= 100; $reponse+=25)
 		{
 			$wpp = answerQuestion($question_id, $reponse, $requete);
 			array_push($wpp_left, $wpp['nb_wpp_left']);
 		}
-		if ($wpp_left[0] >= 10 && $wpp_left[1] >= 10 && $wpp_left[2] >= 10 && $wpp_left[3] >= 10 && $wpp_left[4] >= 10)
+		print_r($wpp_left);
+		// Si il y a suffisamment de wpp pour chaque reponse possible, on continue
+		if ($wpp_left[0] >= $nb_min && $wpp_left[1] >= $nb_min && $wpp_left[2] >= $nb_min && $wpp_left[3] >= $nb_min && $wpp_left[4] >= $nb_min)
 		{
 			$continue = true;
 		}
+		// Sinon on arrete
 		else
 		{
 			$continue = false;

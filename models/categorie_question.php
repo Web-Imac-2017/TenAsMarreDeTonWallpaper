@@ -25,6 +25,7 @@
 	
 	// Rajoute une question
 	function addQuestion($q_courte, $q_longue, $importance, $nb_apparition, $categories) {
+		$nb_apparition = 0;
 		$bdd = getBdd();
 		$sql = 'INSERT INTO question(q_courte, q_longue, importance, nb_apparition) VALUES(:q_courte, :q_longue, :importance, :nb_apparition)';
 		$req = $bdd->prepare($sql);
@@ -42,9 +43,9 @@
 	{
 		foreach ($categoriesID as $cat) {
 			$bdd = getBdd();
-			$sql = 'INSERT INTO categorie_question VALUES(?, ?)';
+			$sql = 'INSERT INTO categorie_question (categorie_id, question_id) VALUES(?, ?)';
 			$req = $bdd->prepare($sql);
-			$req->execute(array($questionID, $cat));
+			$req->execute(array($cat, $questionID));
 		}
 	}
 	

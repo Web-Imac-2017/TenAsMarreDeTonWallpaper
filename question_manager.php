@@ -53,6 +53,8 @@ session_start();
 					$q_categories = getQuestionCategories($_POST['question_id']);
 					$occurences = sizeof($q_categories);
 					$_SESSION['q_id'] = $question['q_id'];
+					$_SESSION['importance'] = $question['importance'];
+					$_SESSION['nb_apparition'] = $question['nb_apparition'];
 			?>
 			<hr />
 			<form action="" method="post">
@@ -114,11 +116,11 @@ session_start();
 				{
 					if(empty($_POST['importance']))
 					{
-						$_POST['importance'] = $question['importance'];
+						$_POST['importance'] = $_SESSION['importance'];
 					}
 					if(empty($_POST['nb_apparition']))
 					{
-						$_POST['nb_apparition'] = $question['nb_apparition'];
+						$_POST['nb_apparition'] = $_SESSION['nb_apparition'];
 					}
 					
 					$_SESSION['q_courte'] = $_POST['q_courte'];
@@ -126,7 +128,6 @@ session_start();
 					$_SESSION['importance'] = $_POST['importance'];
 					$_SESSION['nb_apparition'] = $_POST['nb_apparition'];
 					$_SESSION['q_categories'] = $_POST['q_categories'];
-					print_r($_SESSION['q_categories']);
 					changeQuestion($_SESSION['q_id'], $_SESSION['q_courte'], $_SESSION['q_longue'], $_SESSION['importance'], $_SESSION['nb_apparition']);
 					deleteQuestionCategorie($_SESSION['q_id']);
 					addQuestionCategorie($_SESSION['q_id'], $_SESSION['q_categories']);
