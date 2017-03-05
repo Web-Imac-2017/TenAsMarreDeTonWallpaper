@@ -43,13 +43,13 @@ class Membre extends Model {
 
 			$stmt = $bdd->prepare($sqlQuery);
 			$success = $stmt->execute([$pseudo, $password, $mailAdress]);
-
 			$lastInsertId = $bdd->lastInsertId();
 
 			$sqlQuery = "SELECT * FROM membre WHERE id = ?";
 			$stmt = $bdd->prepare($sqlQuery);
 			$stmt->execute([$lastInsertId]);
 			$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 			$result['returnCode'] = 1;
 			$result['returnMessage'] = 'Utilisateur enregistré !';
