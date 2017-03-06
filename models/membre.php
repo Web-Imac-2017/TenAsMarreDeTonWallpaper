@@ -96,6 +96,7 @@ class Membre extends Model {
 
 		return $result;
 	}
+<<<<<<< HEAD
 
 	public function editMember($pseudo, $mdp, $mail, $admin, $moderateur) {
 		$bdd = Database::get();
@@ -104,6 +105,8 @@ class Membre extends Model {
 
 		$password = sha1($password);
 	}
+=======
+>>>>>>> bca579dd45c1a7d876e7fae9bef2321f5140dc50
 
 	// Obtenir les informations sur un membre avec son pseudo
 	public function getMemberByPseudo($pseudo) {
