@@ -9,26 +9,22 @@ class Mel extends Model {
         parent::__construct();
     }
 
-    public function add($raison, $status) {
+    public function add($raison, $status, $membre_id) {
         $bdd = Database::get();
 
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
-        $sqlQuery = "INSERT INTO ";
+        $sqlQuery = "INSERT INTO mise_en_ligne VALUES(NULL, ?, ?, ?, NULL)";
 
         try {
             $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute([$pseudo, $password]);
+            $success = $stmt->execute([$raison, $status, $membre_id]);
             $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if (!empty($bddResult)) {
                 $result['data'] = $bddResult[0];
                 $result['returnCode'] = 1;
                 $result['returnMessage'] = 'Connexion réussie !';
-
-                // S'il n'y a pas de session démarrée
-                session_status() == PHP_SESSION_ACTIVE ? "" : session_start();
-                $_SESSION['user'] = $bddResult[0];
             }
             else {
                 $result['returnCode'] = 0;
