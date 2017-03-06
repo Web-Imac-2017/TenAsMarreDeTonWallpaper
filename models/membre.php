@@ -121,7 +121,7 @@ class Membre extends Model {
 		}
 
 		catch (PDOException $e) {
-			return array("returnCode" => -1, "returnMessage" => "Modification échouée " . $e->getMessage(),  "data" => $data);
+			return array("returnCode" => -1, "returnMessage" => "Modification échouée : " . $e->getMessage(),  "data" => $data);
 		}
 
 	}
@@ -133,6 +133,7 @@ class Membre extends Model {
 
 	// Obtenir les informations sur un membre avec son id
 	public function getMemberById($id) {
+		
 
 	}
 

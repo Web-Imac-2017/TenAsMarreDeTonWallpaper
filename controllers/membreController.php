@@ -52,10 +52,17 @@ class membreController extends Controller {
 	public function login() {
 		$myModel = new Membre();
 
-		if (isset($_POST['pseudo']) && !empty($_POST['pseudo']) && isset($_POST['password'])  && !empty($_POST['password'])) {
+		if (isset($_POST['pseudo']) && !empty($_POST['pseudo']) && isset($_POST['password'])  && !empty($_POST['password']) && isset($_POST['password2'])  && !empty($_POST['password2'])) {
 			$pseudo = $_POST['pseudo'];
 			$password = $_POST['password'];
-			$data = $myModel->loginMember($pseudo, $password);
+			$password2 = $_POST['password2'];
+
+			if (strcmp($password, $password2) == 0) {
+				$data = $myModel->loginMember($pseudo, $password);
+			}
+			else {
+				$data = ['returnCode' => '0', 'data' => '', 'returnMessage' => 'Les mots de passe ne sont pas identiques !'];	
+			}
 
 			echo json_encode($data);
 		}
@@ -96,6 +103,29 @@ class membreController extends Controller {
 	}
 
 	public function edit(){
+		if (isset($_SESSION['user'])) {
+			$id = $_SESSION['user']['id'];
+			$pseudo = $_SESSION['user']['pseudo'];
+			$password = $_SESSION['user']['password'];
+			$mailAdress = $_SESSION['user']['mailAdress'];
+			$admin = $_SESSION['user']['admin'];
+			$moderateur = $_SESSION['user']['moderateur'];
+		}
+		if (isset($_POST['pseudo']) && !empty($_POST['pseudo'])) {
+			$pseudo = $_POST['pseudo'];
+		}
+		if (isset($_POST['password']) && !empty($_POST['password'])) {
+			$password = $_POST['password'];	
+		}
+		if (isset($_POST['mailAdress']) && !empty($_POST['mailAdress'])) {
+			$mailAdress = $_POST['mailAdress'];
+		}
+		if (isset($_POST['admin']) && !empty($_POST['admin'])) {
+			$admin = $_POST['admin'];
+		}
+		if (isset($_POST['moderateur']) && !empty($_POST['moderateur'])) {
+			$moderateur = $_POST['moderateur'];
+		}
 
 	}
 }
