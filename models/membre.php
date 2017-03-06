@@ -36,25 +36,31 @@ class Membre extends Model {
 
 		$password = sha1($password);
 
-		$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (?, ?, ?, 0, 0)";
-
 		try {
 
-			$stmt = $bdd->prepare($sqlQuery);
-			$success = $stmt->execute([$pseudo, $password, $mailAdress]);
-			$lastInsertId = $bdd->lastInsertId();
+			$sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (?, ?, ?, 0, 0)";
 
-			$sqlQuery = "SELECT * FROM membre WHERE id = ?";
-			$stmt = $bdd->prepare($sqlQuery);
-			$stmt->execute([$lastInsertId]);
-			$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			try {
+
+				$stmt = $bdd->prepare($sqlQuery);
+				$success = $stmt->execute([$pseudo, $password, $mailAdress]);
+				$lastInsertId = $bdd->lastInsertId();
+
+				$sqlQuery = "SELECT * FROM membre WHERE id = ?";
+				$stmt = $bdd->prepare($sqlQuery);
+				$stmt->execute([$lastInsertId]);
+				$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-			$data = $bddResult[0];
+				$data = $bddResult[0];
 
-			return array("returnCode" => 1, "returnMessage" => "utilisateur enregistré",  "data" => $data);
+				return array("returnCode" => 1, "returnMessage" => "Utilisateur enregistré",  "data" => $data);
+			}
+
+			catch (PDOException $e) {
+				return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+			}
 		}
-
 		catch (PDOException $e) {
 			return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
 		}
@@ -102,20 +108,37 @@ class Membre extends Model {
 
 		$result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
-		$password = sha1($password);
-		$sqlQuery = "UPDATE membre SET pseudo = ?, mdp = ?, mail = ?, admin = ?, moderateur = ? WHERE id = ?";
-
 		try {
+			try {
+				// Récupération mot de passe
+				$sqlQuery = "SELECT mdp FROM membre WHERE id = ?";
+				$stmt = $bdd->prepare($sqlQuery);
+				$stmt->execute([$id]);
+				$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				
+				$password = sha1($password);
 
+				$sqlQuery = "UPDATE membre SET pseudo = ?, mdp = ?, mail = ?, admin = ?, moderateur = ? WHERE id = ?";
+			}
+			catch (PDOException $e) {
+				return array("returnCode" => -1, "returnMessage" => "Modification échouée : " . $e->getMessage(),  "data" => $data);
+			}
+
+			// Modification
 			$stmt = $bdd->prepare($sqlQuery);
-			$success = $stmt->execute([$pseudo, $password = null, $mailAdress, $admin, $moderateur, $id]);
+			$success = $stmt->execute([$pseudo, $password, $mailAdress, $admin, $moderateur, $id]);
 
+			// Récupération infos
 			$sqlQuery = "SELECT * FROM membre WHERE id = ?";
 			$stmt = $bdd->prepare($sqlQuery);
 			$stmt->execute([$id]);
 			$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			$data = $bddResult[0];
+
+			// S'il n'y a pas de session démarrée
+			session_status() == PHP_SESSION_ACTIVE ? "" : session_start();
+			$_SESSION['user'] = $bddResult[0];
 
 			return array("returnCode" => 1, "returnMessage" => "Modificaton effectuée !",  "data" => $data);
 		}
@@ -124,6 +147,24 @@ class Membre extends Model {
 			return array("returnCode" => -1, "returnMessage" => "Modification échouée : " . $e->getMessage(),  "data" => $data);
 		}
 
+	}
+
+	public function deleteMember($id) {
+		$bdd = Database::get();
+
+		$result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+
+		try {
+			$sqlQuery = "DELETE FROM membre WHERE id = ?";
+			$stmt = $bdd->prepare($sqlQuery);
+			$stmt->execute([$id]);		
+			$result['returnCode'] = 1;
+			$result['returnMessage']  = "Supression effectuée";	
+		}
+		catch (PDOException $e) {
+			$result['returnCode'] = -1;
+			$result['returnMessage']  = "Supression échouée :";	
+		}
 	}
 
 	// Obtenir les informations sur un membre avec son pseudo
@@ -138,32 +179,3 @@ class Membre extends Model {
 	}
 
 }
-
-/*
-    /*on suppose session actualisé avec les modifs
-    function modifaccount($_SESSION,$bddpdo){
-        $reponse = $bddpdo->prepare('DELETE FROM Membre 
-        WHERE id=?');
-        $reponse->execute(array($_SESSION['tab']['id']));
-        $reponse->closeCursor();
-    
-        $reponse = $bddpdo->prepare('INSERT INTO Membre(id,mail,pseudo,mdp,est_modo,est_admin,est_ban)
-        VALUES(:id,:mail,:pseudo,:mdp,:est_modo,:est_admin,:est_ban)');
-    
-        $reponse->execute(array(
-            'id' => $_SESSION['tab']['id'],
-            'mail' => $_SESSION['tab']['mail'],
-            'pseudo' => $_SESSION['tab']['pseudo'],
-            'mdp' => $_SESSION['tab']['mdp'],
-            'est_modo' => $_SESSION['tab']['est_modo'],
-            'est_admin' => $_SESSION['tab']['est_admin'],
-            'est_ban' => $_SESSION['tab']['est_ban']
-        ));
-        $reponse->closeCursor();
-    }
-
-    function supaccount($id,$bddpdo){
-        $reponse = $bddpdo->prepare('DELETE FROM Membre 
-        WHERE id=$id');
-        $reponse->closeCursor();
-    }*/

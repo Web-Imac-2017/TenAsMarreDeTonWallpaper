@@ -32,12 +32,17 @@ class membreController extends Controller {
 			$password2 = $_POST['password2'];
 			$mailAdress = $_POST['mailAdress'];
 
-			if (strcmp($password, $password2) == 0) {
-				$data = $myModel->registerMember($pseudo, $password, $mailAdress);
+			if (strcmp($password, $password2) != 0) {
+				$data = ['returnCode' => '0', 'data' => '', 'returnMessage' => 'Les mots de passe ne sont pas identiques !'];	
+			}
+			else if (!filter_var($mailAdress, FILTER_VALIDATE_EMAIL)) {	
+				$data = ['returnCode' => '0', 'data' => '', 'returnMessage' => 'Adresse mail invalide !'];	
 			}
 			else {
-				$data = ['returnCode' => '0', 'data' => '', 'returnMessage' => 'Les mots de passe ne sont pas identiques !'];		
+
+				$data = $myModel->registerMember($pseudo, $password, $mailAdress);
 			}
+			
 
 			echo json_encode($data);
 		}
@@ -103,6 +108,11 @@ class membreController extends Controller {
 	}
 
 	public function edit(){
+		$myModel = new Membre();
+		$flagPassOK = 1;
+		$flagMailOK = 1;
+		$errorMessage = '';
+
 		if (isset($_SESSION['user'])) {
 			$id = $_SESSION['user']['id'];
 			$pseudo = $_SESSION['user']['pseudo'];
@@ -115,10 +125,16 @@ class membreController extends Controller {
 			$pseudo = $_POST['pseudo'];
 		}
 		if (isset($_POST['password']) && !empty($_POST['password'])) {
-			$password = $_POST['password'];	
+			$password = $_POST['password'];
+			if (isset($_POST['password2']) && !empty($_POST['password2'])) {
+				if(strcmp($password, $password2) != 0)
+					$flagPassOK = 0;
+			}
 		}
 		if (isset($_POST['mailAdress']) && !empty($_POST['mailAdress'])) {
 			$mailAdress = $_POST['mailAdress'];
+			if (!filter_var($mailAdress, FILTER_VALIDATE_EMAIL))
+				$flagMailOK = 0;
 		}
 		if (isset($_POST['admin']) && !empty($_POST['admin'])) {
 			$admin = $_POST['admin'];
@@ -127,5 +143,25 @@ class membreController extends Controller {
 			$moderateur = $_POST['moderateur'];
 		}
 
+		if ($flagPassOK == 1 && $flagMailOK == 1)
+			$data = $myModel->editMember($id, $pseudo, $password, $mailAdress, $admin, $moderateur);
+		else {
+			if (!$flagMailOK)
+				$errorMessage = $errorMessage . "-- Adresse mail invalide";
+			if (!$flagPassOK)
+				$errorMessage = $errorMessage . "-- Les mots de passe ne sont pas identiques !";
+
+		}
+			$data = ['returnCode' => '0', 'data' => '', 'returnMessage' => $errorMessage];
+
+		echo json_encode($data);
+	}
+
+	public function delete($id){
+		$myModel = new Membre();
+
+		$data = $myModel->deleteMember($id);
+
+		echo json_encode($data);
 	}
 }
