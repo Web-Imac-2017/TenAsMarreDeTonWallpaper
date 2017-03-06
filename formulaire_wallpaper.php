@@ -25,13 +25,26 @@ require_once('wallpaper.php');
 
         <fieldset>
             <legend>Ajouter un nouveau wallpaper</legend>
-            <form action="api/wallpaper/add" enctype="multipart/form-data" method="post">
+            <form action="/wallpaper/add" enctype="multipart/form-data" method="post">
                 <label for="nom">Nom :</label>
                 <input type="text" name="nom" id="nom" /><br />
                 <label for="auteur">Auteur :</label>
                 <input type="text" name="auteur" id="auteur" /><br />
                 <label for="image">Upload :</label>
                 <input type="file" name="image" id="image" /><br />
+                <label for="reponses">Réponses</label>
+                <table>
+                    <tr>
+                        <th>Question</th>
+                        <th>Val min</th>
+                        <th>Val max</th>
+                    </tr>
+                    <?php
+                    
+                    // requête vers /question/getAll
+                    
+                    ?>
+                </table>
                 <input type="submit" value="Ajouter" name="submit" />
             </form>
         </fieldset>
