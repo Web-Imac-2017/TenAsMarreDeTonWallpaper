@@ -71,7 +71,7 @@ class Membre extends Model {
 
 		try {
 			$stmt = $bdd->prepare($sqlQuery);
-			$success = $stmt->execute([$pseudo, $password]);
+			$stmt->execute([$pseudo, $password]);
 			$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (!empty($bddResult)) {
@@ -95,7 +95,15 @@ class Membre extends Model {
 		}
 
 		return $result;
-	}Z
+	}
+
+	public function editMember($pseudo, $mdp, $mail, $admin, $moderateur) {
+		$bdd = Database::get();
+
+		$result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+
+		$password = sha1($password);
+	}
 
 	// Obtenir les informations sur un membre avec son pseudo
 	public function getMemberByPseudo($pseudo) {
@@ -108,3 +116,33 @@ class Membre extends Model {
 	}
 
 }
+
+
+    /*on suppose session actualisé avec les modifs*/
+    function modifaccount($_SESSION,$bddpdo){
+        $reponse = $bddpdo->prepare('DELETE FROM Membre 
+        WHERE id=?');
+        $reponse->execute(array($_SESSION['tab']['id']));
+        $reponse->closeCursor();
+    
+        $reponse = $bddpdo->prepare('INSERT INTO Membre(id,mail,pseudo,mdp,est_modo,est_admin,est_ban)
+        VALUES(:id,:mail,:pseudo,:mdp,:est_modo,:est_admin,:est_ban)');
+    
+        $reponse->execute(array(
+            'id' => $_SESSION['tab']['id'],
+            'mail' => $_SESSION['tab']['mail'],
+            'pseudo' => $_SESSION['tab']['pseudo'],
+            'mdp' => $_SESSION['tab']['mdp'],
+            'est_modo' => $_SESSION['tab']['est_modo'],
+            'est_admin' => $_SESSION['tab']['est_admin'],
+            'est_ban' => $_SESSION['tab']['est_ban']
+        ));
+        $reponse->closeCursor();
+    }
+
+    function supaccount($id,$bddpdo){
+        $reponse = $bddpdo->prepare('DELETE FROM Membre 
+        WHERE id=$id');
+        $reponse->closeCursor();
+    }
+?>
