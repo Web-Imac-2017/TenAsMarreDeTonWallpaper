@@ -5,8 +5,8 @@ require_once KERNEL . 'kernel.php';
 
 class Question extends Model {
 
-    public function __construct() {
-
+    public function __construct(){
+        parent::__construct();
     }
 
     // Renvoie les informations de toutes les questions
