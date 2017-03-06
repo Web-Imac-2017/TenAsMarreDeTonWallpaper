@@ -40,27 +40,67 @@ class Wallpaper extends Model {
     }
 
     // Renvoie les informations d'un seul wallpaper
-    public function get($id) {
+    public function get($id) {        
         $bdd = Database::get();
-        $sql = 'SELECT * FROM wallpaper WHERE id=?';
-        $data['content'] = $bdd->prepare($sql);
-        $data['content']->execute(array($id));
-        if ($data['content']->rowCount() == 1)
-            $data['content']->fetch();  // Accès à la première ligne de résultat
-        else
-            throw new Exception("Aucune wallpaper ne correspond à l'identifiant '$wallpaperID'");
-        return $data;
+        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+        $sqlQuery = 'SELECT * FROM wallpaper WHERE id=?';
+
+        try {
+            $stmt = $bdd->prepare($sqlQuery);
+            $success = $stmt->execute([$id]);
+            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if(!empty($bddResult)) {
+                $result['data'] = $bddResult[0];
+                $result['returnCode'] = 1;
+                $result['returnMessage'] = 'Connexion réussie !';
+            }
+            else {
+                $result['returnCode'] = 0;
+                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
+            }
+        }
+
+        catch (PDOException $e) {
+            $result['returnCode'] = -1;
+            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
+        }
+
+        return $result;
     }
 
     // Ajoute un nouveau wallpaper
-    public function add() {
+    public function add($url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $extension, $categories) {
         $bdd = Database::get();
-        $sql = 'INSERT INTO wallpaper VALUES(NULL, ?, ?)';
-        $req = $bdd->prepare($sql);
-        $req->execute(array($_POST['url'], 0));
+        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+        $sqlQuery = 'INSERT INTO wallpaper VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)';
+
+        try {
+            $stmt = $bdd->prepare($sqlQuery);
+            $success = $stmt->execute([$url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $extension, date("Y-m-d"), 0, 0]);
+            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if(!empty($bddResult)) {
+                $result['data'] = $bddResult[0];
+                $result['returnCode'] = 1;
+                $result['returnMessage'] = 'Connexion réussie !';
+            }
+            else {
+                $result['returnCode'] = 0;
+                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
+            }
+        }
+
+        catch (PDOException $e) {
+            $result['returnCode'] = -1;
+            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
+        }
 
         $id = getIdLastWallpaper(); // on récupère l'id du nouvel wallpaper
         setWallpaperCategories($id, $categories); // on associe le wallpaper aux différentes catégories
+
+        return $result;
+
     }
 
     // Renvoie l'id du dernier wallpaper inséré
