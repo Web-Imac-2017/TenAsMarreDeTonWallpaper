@@ -115,7 +115,7 @@ class Question extends Model {
 
     // Supprime une question
     function deleteQuestion($questionID) {
-        $bdd = getBdd();
+        $bdd = Database::get();
         $sql = 'DELETE FROM question WHERE id = '.$questionID.'';
         $req = $bdd->prepare($sql);
         $req->execute();
@@ -123,7 +123,7 @@ class Question extends Model {
 
     // Supprime une question de la table question_categorie
     function deleteQuestionCategorie($questionID) {
-        $bdd = getBdd();
+        $bdd = Database::get();
         $sql = 'DELETE FROM categorie_question WHERE question_id = '.$questionID.'';
         $req = $bdd->prepare($sql);
         $req->execute();
@@ -131,7 +131,7 @@ class Question extends Model {
 
     // Modifie une question
     function changeQuestion($questionID, $q_courte, $q_longue, $importance, $nb_apparition) {
-        $bdd = getBdd();
+        $bdd = Database::get();
         $sql = 'UPDATE question SET q_courte=:q_courte, q_longue=:q_longue, importance=:importance, nb_apparition=:nb_apparition WHERE id = :questionID';
         $req = $bdd->prepare($sql);
         $req->bindParam(':q_courte', $q_courte);
@@ -146,7 +146,7 @@ class Question extends Model {
     // Modifie la catégorie d'une question
     function changeQuestionCategorie($questionID, $categoriesID) {
         foreach ($categoriesID as $categoriesID):
-        $bdd = getBdd();
+        $bdd = Database::get();
         $sql = 'UPDATE categorie_question SET categorie_id=:categorieID WHERE question_id=:questionID';
         $req = $bdd->prepare($sql);
         $req->bindParam(':categorieID', $categoriesID);
@@ -158,7 +158,7 @@ class Question extends Model {
     // Renvoie les catégories liées à la question
     function getQuestionCategories($questionID) {
         $i = 0;
-        $bdd = getBdd();
+        $bdd = Database::get();
         $sql = 'SELECT categorie_id AS cat_id FROM categorie_question WHERE question_id =?';
         $req = $bdd->prepare($sql);
         if($req->execute(array($questionID))) {
@@ -174,7 +174,7 @@ class Question extends Model {
 
     // Renvoie le nombre d'occurences d'une question dans la table question_categorie
     function getQuestionOccurences($questionID) {
-        $bdd = getBdd();
+        $bdd = Database::get();
         $sql = 'SELECT question_id AS id, COUNT( question_id ) AS nb_cat FROM categorie_question WHERE question_id =?';
         $req = $bdd->prepare($sql);
         $req->execute(array($questionID));
