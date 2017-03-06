@@ -108,7 +108,7 @@ class Membre extends Model {
 		try {
 
 			$stmt = $bdd->prepare($sqlQuery);
-			$success = $stmt->execute([$pseudo, $password, $mailAdress, $admin, $moderateur, $id]);
+			$success = $stmt->execute([$pseudo, $password = null, $mailAdress, $admin, $moderateur, $id]);
 
 			$sqlQuery = "SELECT * FROM membre WHERE id = ?";
 			$stmt = $bdd->prepare($sqlQuery);
@@ -133,7 +133,7 @@ class Membre extends Model {
 
 	// Obtenir les informations sur un membre avec son id
 	public function getMemberById($id) {
-		
+
 
 	}
 

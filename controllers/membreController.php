@@ -26,11 +26,18 @@ class membreController extends Controller {
 	public function add() {
 		$myModel = new Membre();
 
-		if (isset($_POST['pseudo']) && !empty($_POST['pseudo']) && isset($_POST['password']) && !empty($_POST['password']) && isset($_POST['mailAdress'])  && !empty($_POST['mailAdress'])) {
+		if (isset($_POST['pseudo']) && !empty($_POST['pseudo']) && isset($_POST['password']) && !empty($_POST['password']) && isset($_POST['password2'])  && !empty($_POST['password2']) && isset($_POST['mailAdress'])  && !empty($_POST['mailAdress'])) {
 			$pseudo = $_POST['pseudo'];
 			$password = $_POST['password'];
+			$password2 = $_POST['password2'];
 			$mailAdress = $_POST['mailAdress'];
-			$data = $myModel->registerMember($pseudo, $password, $mailAdress);
+
+			if (strcmp($password, $password2) == 0) {
+				$data = $myModel->registerMember($pseudo, $password, $mailAdress);
+			}
+			else {
+				$data = ['returnCode' => '0', 'data' => '', 'returnMessage' => 'Les mots de passe ne sont pas identiques !'];		
+			}
 
 			echo json_encode($data);
 		}
@@ -52,18 +59,11 @@ class membreController extends Controller {
 	public function login() {
 		$myModel = new Membre();
 
-		if (isset($_POST['pseudo']) && !empty($_POST['pseudo']) && isset($_POST['password'])  && !empty($_POST['password']) && isset($_POST['password2'])  && !empty($_POST['password2'])) {
+		if (isset($_POST['pseudo']) && !empty($_POST['pseudo']) && isset($_POST['password'])  && !empty($_POST['password'])) {
 			$pseudo = $_POST['pseudo'];
 			$password = $_POST['password'];
-			$password2 = $_POST['password2'];
-
-			if (strcmp($password, $password2) == 0) {
-				$data = $myModel->loginMember($pseudo, $password);
-			}
-			else {
-				$data = ['returnCode' => '0', 'data' => '', 'returnMessage' => 'Les mots de passe ne sont pas identiques !'];	
-			}
-
+			$data = $myModel->loginMember($pseudo, $password);
+			
 			echo json_encode($data);
 		}
 		else {
