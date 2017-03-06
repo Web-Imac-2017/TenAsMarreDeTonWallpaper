@@ -39,7 +39,7 @@ class Question extends Model {
         return $result;
     }
 
-    // Renvoie les informations sur une seule question
+    // Renvoie les informations d'une seule question
     public function get($id) {        
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
