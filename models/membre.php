@@ -96,7 +96,6 @@ class Membre extends Model {
 
 		return $result;
 	}
-<<<<<<< HEAD
 
 	public function editMember($pseudo, $mdp, $mail, $admin, $moderateur) {
 		$bdd = Database::get();
@@ -105,8 +104,6 @@ class Membre extends Model {
 
 		$password = sha1($password);
 	}
-=======
->>>>>>> bca579dd45c1a7d876e7fae9bef2321f5140dc50
 
 	// Obtenir les informations sur un membre avec son pseudo
 	public function getMemberByPseudo($pseudo) {
@@ -120,8 +117,8 @@ class Membre extends Model {
 
 }
 
-
-    /*on suppose session actualisé avec les modifs*/
+/*
+    /*on suppose session actualisé avec les modifs
     function modifaccount($_SESSION,$bddpdo){
         $reponse = $bddpdo->prepare('DELETE FROM Membre 
         WHERE id=?');
@@ -147,5 +144,5 @@ class Membre extends Model {
         $reponse = $bddpdo->prepare('DELETE FROM Membre 
         WHERE id=$id');
         $reponse->closeCursor();
-    }
+    }*/
 ?>
