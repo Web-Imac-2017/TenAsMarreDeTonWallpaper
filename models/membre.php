@@ -103,7 +103,7 @@ class Membre extends Model {
 		$result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
 		$password = sha1($password);
-		$sqlQuery "UPDATE membre SET pseudo = ?, mdp = ?, mail = ?, admin = ?, moderateur = ? WHERE id = ?";
+		$sqlQuery = "UPDATE membre SET pseudo = ?, mdp = ?, mail = ?, admin = ?, moderateur = ? WHERE id = ?";
 
 		try {
 

@@ -95,4 +95,7 @@ class membreController extends Controller {
 		}
 	}
 
+	public function edit(){
+
+	}
 }

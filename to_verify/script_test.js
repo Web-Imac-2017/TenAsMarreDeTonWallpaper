@@ -6,7 +6,7 @@ function myPage(){
     var me = this;
     this.start = function(){
 
-        var url = "http://localhost/TenAsMarreDeTonWallpaper/api/membre/login";
+        var url = "http://localhost/TenAsMarreDeTonWallpaper/api/membre/logout";
 
         $('#myForm').submit(function(e){
 
@@ -25,10 +25,10 @@ function myPage(){
             console.log(myDatas);
             
             $.ajax({
-                data: myDatas,
+                //data: myDatas,
                 contentType: 'application/x-www-form-urlencoded',
                 dataType: 'json',
-                type: 'POST',
+                type: 'GET',
                 url: url,
                 success: function(datas) {
                     console.log(datas);
