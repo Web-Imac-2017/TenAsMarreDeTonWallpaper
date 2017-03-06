@@ -1,0 +1,22 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+# Si le fichier existe, on laisse faire
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.*)$ - [END]
+
+# On ne veut pas permettre d'aller dans un dossier sans donner de fichier
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ ../index.php/$1 [END]
+
+# Si le fichier n'existe pas, on retourne à la réécriture par défaut : ../index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ ../index.php/$1 [END]
+
+# Idem si on veut index.html
+RewriteRule ^www/index.html index.php [END]
+
+# Idem si c'est une route vide
+RewriteRule ^$ ../index.php [END]
+
+# Sinon on charge le fichier !

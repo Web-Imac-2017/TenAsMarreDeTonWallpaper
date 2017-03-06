@@ -1,0 +1,12 @@
+<section class="mr-wallmatch-content">
+    <museum-background v-if="showBackground"></museum-background>
+    <div class="left-part">
+        <mr-wallmatch></mr-wallmatch>
+    </div>
+    <div class="right-part">
+        <div class="mr-wallmatch-says">
+            <slot name="mr-wallmatch-says"></slot>
+        </div>
+        <slot>Voici un texte qui ne devrait pas s'afficher.</slot>
+    </div>
+</section>

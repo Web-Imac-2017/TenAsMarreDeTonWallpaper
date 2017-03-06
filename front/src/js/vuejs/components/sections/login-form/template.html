@@ -1,0 +1,20 @@
+<div class="login-form">
+    <div v-if="msgs" class="msgs">
+        <div v-if="msgerror" class="msg-error">{{msgerror}}</div>
+        <div v-if="msgok" class="msg-ok">{{msgok}}</div>
+    </div>
+    <form class="login-form-login" ref="loginForm" v-on:submit.prevent="tryLogin">
+        <h2>Connectez-vous</h2>
+        <input type="text" name="pseudo" placeholder="Identifiant"/>
+        <input type="password" name="password" placeholder="Mot de passe"/>
+        <input type="submit" value="Connexion !"/>
+    </form>
+    <form class="login-form-register" ref="registerForm" v-on:submit.prevent="tryRegister">
+        <h2>Ou créez un compte</h2>
+        <input type="text" name="pseudo" placeholder="Identifiant"/>
+        <input type="email" name="mailAdress" placeholder="Adresse e-mail"/>
+        <input type="password" name="password" placeholder="Mot de passe"/>
+        <input type="password" name="password2" placeholder="Mot de passe (confirmation)"/>
+        <input type="submit" value="Inscription !"/>
+    </form>
+</div>

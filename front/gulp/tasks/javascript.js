@@ -33,6 +33,7 @@ gulp.task('browserify', function() {
   // On créé un objet qui contient tout le tralala pour build
   var bundler = watchify(browserify(config.src, args));
   // On ajoute des transformations
+
   bundler
     .transform(stringify,{ appliesTo: { includeExtensions: ['.html'] }, minify: true })
     .transform(babelify, { presets: ['es2015'] }) // Babel, pour l'ES6

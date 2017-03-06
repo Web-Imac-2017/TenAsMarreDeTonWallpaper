@@ -1,0 +1,27 @@
+.mr-wallmatch-content{
+
+    $left-part-width: 25%;
+
+    display: flex; flex-wrap: row nowrap; align-items: stretch;
+    width: 100%;
+
+    .left-part{
+        flex: 0 1 $left-part-width;
+        min-width: 10rem;
+        display: flex; flex-flow: row nowrap; align-items: flex-start; justify-content: center;
+    }
+    .right-part{
+        flex: auto;
+    }
+
+    .mr-wallmatch-says{
+        @include typo-brandon-sc-black();
+        font-size: 2em;
+        text-align: right;
+        margin: $mr-wallmatch-content-base-margin $mr-wallmatch-content-base-margin 0 0;
+        p{ margin: 0; }
+        p:not(:last-child){
+            margin-bottom: 1em;
+        }
+    }
+}

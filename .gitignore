@@ -38,3 +38,10 @@ jspm_packages
 
 # Visual Studio Code configuration
 .vscode
+
+# Front build
+front/www/assets/css
+front/www/assets/js
+
+# Datas to access the database
+DbConfig.php

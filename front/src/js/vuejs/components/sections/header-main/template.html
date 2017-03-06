@@ -1,0 +1,23 @@
+<header class="header-main">
+    <nav>
+        <ul class="menu-left">
+            <li><a href="#"><img class="site-logo" src="http://placehold.it/32x32"><span class="site-title">WallMatch</span></a></li>
+        </ul>
+        <ul class="menu-right">
+            <li v-for="(curlink, keylink) in links" :key="keylink">
+                <a v-bind:href="curlink.url">{{curlink.text}}</a>
+            </li>
+            <li>
+                <a href="#" v-on:click.prevent="onToggleSidebarButton">
+                    <template v-if="bus.isUserLoggedIn">
+                        <img class="user-avatar" alt="avatar" :src="bus.userLoggedIn.avatar"/>
+                        <span>{{bus.userLoggedIn.pseudo}}</span>
+                    </template>
+                    <span v-else>Connexion</span>
+                    <span class="login-arrow"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <rainbow-bar></rainbow-bar>
+</header>

@@ -1,0 +1,33 @@
+.login-form{
+    padding: $base-margin;
+    position: relative;
+
+    .login-form-login>*:first-child{ margin-top: 0; }
+    .login-form-register>*:last-child{ margin-bottom: 0; }
+
+    input{
+        display: block;
+        margin: 0 0 0.4em 0;
+        color: inherit;
+        width: 100%;
+        
+        &[type="submit"]{
+            padding: 0;
+            border: solid 1px;
+            text-align: center;
+            background: none;
+            @include typo-brandon-sc-black();
+            @include font-size-normal();
+        }
+    }
+
+    .msgs{
+        position: absolute; top: 0; left: 0;
+        width: 100%;
+        @include font-size-small();
+
+        .msg-error{ background: $color-sunset-orange; }
+        .msg-ok{ background: green; }
+        .msg-error, .msg-ok{padding: 0 0.4rem;}
+    }
+}

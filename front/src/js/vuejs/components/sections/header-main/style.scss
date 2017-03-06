@@ -1,0 +1,52 @@
+.header-main{
+    display: flex; flex-flow: column nowrap; align-items: stretch;
+    width: 100%; height: $header-main-height;
+
+    position: fixed; z-index: 100;
+    top: 0; left: 0;
+
+    a{
+        color: inherit; text-decoration: none;
+        :hover{box-shadow: none; color: inherit;}
+    }
+
+    nav{
+        flex: 1;
+        display: flex; flex-flow: row nowrap; align-items: stretch; justify-content: space-between;
+        background: $color-foreground;
+        color: $color-background;
+
+        @include typo-brandon-sc-medium();
+        @include font-size-large();
+
+        &>ul{
+            display: flex; flex-flow: row nowrap; align-items: stretch;
+            margin: 0; padding: 0;
+            li{
+                display: flex; flex-flow: row nowrap; align-items: stretch;
+                a{
+                    display: flex; flex-flow: row nowrap; align-items: center;
+                    padding: 0 0.8rem;
+                    &:hover{
+                        background: rgba(255,255,255,0.2);
+                    }
+                }
+            }
+        }
+        .site-logo{ margin-right: 0.8rem; }
+        .site-title{ @include typo-brandon-sc-black(); @include font-size-larger(); }
+        .login-arrow{
+            display: block;
+            margin-left: 0.8rem; margin-top: -0.6rem * cos(45deg);
+            width: 0.6rem; height: 0.6rem;
+            border-right: solid 2px $color-background;
+            border-bottom: solid 2px $color-background;
+            transform: rotate(45deg);
+        }
+        .user-avatar{
+            display: block;
+            height: (32rem / 24); width: auto;
+            margin-right: 0.8rem;
+        }
+    }
+}

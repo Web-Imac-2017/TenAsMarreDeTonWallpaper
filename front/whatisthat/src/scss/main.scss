@@ -1,0 +1,129 @@
+@import './normalize';
+
+@import './utils';
+
+// Ne pas utiliser les classes et mixins ci-dessous
+
+$title-font: bold 24px/1.5 'Arial', sans-serif;
+$sub-title-font: normal 18px/1.5 'Arial', sans-serif;
+$normal-font: normal 13px/1.5 'Times New Roman', sans-serif;
+
+$box-shadow-bottom-only: 0 2px 1px 0 rgba(0, 0, 0, 0.2);
+//$box-shadow-top-only: 0 2px 1px 0 rgba(0, 0, 0, 0.2);
+//$box-shadow-left-only: 0 2px 1px 0 rgba(0, 0, 0, 0.2);
+$box-shadow-all-around: 2px 2px 1px 1px rgba(0, 0, 0, 0.2);
+
+
+@mixin box-with-shadow ($width, $height, $color) {
+  width: $width;
+  height: $height;
+  background-color: $color;
+  box-shadow: $box-shadow-all-around;
+}
+
+
+@mixin transform-scale() {
+  $scale: scale(1.1,1.1);
+
+  -webkit-transform: $scale; /* Ch <36, Saf 5.1+, iOS, An =<4.4.4 */
+      -ms-transform: $scale; /* IE 9 */
+          transform: $scale; /* IE 10, Fx 16+, Op 12.1+ */
+}
+
+h1.title {
+	font: $title-font;
+	color: $color-dark-brown;
+}
+
+.button-dark-purple {
+	@include box-with-shadow (70px, 100px, $color-dark-red);
+	&:hover {
+		@include transform-scale; 
+	} 
+
+	p {
+		font: $normal-font;
+		color: $color-light-orange;
+	}
+}
+
+
+.question {
+	display: block;
+	width: 15%;
+	height: 10%;
+	margin-left: 75%;
+	margin-top: 45%;
+	text-align: center;
+	background-color: blue;
+	font-weight: bold;
+
+}
+
+.footer_main {
+	height: 20%;
+	width: 100%;
+	margin-top: 80%;
+}
+
+/*************************************************************************************************************************************
+**************************** CI-DESSOUS CLASSES REUTILISABLES
+**************************************************************************************************************************************/
+
+/**********************************************************************
+SIZING
+**********************************************************************/
+
+* { box-sizing: border-box; }
+
+html{
+	font-size: 24px; // base font-size.
+	line-height: 1.6em;
+}
+html, body{	// full-viewport html
+	height: 100%;
+	color: $color-foreground;
+}
+
+/**********************************************************************
+GENERIC ELEMENTS
+**********************************************************************/
+
+h1{ @include typo-brandon-sc-black(); @include font-size-largest(); }
+h2{ @include typo-brandon-sc-black(); @include font-size-larger(); }
+h3{ @include typo-brandon-sc-black(); @include font-size-large(); }
+h4{ @include typo-brandon-sc-medium(); @include font-size-large(); }
+
+button, a.abutton{
+	display: inline-block;
+	padding: 0.6rem 1rem;
+	background: $color-foreground;
+	color: $color-background;
+	cursor: pointer;
+}
+
+
+
+/**********************************************************************
+LOAD COMPONENTS
+**********************************************************************/
+
+/* app */
+@import '../js/vuejs/components/app/style';
+
+/* layouts */
+@import '../js/vuejs/components/layouts/default-layout/style';
+@import '../js/vuejs/components/layouts/mr-wallmatch-content/style';
+
+/* pages */
+@import '../js/vuejs/components/pages/home/style';
+
+/* sections */
+@import '../js/vuejs/components/sections/presentation/style';
+@import '../js/vuejs/components/sections/slider_wpp_home/style';
+@import '../js/vuejs/components/sections/header/style';
+@import '../js/vuejs/components/sections/footer/style';
+
+
+/* widgets */
+@import '../js/vuejs/components/widgets/mr-wallmatch/style';

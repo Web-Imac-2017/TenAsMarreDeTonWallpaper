@@ -1,0 +1,41 @@
+
+$normal-font: normal 13px/1.5 'Times New Roman', sans-serif; // à modifier par la vraie police
+
+$color-dark-brown: #020202;
+
+$little-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+$box-shadow-top-only: 0 0 0 2px rgba(0, 0, 0, 0.2);
+
+@mixin wpp-box-with-shadow ($width, $height) {
+  width: $width;
+  height: $height;
+  box-shadow: $little-box-shadow;
+}
+
+@mixin transform-scale-light() {
+  $scale: scale(1.05,1.05);
+
+  -webkit-transform: $scale; /* Ch <36, Saf 5.1+, iOS, An =<4.4.4 */
+      -ms-transform: $scale; /* IE 9 */
+          transform: $scale; /* IE 10, Fx 16+, Op 12.1+ */
+}
+
+
+.slider_wpp {
+	width: 100%;
+	height: 20%;
+	border-top: 2px solid grey;
+	margin-top: 10px;
+	#text_slider {
+		text-align: center;
+		p {
+			margin-top: 10px;
+			font: $normal-font;
+			color: $color-dark-brown;
+		}
+	}
+}
+
+.images_slider {
+	display: inline-block;
+}

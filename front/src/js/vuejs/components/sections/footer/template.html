@@ -1,0 +1,11 @@
+
+<div id="main">
+  <nav v-bind:class="active" v-on:click.prevent>
+   <div class="line"></div>
+    <img src="http://placehold.it/32x32">
+    <img src="http://placehold.it/32x32">
+    <img src="http://placehold.it/32x32">
+    <a href="#" class="home" v-on:click="makeActive('home')">Contact</a>
+    <a href="#" class="projects" v-on:click="makeActive('projects')">Mention Légales</a>
+    <a href="#" class="services" v-on:click="makeActive('services')">Plan du site</a>
+  </nav>
