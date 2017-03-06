@@ -21,9 +21,13 @@ session_start();
 	<?php
 		require('models/categorie_question.php');
 		require('models/scenario_functions.php');
-		$_SESSION['num_question'] = 1;
-		$_SESSION['importance'] = 50;
-		$_SESSION['requete'] = "";
+		$i;
+		$minWPP = 3;
+		$maxQuestion = 5;
+		if (! isset($_SESSION['num_question'])) $_SESSION['num_question'] = 1;
+		if (! isset($_SESSION['importance'])) $_SESSION['importance'] = 50;
+		if (! isset($_SESSION['requete'])) $_SESSION['requete'] = "";
+		if (! isset($_SESSION['continue'])) $_SESSION['continue'] = true;
 		if($_SESSION['num_question']==1 && !(isset($_POST['sub1'])))
 		{
 			$_SESSION['firstQuestion'] = firstQuestion();
@@ -50,11 +54,75 @@ session_start();
 		</fieldset>	
 	<?php
 		}
-		if(isset($_POST['sub'.$_SESSION['num_question']]))
+		
+		// Si on a répondu à une question autre que la première
+		if(isset($_POST['sub'.$_SESSION['num_question']]) && $_SESSION['num_question']>1)
 		{
-			$_SESSION['categories'] = $_SESSION['firstQuestion']['values'][$_POST['categorie']];
-			$_SESSION['num_question']++;
-			$_SESSION['nextQuestion'] = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
+			// On récupére la valeur de la réponse
+			$_SESSION['reponse'] = $_POST['reponse'];
+			
+			// On compte combien de wpp on trouve et on met à jour la requete
+			$wppLeft = answerQuestion($_SESSION['nextQuestion']['id'][0],$_SESSION['reponse'],$_SESSION['requete']);
+			//print_r($wppLeft);
+			// Si on trouve moins de $minWPP wpp, on arrête
+			if($wppLeft['nb_wpp_left']<$minWPP || $_SESSION['num_question'] == $maxQuestion)
+			{
+				$_SESSION['continue'] = false;
+				echo "Il n'y a plus que ".$wppLeft['nb_wpp_left']." wallpapers qui correspondent à vos critères";
+				$wallpapers = stopGame($wppLeft['id']);
+				// On affiche les wallpapers trouvés
+				for ($i = 0; $i < $wppLeft['nb_wpp_left']; $i++)
+				{
+					echo "<br/> <a href='".$wallpapers[$i]['url']."' download='".$wallpapers[$i]['nom']."'> <img src='".$wallpapers[$i]['url_thumb']."' width='300' height ='180'> </a>";	
+				}
+			}
+			// Sinon on passe à la question suivante
+			else {
+				// On met à jour l'importance
+				$_SESSION['importance'] = updateImportance($_SESSION['importance']);
+				
+				// On prépare la prochaine question
+				$_SESSION['nextQuestion'] = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
+				
+				// On met à jour la requete
+				$_SESSION['requete'] = $wppLeft['requete'];
+				
+				// On check si on peut trouver des wpp avec la prochaine question
+				$checkQuestion = checkQuestion($_SESSION['nextQuestion']['id'][0], $_SESSION['requete']);
+				print_r($checkQuestion);
+				// Si on peut pas on arrête
+				if($checkQuestion['continue']==false)
+				{
+					$_SESSION['continue'] = false;
+					echo "La question suivante ne permet pas de trouver assez de wallpapers";
+					$wallpapers = stopGame($wppLeft['id']);
+					// On affiche les wallpapers trouvés
+					for ($i = 0; $i < $wppLeft['nb_wpp_left']; $i++)
+					{
+						echo "<br/> <a href='".$wallpapers[$i]['url']."' download='".$wallpapers[$i]['nom']."'> <img src='".$wallpapers[$i]['url_thumb']."' width='300' height ='180'> </a>";	
+					}
+				}
+			}
+		}
+
+		// Si on a répondu au formulaire précédent et qu'on peut continuer
+		if(isset($_POST['sub'.$_SESSION['num_question']]) && $_SESSION['continue'] == true)
+		{ 
+			// Si on a choisi une catégorie
+			if(isset($_POST['categorie']) || isset($_SESSION['categories']))
+			{	
+				// Après avoir répondu à la premiere question, on stock les catégories choisies
+				if ($_SESSION['num_question'] == 1)
+				{
+					$_SESSION['categories'] = $_SESSION['firstQuestion']['values'][$_POST['categorie']];
+				}
+				// On incrémente le numero de la question
+				$_SESSION['num_question']++;
+				// On selectionne la question suivante
+				if ($_SESSION['num_question'] == 2)
+					$_SESSION['nextQuestion'] = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
+				// On met à jour le nombre d'apparition de la question
+				updateNb_aQ($_SESSION['nextQuestion']['id'][0],$_SESSION['nextQuestion']['nb_a'][0]);
 	?>
 	    <fieldset>
             <legend>QUESTION <?php echo $_SESSION['num_question']; ?></legend>
@@ -77,43 +145,29 @@ session_start();
             </form>
 		</fieldset>
 	<?php
-		}
-		//if(isset($_POST['sub'.$_SESSION['num_question']]))
-		if(isset($_POST['sub2']))
-		{
-			// On récupére la valeur de la réponse
-			$_SESSION['reponse'] = $_POST['reponse'];
-			
-			// On compte combien de wpp on trouve et on met à jour la requete
-			$wppLeft = answerQuestion($_SESSION['nextQuestion']['id'][0],$_SESSION['reponse'],$_SESSION['requete']);
-			
-			// Si on trouve moins de 10 wpp, on arrête
-			if($wppLeft['nb_wpp_left']<10)
+			}
+			// Sinon ça veut dire qu'on a pas répondu à la 1ère question
+			else
 			{
-				$wallpapers = stopGame($wppLeft['id']);
-				echo "<a href='".$wallpapers[0]['url']."' download='".$wallpapers[0]['nom']."'>Télécharger l'image</a>";
+				echo "Merci de choisir une réponse";
 			}
-			// Sinon on passe à la question suivante
-			else {
-				// On met à jour l'importance
-				$_SESSION['importance'] = updateImportance($_SESSION['importance']);
-				
-				// On prépare la prochaine question
-				$_SESSION['nextQuestion'] = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
-				
-				// On met à jour la requete
-				$_SESSION['requete'] = $wppLeft['requete'];
-				
-				// On check si on peut trouver des wpp avec la prochaine question
-				$checkQuestion = checkQuestion($_SESSION['nextQuestion']['id'][0], $_SESSION['requete']);
-				
-				// Si on peut pas on arrête
-				if($checkQuestion['continue']==false)
-				{
-					$wallpapers = stopGame($wppLeft['id']);
-					echo "<a href='".$wallpapers[0]['url']."' download='".$wallpapers[0]['nom']."'>Télécharger l'image</a>";
-				}
-			}
+		}
+	?>
+		<br/>
+		<fieldset>
+            <legend>REDEMARRER LA SESSION</legend>
+			<form action="" method="post">
+                <input type="submit" value="Restart" name="restart" />
+            </form>
+		</fieldset>
+	<?php
+		if(isset($_POST['restart']))
+		{
+			// remove all session variables
+			session_unset();
+
+			// destroy the session
+			session_destroy();
 		}
 	?>
     </body>
