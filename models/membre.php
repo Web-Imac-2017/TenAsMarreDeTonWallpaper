@@ -97,12 +97,33 @@ class Membre extends Model {
 		return $result;
 	}
 
-	public function editMember($pseudo, $mdp, $mail, $admin, $moderateur) {
+	public function editMember($id, $pseudo, $password, $mailAdress, $admin, $moderateur) {
 		$bdd = Database::get();
 
 		$result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
 		$password = sha1($password);
+		$sqlQuery = "UPDATE membre SET pseudo = ?, mdp = ?, mail = ?, admin = ?, moderateur = ? WHERE id = ?";
+
+		try {
+
+			$stmt = $bdd->prepare($sqlQuery);
+			$success = $stmt->execute([$pseudo, $password, $mailAdress, $admin, $moderateur, $id]);
+
+			$sqlQuery = "SELECT * FROM membre WHERE id = ?";
+			$stmt = $bdd->prepare($sqlQuery);
+			$stmt->execute([$id]);
+			$bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			$data = $bddResult[0];
+
+			return array("returnCode" => 1, "returnMessage" => "Modificaton effectuée !",  "data" => $data);
+		}
+
+		catch (PDOException $e) {
+			return array("returnCode" => -1, "returnMessage" => "Modification échouée " . $e->getMessage(),  "data" => $data);
+		}
+
 	}
 
 	// Obtenir les informations sur un membre avec son pseudo
@@ -145,4 +166,3 @@ class Membre extends Model {
         WHERE id=$id');
         $reponse->closeCursor();
     }*/
-?>
