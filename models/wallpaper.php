@@ -70,14 +70,14 @@ class Wallpaper extends Model {
     }
 
     // Ajoute un nouveau wallpaper
-    public function add($url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $extension, $categories) {
+    public function add($url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $format) {
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
         $sqlQuery = 'INSERT INTO wallpaper VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)';
 
         try {
             $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute([$url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $extension, date("Y-m-d"), 0, 0]);
+            $success = $stmt->execute([$url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $format, date("Y-m-d"), 0, 0]);
             $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if(!empty($bddResult)) {
@@ -95,16 +95,13 @@ class Wallpaper extends Model {
             $result['returnCode'] = -1;
             $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
         }
-
-        $id = getIdLastWallpaper(); // on récupère l'id du nouvel wallpaper
-        setWallpaperCategories($id, $categories); // on associe le wallpaper aux différentes catégories
-
+        
         return $result;
 
     }
 
     // Renvoie l'id du dernier wallpaper inséré
-    public function getIdLastWallpaper() {
+    public function lastInsertId() {
         $bdd = Database::get();
         $sql = 'SELECT id FROM wallpaper ORDER BY id DESC LIMIT 1';
         $req = $bdd->prepare($sql);
