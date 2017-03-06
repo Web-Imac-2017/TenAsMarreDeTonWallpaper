@@ -7,7 +7,7 @@ let handleHttpError = function(response){
 };
 
 let handleRequestError = function(response){    // response au format Object
-    console.log(response);
+    //console.log(response);
     if(!('returnCode' in response) || response.returnCode != 1){
         throw Error('returnMessage' in response ? response.returnMessage : "Aucun message d'erreur.");
     }

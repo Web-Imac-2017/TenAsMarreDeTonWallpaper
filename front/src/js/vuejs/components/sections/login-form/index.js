@@ -49,7 +49,7 @@ const LoginForm = Vue.extend({
           _this.bus.login(response.data);
         })
         // Error caught
-        .catch(function(error){ _this.msgerror = error.message; console.log(error);});
+        .catch(function(error){ _this.msgerror = error.message; console.log(error.message);});
     },
 
     tryRegister(event){
@@ -70,7 +70,7 @@ const LoginForm = Vue.extend({
         // Register ok
         .then(function(response){ _this.msgok = "Inscription terminée, vous pouvez vous connecter."; _this.$refs.registerForm.reset(); })
         // Error caught
-        .catch(function(error){ _this.msgerror = error.message; console.log(error);});
+        .catch(function(error){ _this.msgerror = error.message; console.log(error.message);});
     },
     
   }
