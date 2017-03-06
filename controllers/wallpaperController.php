@@ -19,6 +19,7 @@ class wallpaperController extends Controller {
     public function add() {
         $mel = new Mel();
         $wallpaper = new Wallpaper();
+        $reponse = new Reponse();
 
         if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
             if(isset($_POST['nom']) && !empty($_POST['nom']) && isset($_FILES['image']) && !empty($_FILES['image'])) {
@@ -51,6 +52,11 @@ class wallpaperController extends Controller {
                         $format = getimagesize($url)['mime'];
 
                         $wallpaper->add($url, $url, $mel_id, $_POST['nom'], $_POST['auteur'], $width, $height, $format);
+                        
+//                        $wallpaper_id = $wallpaper->lastInsertId();
+//                        foreach($_POST['reponses'] as $rep) {
+//                            $reponse->add($question_id, $wallpaper_id, $rep['val_min'], $rep['val_max']);
+//                        }
                     } 
                     else {
                         $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Problème de transfert de fichier'];
