@@ -103,7 +103,7 @@ class Membre extends Model {
 		return $result;
 	}
 
-	public function editMember($id, $pseudo, $password, $mailAdress, $admin, $moderateur) {
+	public function editMember($id, $pseudo, $password, $mailAdress) {
 		$bdd = Database::get();
 
 		$result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
@@ -118,7 +118,7 @@ class Membre extends Model {
 				
 				$password = sha1($password);
 
-				$sqlQuery = "UPDATE membre SET pseudo = ?, mdp = ?, mail = ?, admin = ?, moderateur = ? WHERE id = ?";
+				$sqlQuery = "UPDATE membre SET pseudo = ?, mdp = ?, mail = ? WHERE id = ?";
 			}
 			catch (PDOException $e) {
 				return array("returnCode" => -1, "returnMessage" => "Modification échouée : " . $e->getMessage(),  "data" => $data);
@@ -126,7 +126,7 @@ class Membre extends Model {
 
 			// Modification
 			$stmt = $bdd->prepare($sqlQuery);
-			$success = $stmt->execute([$pseudo, $password, $mailAdress, $admin, $moderateur, $id]);
+			$success = $stmt->execute([$pseudo, $password, $mailAdress, $id]);
 
 			// Récupération infos
 			$sqlQuery = "SELECT * FROM membre WHERE id = ?";

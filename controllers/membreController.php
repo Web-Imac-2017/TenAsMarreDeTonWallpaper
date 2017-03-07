@@ -118,8 +118,6 @@ class membreController extends Controller {
 			$pseudo = $_SESSION['user']['pseudo'];
 			$password = $_SESSION['user']['password'];
 			$mailAdress = $_SESSION['user']['mailAdress'];
-			$admin = $_SESSION['user']['admin'];
-			$moderateur = $_SESSION['user']['moderateur'];
 		}
 		if (isset($_POST['pseudo']) && !empty($_POST['pseudo'])) {
 			$pseudo = $_POST['pseudo'];
@@ -136,15 +134,9 @@ class membreController extends Controller {
 			if (!filter_var($mailAdress, FILTER_VALIDATE_EMAIL))
 				$flagMailOK = 0;
 		}
-		if (isset($_POST['admin']) && !empty($_POST['admin'])) {
-			$admin = $_POST['admin'];
-		}
-		if (isset($_POST['moderateur']) && !empty($_POST['moderateur'])) {
-			$moderateur = $_POST['moderateur'];
-		}
 
 		if ($flagPassOK == 1 && $flagMailOK == 1)
-			$data = $myModel->editMember($id, $pseudo, $password, $mailAdress, $admin, $moderateur);
+			$data = $myModel->editMember($id, $pseudo, $password, $mailAdress);
 		else {
 			if (!$flagMailOK)
 				$errorMessage = $errorMessage . "-- Adresse mail invalide";
