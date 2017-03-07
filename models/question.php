@@ -20,15 +20,9 @@ class Question extends Model {
             $success = $stmt->execute();
             $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if(!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
-            }
-            else {
-                $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
-            }
+            $result['data'] = $bddResult[0];
+            $result['returnCode'] = 1;
+            $result['returnMessage'] = 'Connexion réussie !';
         }
 
         catch (PDOException $e) {
@@ -57,7 +51,7 @@ class Question extends Model {
             }
             else {
                 $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
+                $result['returnMessage'] = 'Echec de la connexion : aucune question trouvée ayant pour id : '.$id;
             }
         }
 
@@ -80,18 +74,12 @@ class Question extends Model {
             $success = $stmt->execute([$q_courte, $q_longue, $importance]);
             $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if(!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
+            $result['data'] = $bddResult[0];
+            $result['returnCode'] = 1;
+            $result['returnMessage'] = 'Connexion réussie !';
 
-                $id_nouveau = $bdd->lastInsertId();
-                addQuestionCategorie($id_nouveau, $categories);
-            }
-            else {
-                $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
-            }
+            $id_nouveau = $bdd->lastInsertId();
+            addQuestionCategorie($id_nouveau, $categories);
         }
 
         catch (PDOException $e) {
