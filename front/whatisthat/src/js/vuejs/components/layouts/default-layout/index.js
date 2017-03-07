@@ -5,7 +5,7 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
-//import Header from '../../sections/header/index.js';
+import Header_main from '../../sections/header/index.js';
 import Footer_main from '../../sections/footer/index.js';
 
 const DefaultLayout = Vue.extend({
@@ -21,7 +21,7 @@ const DefaultLayout = Vue.extend({
   },
 
   components: {
-    //'header': Header,
+    'header-main': Header_main,
     'footer-main': Footer_main
   },
 

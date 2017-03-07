@@ -1,0 +1,46 @@
+
+$normal-font: normal 13px/1.5 'Times New Roman', sans-serif; // à modifier par la vraie police
+
+$color-dark-brown: #020202;
+$color-light-grey: #9a9999;
+
+$little-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+$box-shadow-top-only: 0 0 0 2px rgba(0, 0, 0, 0.2);
+
+@mixin wpp-box-with-shadow ($width, $height) {
+  width: $width;
+  height: $height;
+  box-shadow: $little-box-shadow;
+}
+
+@mixin transform-scale-light() {
+  $scale: scale(1.05,1.05);
+
+  -webkit-transform: $scale; /* Ch <36, Saf 5.1+, iOS, An =<4.4.4 */
+      -ms-transform: $scale; /* IE 9 */
+          transform: $scale; /* IE 10, Fx 16+, Op 12.1+ */
+}
+
+.slider {
+	display: flex; flex-flow: row nowrap; align-items: stretch;
+    width: 100%; flex: 1 0 auto;
+    position: relative;
+	align-items: center; 
+	justify-content: center;
+    margin-bottom: 1rem;
+	margin-top: 1rem;
+	border-top: 2px solid grey;
+		#text_slider {
+			text-align: center;
+			p {
+				margin-top: 5px;
+				@include typo-brandon-medium();
+				color: $color-light-grey;
+			}
+		}
+
+	.images_slider {
+		display: inline-block;
+	}
+}
+
