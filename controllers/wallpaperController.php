@@ -2,7 +2,9 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
 require_once KERNEL . 'kernel.php';
-require_once MODEL_DIR . 'categorie.php';
+require_once MODEL_DIR . 'wallpaper.php';
+require_once MODEL_DIR . 'mel.php';
+require_once MODEL_DIR . 'reponse.php';
 
 /**
 * Classe : wallpaperController
@@ -16,7 +18,7 @@ class wallpaperController extends Controller {
         parent::__construct();
     }
 
-    public function add() {
+    public function add() {        
         $mel = new Mel();
         $wallpaper = new Wallpaper();
         $reponse = new Reponse();
@@ -73,7 +75,6 @@ class wallpaperController extends Controller {
         }
         else {
             $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté'];
-
             echo json_encode($data);
         }
     }

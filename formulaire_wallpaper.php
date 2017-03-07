@@ -1,9 +1,3 @@
-<?php
-
-require_once('wallpaper.php');
-
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -13,40 +7,48 @@ require_once('wallpaper.php');
 
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" href="">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
         <title>Formulaire wallpaper</title>
 
     </head>
     <body>
-        <h1>Formulaire wallpaper</h1>
+        <div class="container">
 
-        <div style="clear: both;"></div>
+            <h1>Formulaire wallpaper</h1>
+            <h4>Ajouter un nouveau wallpaper</h4>
+            <hr>
 
-        <fieldset>
-            <legend>Ajouter un nouveau wallpaper</legend>
-            <form action="/wallpaper/add" enctype="multipart/form-data" method="post">
-                <label for="nom">Nom :</label>
-                <input type="text" name="nom" id="nom" /><br />
-                <label for="auteur">Auteur :</label>
-                <input type="text" name="auteur" id="auteur" /><br />
-                <label for="image">Upload :</label>
-                <input type="file" name="image" id="image" /><br />
-                <label for="reponses">Réponses</label>
+            <form action="api/wallpaper/add" enctype="multipart/form-data" method="post">
                 <table>
                     <tr>
-                        <th>Question</th>
-                        <th>Val min</th>
-                        <th>Val max</th>
+                        <td>Nom <span style="color:red;">*</span>:</td>
+                        <td><input type="text" name="nom" class="form-control" /></td>
                     </tr>
-                    <?php
-                    
-                    // requête vers /question/getAll
-                    
-                    ?>
+                    <tr>
+                        <td>Auteur :</td>
+                        <td><input type="text" name="auteur" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td>Upload <span style="color:red;">*</span> :</td>
+                        <td><input type="file" name="image" required /></td>
+                    </tr>
+                    <tr>
+                        <td>Réponses <span style="color:red;">*</span> :</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Ajouter" name="submit" class="btn btn-primary"/></td>
+                    </tr>
                 </table>
-                <input type="submit" value="Ajouter" name="submit" />
             </form>
-        </fieldset>
+        </div>
+        
+        <script type="text/javascript">
+
+        // requête ajax vers /question/getAll
+            
+        </script>
     </body>
 </html>
