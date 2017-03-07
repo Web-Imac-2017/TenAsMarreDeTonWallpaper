@@ -57,6 +57,8 @@ class wallpaperController extends Controller {
 
                         $data = $wallpaper->add($url, $url, $mel_id, $_POST['nom'], $_POST['auteur'], $width, $height, $format);
                         
+                        $wallpaper_id = $data['data']['id'];
+                        
                         $membre->incrementer_nb_wallpapers_ajoutes($_SESSION['user']['id']);
                         
 //                        $wallpaper_id = $wallpaper->lastInsertId();
