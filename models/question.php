@@ -12,29 +12,33 @@ class Question extends Model {
     // Renvoie les informations de toutes les questions
     public function getAll() {
         $bdd = Database::get();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-        $sqlQuery = 'SELECT * FROM question';
-
+        $data = "";
+        
         try {
-            $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute();
-            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $sqlQuery = 'SELECT * FROM question';
 
-            $result['data'] = $bddResult[0];
-            $result['returnCode'] = 1;
-            $result['returnMessage'] = 'Connexion réussie !';
+            try {
+
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute();
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
         }
-
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
-
-        return $result;
     }
 
     // Renvoie les informations d'une seule question
-    public function get($id) {        
+    public function get($id) {       
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
         $sqlQuery = 'SELECT * FROM question WHERE id=?';
@@ -184,7 +188,5 @@ class Question extends Model {
         else
             throw new Exception("Aucune question ne correspond à l'identifiant '$questionID'");
     }
-
-}
 
 }

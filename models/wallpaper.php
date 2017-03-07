@@ -12,31 +12,29 @@ class Wallpaper extends Model {
     // Renvoie les informations de tous les wallpapers
     public function getAll() {
         $bdd = Database::get();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-        $sqlQuery = 'SELECT * FROM wallpaper';
-
+        $data = "";
+        
         try {
-            $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute();
-            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $sqlQuery = 'SELECT * FROM wallpaper';
 
-            if(!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Requête réussie !';
+            try {
+
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute();
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
             }
-            else {
-                $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la requête';
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
             }
         }
-
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
-
-        return $result;
     }
 
     // Renvoie les informations d'un seul wallpaper

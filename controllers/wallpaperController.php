@@ -19,7 +19,7 @@ class wallpaperController extends Controller {
         parent::__construct();
     }
 
-    public function add() {        
+    public function add() {
         $mel = new Mel();
         $wallpaper = new Wallpaper();
         $reponse = new Reponse();
@@ -60,11 +60,12 @@ class wallpaperController extends Controller {
                         $wallpaper_id = $data['data']['id'];
                         
                         $membre->incrementer_nb_wallpapers_ajoutes($_SESSION['user']['id']);
-                        
-//                        $wallpaper_id = $wallpaper->lastInsertId();
-//                        foreach($_POST['reponses'] as $rep) {
-//                            $reponse->add($question_id, $wallpaper_id, $rep['val_min'], $rep['val_max']);
-//                        }
+
+                        $i=1;
+                        foreach($_POST['rep'] as $rep) {
+                            $reponse->add($i, $wallpaper_id, $rep[0], $rep[1]);
+                            $i++;
+                        }
                     } 
                     else {
                         $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Problème de transfert de fichier'];
@@ -82,5 +83,17 @@ class wallpaperController extends Controller {
             $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté'];
             echo json_encode($data);
         }
+    }
+    
+    public function getAll() {
+        $wallpaper = new Wallpaper();
+        $data = $wallpaper->getAll();
+        echo json_encode($data);
+    }
+    
+    public function get($id) {
+        $wallpaper = new Wallpaper();
+        $data = $wallpaper->get($id);
+        echo json_encode($data);
     }
 }

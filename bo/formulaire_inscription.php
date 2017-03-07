@@ -18,7 +18,7 @@
             <h1>Formulaire inscription</h1>
             <hr>
 
-            <form action="../api/membre/add" enctype="multipart/form-data" method="post">
+            <form action="../api/membre/add" method="post">
                 <table>
                     <tr>
                         <td>Pseudo<span style="color:red;">*</span> :</td>
