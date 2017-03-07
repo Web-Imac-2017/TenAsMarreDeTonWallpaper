@@ -23,11 +23,11 @@ class Wallpaper extends Model {
             if(!empty($bddResult)) {
                 $result['data'] = $bddResult[0];
                 $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
+                $result['returnMessage'] = 'Requête réussie !';
             }
             else {
                 $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
+                $result['returnMessage'] = 'Echec de la requête';
             }
         }
 
@@ -53,11 +53,11 @@ class Wallpaper extends Model {
             if(!empty($bddResult)) {
                 $result['data'] = $bddResult[0];
                 $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
+                $result['returnMessage'] = 'Requête réussie !';
             }
             else {
                 $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
+                $result['returnMessage'] = 'Echec de la requête';
             }
         }
 
@@ -73,29 +73,23 @@ class Wallpaper extends Model {
     public function add($url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $format) {
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-        $sqlQuery = 'INSERT INTO wallpaper VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)';
+        $sqlQuery = 'INSERT INTO wallpaper VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         try {
             $stmt = $bdd->prepare($sqlQuery);
             $success = $stmt->execute([$url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $format, date("Y-m-d"), 0, 0]);
             $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if(!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
-            }
-            else {
-                $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
-            }
+            $result['data'] = $bddResult[0];
+            $result['returnCode'] = 1;
+            $result['returnMessage'] = 'Wallpaper ajouté !';
         }
 
         catch (PDOException $e) {
             $result['returnCode'] = -1;
             $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
         }
-        
+
         return $result;
 
     }

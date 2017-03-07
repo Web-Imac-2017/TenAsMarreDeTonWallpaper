@@ -5,6 +5,7 @@ require_once KERNEL . 'kernel.php';
 require_once MODEL_DIR . 'wallpaper.php';
 require_once MODEL_DIR . 'mel.php';
 require_once MODEL_DIR . 'reponse.php';
+require_once MODEL_DIR . 'membre.php';
 
 /**
 * Classe : wallpaperController
@@ -22,6 +23,7 @@ class wallpaperController extends Controller {
         $mel = new Mel();
         $wallpaper = new Wallpaper();
         $reponse = new Reponse();
+        $membre = new Membre();
 
         if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
             if(isset($_POST['nom']) && !empty($_POST['nom']) && isset($_FILES['image']) && !empty($_FILES['image'])) {
@@ -53,7 +55,9 @@ class wallpaperController extends Controller {
                         $height = getimagesize($url)[1];
                         $format = getimagesize($url)['mime'];
 
-                        $wallpaper->add($url, $url, $mel_id, $_POST['nom'], $_POST['auteur'], $width, $height, $format);
+                        $data = $wallpaper->add($url, $url, $mel_id, $_POST['nom'], $_POST['auteur'], $width, $height, $format);
+                        
+                        $membre->incrementer_nb_wallpapers_ajoutes($_SESSION['user']['id']);
                         
 //                        $wallpaper_id = $wallpaper->lastInsertId();
 //                        foreach($_POST['reponses'] as $rep) {
@@ -62,9 +66,8 @@ class wallpaperController extends Controller {
                     } 
                     else {
                         $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Problème de transfert de fichier'];
-
-                        echo json_encode($data);
                     }
+                    echo json_encode($data);
                 }
             }
             else {
