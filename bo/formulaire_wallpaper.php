@@ -9,7 +9,7 @@
         <meta name="author" content="">
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-        <title>Formulaire wallpaper</title>
+        <title>BO | Formulaire wallpaper</title>
 
     </head>
     <body>
@@ -19,7 +19,7 @@
             <h4>Ajouter un nouveau wallpaper</h4>
             <hr>
 
-            <form action="api/wallpaper/add" enctype="multipart/form-data" method="post">
+            <form action="../api/wallpaper/add" enctype="multipart/form-data" method="post">
                 <table>
                     <tr>
                         <td>Nom <span style="color:red;">*</span>:</td>
