@@ -72,37 +72,34 @@ class Wallpaper extends Model {
     // Ajoute un nouveau wallpaper
     public function add($url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $format) {
         $bdd = Database::get();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-        $sqlQuery = 'INSERT INTO wallpaper VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $data = "";
 
         try {
-            $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute([$url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $format, date("Y-m-d"), 0, 0]);
-            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $sqlQuery = 'INSERT INTO wallpaper VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-            $result['data'] = $bddResult[0];
-            $result['returnCode'] = 1;
-            $result['returnMessage'] = 'Wallpaper ajouté !';
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $format, date("Y-m-d"), 0, 0]);
+                $lastInsertId = $bdd->lastInsertId();
+
+                $sqlQuery = "SELECT * FROM wallpaper WHERE id=?";
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$lastInsertId]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult[0];
+
+                return array("returnCode" => 1, "returnMessage" => "Wallpaper ajouté",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
         }
-
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
 
-        return $result;
-
-    }
-
-    // Renvoie l'id du dernier wallpaper inséré
-    public function lastInsertId() {
-        $bdd = Database::get();
-        $sql = 'SELECT id FROM wallpaper ORDER BY id DESC LIMIT 1';
-        $req = $bdd->prepare($sql);
-        $req->execute();
-        $id = $req->fetch();
-
-        return $id['id'];
     }
 
     // Supprime un wallpaper

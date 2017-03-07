@@ -180,7 +180,6 @@ class Membre extends Model {
     
     // Incrémente la colonne nb_wallpapers_ajoutes
     public function incrementer_nb_wallpapers_ajoutes($id) {
-        echo "In!";
         $bdd = Database::get();
         $sqlQuery = "UPDATE membre SET nb_wallpapers_ajoutes=nb_wallpapers_ajoutes+1 WHERE id=?";
         $stmt = $bdd->prepare($sqlQuery);
@@ -189,7 +188,6 @@ class Membre extends Model {
     
     // Incrémente la colonne nb_questions_ajoutees
     public function incrementer_nb_questions_ajoutees($id) {
-        echo "In!";
         $bdd = Database::get();
         $sqlQuery = "UPDATE membre SET nb_questions_ajoutees=nb_questions_ajoutees+1 WHERE id=?";
         $stmt = $bdd->prepare($sqlQuery);
