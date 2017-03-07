@@ -21,15 +21,9 @@ class Mel extends Model {
             $success = $stmt->execute([$statut, $membre_id]);
             $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if (!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
-            }
-            else {
-                $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
-            }
+            $result['data'] = $bddResult[0];
+            $result['returnCode'] = 1;
+            $result['returnMessage'] = 'Connexion réussie !';
         }
 
         catch (PDOException $e) {
