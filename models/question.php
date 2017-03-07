@@ -100,6 +100,16 @@ class Question extends Model {
             $req->execute(array($questionID, $cat));
         }
     }
+    
+    function setImportance($questionID)
+	{
+		$bdd = getBdd();
+		$sql = 'SELECT wallpaper_id, COUNT( * ) AS nb_wpp FROM categorie_wallpaper AS c_w INNER JOIN c_w.categorie_question ON categorie_id = categorie_question.categorie_id WHERE question_id=? GROUP BY wallpaper_id';
+		$importance = $bdd->prepare($sql);
+		$importance->execute(array($questionID));
+
+		return $importance;
+	}
 
     // Supprime une question
     function deleteQuestion($questionID) {
