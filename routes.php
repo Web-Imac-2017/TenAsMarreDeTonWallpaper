@@ -29,7 +29,7 @@ Router::connect('/membre/edit', 'membre/edit', array());
 Router::connect('/membre/get/:id', 'membre/get/:id', array('id' => '[0-9]+'));
 Router::connect('/membre/delete/:id', 'membre/delete/:id', array('id' => '[0-9]+'));
 Router::connect('/membre/ban/:id', 'membre/ban/:id', array('id' => '[0-9]+'));
-Router::connect('/membre/changeRole/:id', 'membre/changeRole/:id/:role', array('id' => '[0-9]+', 'role' => '[0-2]'));
+Router::connect('/membre/changeRole/:id/:role', 'membre/changeRole/:id/:role', array('id' => '[0-9]+', 'role' => '[0-2]'));
 
 // Wallpaper
 Router::connect('/wallpaper/add', 'wallpaper/add', array());
@@ -37,6 +37,7 @@ Router::connect('/wallpaper/get/:id', 'wallpaper/get/:id', array('id' => '[0-9]+
 Router::connect('/wallpaper/getAll', 'wallpaper/getAll', array());
 Router::connect('/wallpaper/change/:id', 'wallpaper/change/:id', array('id' => '[0-9]+'));
 Router::connect('/wallpaper/delete', 'wallpaper/delete', array());
+Router::connect('wallpaper/getRandom/:limit', 'wallpaper/getRandom/:limit', array('limit' => '[0-9]+'))
 
 // Question
 Router::connect('/question/add', 'question/add', array());
