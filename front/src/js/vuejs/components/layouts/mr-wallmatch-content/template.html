@@ -5,7 +5,12 @@
     </div>
     <div class="right-part">
         <div class="mr-wallmatch-says">
-            <slot name="mr-wallmatch-says"></slot>
+            <div class="mr-wallmatch-says-text">
+                <slot name="mr-wallmatch-says"></slot>
+            </div>
+            <div class="mr-wallmatch-says-deco">
+                <slot name="mr-wallmatch-says-deco"></slot>
+            </div>
         </div>
         <slot>Voici un texte qui ne devrait pas s'afficher.</slot>
     </div>

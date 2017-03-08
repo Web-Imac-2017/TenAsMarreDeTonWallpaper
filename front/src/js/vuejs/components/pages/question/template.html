@@ -1,0 +1,14 @@
+<default-layout class="question-page">
+    <mr-wallmatch-content class="question-content">
+        <p slot="mr-wallmatch-says">{{ question.text }}</p>
+        <p slot="mr-wallmatch-says-deco" class="question-sign">?</p>
+        <div class="question-quote-wrapper">
+            <div class="question-quote">{{ question.quote }}</div>
+            <div class="question-quote-author">{{ question.quoteAuthor }}</div>
+        </div>
+    </mr-wallmatch-content>
+    <div class="top-infos">
+        <a href="#" class="prev-question-link">Corriger</a>
+        <div class="question-counter">Question n°<span class="question-number">{{ question.number }}</span></div>
+    </div>
+</default-layout>

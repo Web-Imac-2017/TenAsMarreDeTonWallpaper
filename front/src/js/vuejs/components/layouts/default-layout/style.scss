@@ -10,6 +10,7 @@
     .content{
         display: flex; flex-flow: column nowrap; align-items: stretch;
         flex: 1;
+        position: relative;
     }
 
     .sidebar{

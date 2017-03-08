@@ -138,6 +138,7 @@ LOAD COMPONENTS
 
 /* pages */
 @import '../js/vuejs/components/pages/home/style';
+@import '../js/vuejs/components/pages/question/style';
 
 /* sections */
 @import '../js/vuejs/components/sections/header-main/style';
@@ -148,4 +149,5 @@ LOAD COMPONENTS
 
 /* widgets */
 @import '../js/vuejs/components/widgets/mr-wallmatch/style';
+@import '../js/vuejs/components/widgets/rainbow-answers/style';
 @import '../js/vuejs/components/widgets/rainbow-bar/style';
