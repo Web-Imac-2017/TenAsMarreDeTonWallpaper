@@ -1,6 +1,18 @@
 <?php
 session_start();
 
+// Si on a redémarrer la session (il faut actualiser la page pour que ça se mette à jour)
+if(isset($_POST['restart']))
+{
+	// remove all session variables
+	session_unset();
+
+	// destroy the session
+	session_destroy();
+	
+	// Restart a session
+	session_start();
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,115 +33,123 @@ session_start();
 	<?php
 		require('models/categorie_question.php');
 		require('models/scenario_functions.php');
+		
+		// Declarations des variables
+		
+		// Pour gérer les boucles for
 		$i;
-		$minWPP = 3;
-		$maxQuestion = 5;
+		// Pour stocker le résultat
+		$resultat = array('nb_wpp_left'=>0, 'wallpapers'=>array());
+		// Si on trouve moins de wpp que ce nombre, on arrête
+		if (! isset($_SESSION['minWPP'])) $_SESSION['minWPP'] = 3;
+		// Si on atteint ce nombre de questions, on arrête
+		if (! isset($_SESSION['maxQuestion'])) $_SESSION['maxQuestion'] = 5;
+		// Le numéro de la question actuelle
 		if (! isset($_SESSION['num_question'])) $_SESSION['num_question'] = 1;
+		// L'importance qui sera de plus en plus petite
 		if (! isset($_SESSION['importance'])) $_SESSION['importance'] = 50;
-		if (! isset($_SESSION['requete'])) $_SESSION['requete'] = "";
-		if (! isset($_SESSION['continue'])) $_SESSION['continue'] = true;
-		if($_SESSION['num_question']==1 && !(isset($_POST['sub1'])))
+		// Un string qui contient les différents SELECT après chaque question
+		if (! isset($_SESSION['requete'])) $_SESSION['requete'] = array("");
+		// Si ce booléan est 'false', on s'arrête
+		if (! isset($_SESSION['continue'])) $_SESSION['continue'] = false;
+		// Stock les questions qui sont passées
+		if (! isset($_SESSION['question'])) $_SESSION['question'] = array();
+		// Empêche les fonctions d'être appelée à nouveau (pour éviter d'avoir une nouvelle question après un UNDO)
+		if (! isset($_SESSION['lock'])) 
 		{
-			$_SESSION['firstQuestion'] = firstQuestion();
+			for($i = 0; $i < $_SESSION['maxQuestion']; $i++)
+			{
+				$_SESSION['lock'][$i] = false;
+			}
+		}
+		
+		// Si on a voulu corriger la question précédente, on revient à la question précédente
+		if(isset($_POST['undo']))
+		{
+			undoQuestion();
+		}
+
+		// Affichage 1ère question
+		if(!(isset($_POST['sub1'])) && $_SESSION['num_question']==1)
+		{
+			// Ici on utilise 'undo' pour empêcher de resélectionner des catégories si on décide de corriger
+			if ($_SESSION['lock'][0]==false)
+			{
+				$_SESSION['lock'][0] = true;
+				$_SESSION['firstQuestion'] = firstQuestion();
+				$_SESSION['question'][0] = $_SESSION['firstQuestion'];
+			}
 	?>
         <fieldset>
             <legend>QUESTION 1</legend>
 			<form action="" method="post">
                 <table>
 					<tr>
-                        <td> <label><?php echo $_SESSION['firstQuestion']['question']; ?></label></td>
+                        <td> <label><?php echo $_SESSION['question'][0]['question']; ?></label></td>
 						<td>
-						  <input type="radio" name="categorie" value="0"> <?php echo $_SESSION['firstQuestion']['reponses'][0]; ?>
-						  <input type="radio" name="categorie" value="1"> <?php echo $_SESSION['firstQuestion']['reponses'][1]; ?>
-						  <input type="radio" name="categorie" value="2"> <?php echo $_SESSION['firstQuestion']['reponses'][2]; ?>
-						  <input type="radio" name="categorie" value="3"> <?php echo $_SESSION['firstQuestion']['reponses'][3]; ?>
-						  <input type="radio" name="categorie" value="4"> <?php echo $_SESSION['firstQuestion']['reponses'][4]; ?>
+						  <input type="radio" name="categorie" value="0"> <?php echo $_SESSION['question'][0]['reponses'][0]; ?>
+						  <input type="radio" name="categorie" value="1"> <?php echo $_SESSION['question'][0]['reponses'][1]; ?>
+						  <input type="radio" name="categorie" value="2"> <?php echo $_SESSION['question'][0]['reponses'][2]; ?>
+						  <input type="radio" name="categorie" value="3"> <?php echo $_SESSION['question'][0]['reponses'][3]; ?>
+						  <input type="radio" name="categorie" value="4"> <?php echo $_SESSION['question'][0]['reponses'][4]; ?>
 						</td>
                     </tr>
                     <tr>
-                        <td><input type="submit" value="Valider" name="sub<?php echo $_SESSION['num_question']; ?>" /></td>
+                        <td><input type="submit" value="Valider" name="sub1" /></td>
                     </tr>
                 </table>
             </form>
-		</fieldset>	
+		</fieldset>
 	<?php
 		}
-		
-		// Si on a répondu à une question autre que la première
-		if(isset($_POST['sub'.$_SESSION['num_question']]) && $_SESSION['num_question']>1)
-		{
-			// On récupére la valeur de la réponse
-			$_SESSION['reponse'] = $_POST['reponse'];
-			
-			// On compte combien de wpp on trouve et on met à jour la requete
-			$wppLeft = answerQuestion($_SESSION['nextQuestion']['id'][0],$_SESSION['reponse'],$_SESSION['requete']);
-			//print_r($wppLeft);
-			// Si on trouve moins de $minWPP wpp, on arrête
-			if($wppLeft['nb_wpp_left']<$minWPP || $_SESSION['num_question'] == $maxQuestion)
-			{
-				$_SESSION['continue'] = false;
-				echo "Il n'y a plus que ".$wppLeft['nb_wpp_left']." wallpapers qui correspondent à vos critères";
-				$wallpapers = stopGame($wppLeft['id']);
-				// On affiche les wallpapers trouvés
-				for ($i = 0; $i < $wppLeft['nb_wpp_left']; $i++)
-				{
-					echo "<br/> <a href='".$wallpapers[$i]['url']."' download='".$wallpapers[$i]['nom']."'> <img src='".$wallpapers[$i]['url_thumb']."' width='300' height ='180'> </a>";	
-				}
-			}
-			// Sinon on passe à la question suivante
-			else {
-				// On met à jour l'importance
-				$_SESSION['importance'] = updateImportance($_SESSION['importance']);
-				
-				// On prépare la prochaine question
-				$_SESSION['nextQuestion'] = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
-				
-				// On met à jour la requete
-				$_SESSION['requete'] = $wppLeft['requete'];
-				
-				// On check si on peut trouver des wpp avec la prochaine question
-				$checkQuestion = checkQuestion($_SESSION['nextQuestion']['id'][0], $_SESSION['requete']);
-				print_r($checkQuestion);
-				// Si on peut pas on arrête
-				if($checkQuestion['continue']==false)
-				{
-					$_SESSION['continue'] = false;
-					echo "La question suivante ne permet pas de trouver assez de wallpapers";
-					$wallpapers = stopGame($wppLeft['id']);
-					// On affiche les wallpapers trouvés
-					for ($i = 0; $i < $wppLeft['nb_wpp_left']; $i++)
-					{
-						echo "<br/> <a href='".$wallpapers[$i]['url']."' download='".$wallpapers[$i]['nom']."'> <img src='".$wallpapers[$i]['url_thumb']."' width='300' height ='180'> </a>";	
-					}
-				}
-			}
-		}
 
-		// Si on a répondu au formulaire précédent et qu'on peut continuer
-		if(isset($_POST['sub'.$_SESSION['num_question']]) && $_SESSION['continue'] == true)
-		{ 
+		// Si on vient de répondre à la première question
+		if(isset($_POST['sub1']) && $_SESSION['num_question'] == 1)
+		{
 			// Si on a choisi une catégorie
 			if(isset($_POST['categorie']) || isset($_SESSION['categories']))
 			{	
-				// Après avoir répondu à la premiere question, on stock les catégories choisies
-				if ($_SESSION['num_question'] == 1)
-				{
-					$_SESSION['categories'] = $_SESSION['firstQuestion']['values'][$_POST['categorie']];
-				}
+				// On stocke les catégories choisies
+				$_SESSION['categories'] = $_SESSION['question'][0]['values'][$_POST['categorie']];
+				
 				// On incrémente le numero de la question
 				$_SESSION['num_question']++;
-				// On selectionne la question suivante
-				if ($_SESSION['num_question'] == 2)
-					$_SESSION['nextQuestion'] = nextQuestion($_SESSION['categories'], $_SESSION['importance']);
-				// On met à jour le nombre d'apparition de la question
-				updateNb_aQ($_SESSION['nextQuestion']['id'][0],$_SESSION['nextQuestion']['nb_a'][0]);
+				
+				if ($_SESSION['lock'][1]==false)
+				{
+					$_SESSION['lock'][1] = true;
+					// On appelle la 2eme question (les autres questions seront appellées au-dessus après vérifications)
+					$_SESSION['question'][1] = nextQuestion();
+				}
+				// On peut continuer
+				$_SESSION['continue'] = true;
+			}
+			// Sinon ça veut dire qu'on a pas répondu à la 1ère question
+			else
+			{
+				// On arrête
+				$_SESSION['continue'] = false;
+				echo "Merci de choisir une réponse";
+			}
+		}
+
+		// Si on a répondu à une question autre que la première, on vérifie les conditions d'arrêts
+		if(isset($_POST['sub'.$_SESSION['num_question']]) && $_SESSION['num_question']>1)
+		{
+			// On envoie la réponse choisie et on test si on peut continuer ou pas
+			$resultat = checkContinue($_POST['reponse']);
+		}
+
+		// Si on peut continuer et qu'on a trouvé une question
+		if($_SESSION['continue'] == true && isset($_SESSION['question'][$_SESSION['num_question']-1]) && $_SESSION['num_question'] > 1)
+		{ 
 	?>
 	    <fieldset>
             <legend>QUESTION <?php echo $_SESSION['num_question']; ?></legend>
 			<form action="" method="post">
                 <table>
 					<tr>
-                        <td> <label><?php echo $_SESSION['nextQuestion']['questions'][0]; ?></label></td>
+                        <td> <label><?php echo $_SESSION['question'][$_SESSION['num_question']-1]['question']['q_longue']; ?></label></td>
 						<td>
 						  <input type="radio" name="reponse" value="0"> Non
 						  <input type="radio" name="reponse" value="25"> Probablement pas
@@ -145,12 +165,29 @@ session_start();
             </form>
 		</fieldset>
 	<?php
-			}
-			// Sinon ça veut dire qu'on a pas répondu à la 1ère question
-			else
+		}
+		// Sinon, si on ne peut pas continuer, on affiche les résultats
+		else if($_SESSION['continue'] == false)
+		{
+			$wallpapers = $resultat['wallpapers'];
+			// Pour chaque wallpaper on affiche les infos
+			for ($i = 0; $i < $resultat['nb_wpp_left']; $i++)
 			{
-				echo "Merci de choisir une réponse";
+				echo "<br/> <a href='".$wallpapers[$i]['url']."' download='".$wallpapers[$i]['nom']."'> <img src='".$wallpapers[$i]['url_thumb']."' width='300' height ='180'> </a>";	
 			}
+		}
+		// On peut corriger uniquement après avoir répondu à la question 2
+		if ($_SESSION['num_question'] > 1)
+		{
+	?>
+		<br/>
+		<fieldset>
+            <legend>CORRIGER LA QUESTION</legend>
+			<form action="" method="post">
+                <input type="submit" value="Corriger" name="undo" />
+            </form>
+		</fieldset>
+	<?php
 		}
 	?>
 		<br/>
@@ -160,15 +197,5 @@ session_start();
                 <input type="submit" value="Restart" name="restart" />
             </form>
 		</fieldset>
-	<?php
-		if(isset($_POST['restart']))
-		{
-			// remove all session variables
-			session_unset();
-
-			// destroy the session
-			session_destroy();
-		}
-	?>
     </body>
 </html>
