@@ -36,7 +36,7 @@
 
     .right-part{
         display: flex; flex-flow: column nowrap; justify-content: space-between;
-        margin-bottom: $question-choices-height;
+        padding-bottom: $question-choices-height;
 
         *{ flex: 0 0 auto; }
     }
