@@ -113,9 +113,9 @@ class wallpaperController extends Controller {
         echo json_encode($data);
     }
 
-    public function alea($nb) {
+    public function random($nb) {
         $wallpaper = new Wallpaper();
-        $data = $wallpaper->alea($nb);
+        $data = $wallpaper->random($nb);
         echo json_encode($data);
     }
 }

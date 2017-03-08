@@ -181,7 +181,7 @@ class Wallpaper extends Model {
         $stmt->execute([$id]);		
     }
 
-    public function alea($nb) {
+    public function random($nb) {
         $bdd = Database::get();
         $data = "";
 
