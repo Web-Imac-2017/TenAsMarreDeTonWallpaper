@@ -1,11 +1,23 @@
 <?php	
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
+require_once KERNEL . 'kernel.php';
+require_once MODEL_DIR . 'categorie.php';
+
+class Algo extends Model {
+
+    public function __construct(){
+        parent::__construct();
+    }
+	
 	/* GESTION DE LA PREMIERE QUESTION */
 	
 	// Tire au hasard trois catégories.
 	// Renvoie l'intitulé de la question 1, les id et nom des 3 catégories, le reste et toutes les catégories
-	function firstQuestion() {
+	public function firstQuestion() {
+		$categorie = new Categorie();
 		// On récupére toutes les catégories
-		$categories = getCategories();
+		$categories = $categorie->getCategories();
 		// On en tire 3 au hasard
 		$random_categorie=array_rand($categories,3);
 		// Intitulé de la question
@@ -39,14 +51,14 @@
 			$categories_id
 		);
 		shuffle($other);
-		$firstQuestion = array("question"=>$question, "reponses"=>$reponses, "values"=>$values);
+		$firstQuestion = array("question"=>$question, "reponses"=>$reponses, "values"=>$values, "returnCode" => 1);
 		return $firstQuestion;
 	}
 	
 	/* GESTION DES QUESTIONS SUIVANTES */
 	
-	// Renvoie 2 questions en fonction de la categorie et de l'importance
-	function nextQuestion()
+	// Renvoie 1 question en fonction de la categorie, de l'importance et du nombre d'apparition
+	public function nextQuestion()
 	{		
 		// S'il y a plusieurs catégories, on en sélectionne 1 au hasard
 		if (gettype($_SESSION['categories']) == "array")
@@ -61,7 +73,7 @@
 		$importanceUp = $_SESSION['importance']+5;
 		
 		// On effectue la requete SQL qui récupére la question
-		$bdd = getBdd();
+		$bdd = Database::get();
 		// On select les questions qui ont les categories choisies et l'importance demandée
 		$sql = "SELECT DISTINCT id, nb_apparition AS nb_a, q_longue FROM question AS q 
 				INNER JOIN categorie_question AS c_q 
@@ -107,22 +119,25 @@
 			{
 				updateNb_aQ($selected['id'],$selected['nb_a']);
 			}
+			$returnMessage = "Une question a bien été sélectionnée";
 		}
 		// S'il n'y a aucune question qui correspond à la requête
 		else
 		{
 			$nextQuestion = array('nb_q'=>0,'question'=>NULL);
 			$_SESSION['continue'] = false;
+			$returnCode = 0;
+			$returnMessage = "Aucune question ne correspond à la requête";
 		}
 
-		return $nextQuestion;
+		return array("question"=>$nextQuestion, "returnCode" => $returnCode, "returnMessage" => $returnMessage) ;
 	}
 	
 	// Met à jour le nombre d'apparition d'une question
 	function updateNb_aQ($question_id, $nb_a)
 	{
 		$nb_a++;
-		$bdd = getBdd();
+		$bdd = Database::get();
 		$sql = 'UPDATE question SET nb_apparition=:nb_a WHERE id=:question_id';
 		$req = $bdd->prepare($sql);
 		$req->bindParam(':nb_a', $nb_a);
@@ -135,7 +150,7 @@
 	// Renvoie le nombre de wpp correspondant à la requete actuelle
 	function answerQuestion($question_id, $reponse, $requete)
 	{
-		$bdd = getBdd();
+		$bdd = Database::get();
 		// On select les wpp qui correspondent aux reponses choisies de la question actuelle
 		$sql = "SELECT DISTINCT wallpaper_id FROM reponse AS r 
 				WHERE question_id =".$question_id."
@@ -168,7 +183,7 @@
 	{		
 		$i = 0;
 		$selection = array();
-		$bdd = getBdd();
+		$bdd = Database::get();
 		foreach ($wpp_id as $id)
 		{
 			// On récupére les informations
@@ -229,14 +244,14 @@
 	}
 	
 	// Retourne la question actuelle
-	function getCurrentQuestion()
+	public function getCurrentQuestion()
 	{
-		return $_SESSION['question'][$_SESSION['num_question']];
+		return array("question"=>$_SESSION['question'][$_SESSION['num_question']], "returnCode" => 1);
 	}
 	
 	// Check les conditions d'arrêts, dis si on peut continuer ou pas
 	// Retourne la nouvelle question et met à jour les variables (num_question, importance, requete)
-	function checkContinue($reponse)
+	public function checkContinue($reponse)
 	{
 		// Variables retournées avec initialisation si jamais elles ne sont pas modifiées
 		$nb_wpp_left = 0;
@@ -252,10 +267,11 @@
 		if($wppLeft['nb_wpp_left']<=$_SESSION['minWPP'] || $_SESSION['num_question'] == $_SESSION['maxQuestion'])
 		{
 			$_SESSION['continue'] = false;
-			//echo "Il n'y a plus que ".$wppLeft['nb_wpp_left']." wallpapers qui correspondent à vos critères";
 			// On récupére les infos de tous les wpp qu'il reste
 			$wallpapers = stopGame($wppLeft['id']);
 			$nb_wpp_left = $wppLeft['nb_wpp_left'];
+			$returnCode = 0;
+			$returnMessage = "Il n'y a plus que ".$wppLeft['nb_wpp_left']." wallpapers qui correspondent à vos critères";
 		}
 		
 		// Sinon on passe à la question suivante
@@ -269,7 +285,8 @@
 			{	
 				$_SESSION['lock'][$_SESSION['num_question']] = true;
 				// On prépare la prochaine question
-				$_SESSION['question'][$_SESSION['num_question']] = nextQuestion();
+				$nextQuestion = nextQuestion();
+				$_SESSION['question'][$_SESSION['num_question']] = $nextQuestion['question'];
 			}
 				
 			// On met à jour la requete
@@ -282,7 +299,6 @@
 			if($checkQuestion['continue']==false)
 			{
 				$_SESSION['continue'] = false;
-				//echo "La question suivante ne permet pas de trouver assez de wallpapers";
 				$wallpapers = stopGame($wppLeft['id']);
 				// S'il y en a moins que le minimum, la limite = le nombre de wpp qu'il reste
 				if($wppLeft['nb_wpp_left']<$_SESSION['minWPP'])
@@ -294,6 +310,8 @@
 				{
 					$nb_wpp_left = $_SESSION['minWPP'];
 				}
+				$returnCode = 0;
+				$returnMessage = "La question suivante ne permet pas de trouver assez de wallpapers";
 			}
 			// Sinon on peut continuer, on incremente le nb_apparition de la question
 			else 
@@ -302,14 +320,16 @@
 				$_SESSION['num_question']++;
 				$_SESSION['continue'] = true;
 				updateNb_aQ($_SESSION['question'][$_SESSION['num_question']-1]['question']['id'],$_SESSION['question'][$_SESSION['num_question']-1]['question']['nb_a']);
+				$returnCode = 1;
+				$returnMessage = "La réponse permet de passer à la question suivante";
 			}
 		}
-		$resultat = array('nb_wpp_left' => $nb_wpp_left, 'wallpapers' => $wallpapers);
+		$resultat = array('nb_wpp_left' => $nb_wpp_left, 'wallpapers' => $wallpapers, "returnCode" => $returnCode, "returnMessage" => $returnMessage);
 		return $resultat;
 	}
 	
 	// Corrige la question précédente
-	function undoQuestion()
+	public function undoQuestion()
 	{
 		if ($_SESSION['continue'] == true)
 		{
@@ -320,20 +340,21 @@
 		{
 			updateImportance(1);
 		}
-		return true;
+		return array("returnCode" => 1, "returnMessage" => "On revient à la question précédente");
 	}
 	
 	// RENVOYER UN RETURN CODE
 	
 	// Met à jour le nombre de téléchargements du wallpaper
-	function updateDL($wallpaper_id, $nb_telechargement)
+	public function updateDL($wallpaper_id, $nb_telechargement)
 	{
 		$nb_telechargement++;
-		$bdd = getBdd();
+		$bdd = Database::get();
 		$sql = 'UPDATE wallpaper SET nb_telechargement=:nb_telechargement WHERE id=:wallpaper_id';
 		$req = $bdd->prepare($sql);
 		$req->bindParam(':nb_telechargement', $nb_telechargement);
 		$req->bindParam(':wallpaper_id', $wallpaper_id);
 		$req->execute();
 	}
+}
 ?>

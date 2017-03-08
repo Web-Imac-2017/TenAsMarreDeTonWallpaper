@@ -119,7 +119,8 @@ if(isset($_POST['restart']))
 				{
 					$_SESSION['lock'][1] = true;
 					// On appelle la 2eme question (les autres questions seront appellées au-dessus après vérifications)
-					$_SESSION['question'][1] = nextQuestion();
+					$nextQuestion = nextQuestion();
+					$_SESSION['question'][1] = $nextQuestion['question'];
 				}
 				// On peut continuer
 				$_SESSION['continue'] = true;
