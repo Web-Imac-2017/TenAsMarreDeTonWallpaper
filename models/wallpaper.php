@@ -9,34 +9,6 @@ class Wallpaper extends Model {
         parent::__construct();
     }
 
-    // Renvoie les informations de tous les wallpapers
-    public function getAll() {
-        $bdd = Database::get();
-        $data = "";
-
-        try {
-            $sqlQuery = 'SELECT * FROM wallpaper';
-
-            try {
-
-                $stmt = $bdd->prepare($sqlQuery);
-                $success = $stmt->execute();
-                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                $data = $bddResult;
-
-                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
-            }
-
-            catch (PDOException $e) {
-                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
-            }
-        }
-        catch (PDOException $e) {
-            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
-        }
-    }
-
     // Renvoie les informations d'un seul wallpaper
     public function get($id) {        
         $bdd = Database::get();
@@ -65,6 +37,45 @@ class Wallpaper extends Model {
         }
 
         return $result;
+    }
+
+    public function getMines($membre_id, $nb) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM wallpaper INNER JOIN mise_en_ligne on mise_en_ligne_id=mise_en_ligne.id WHERE membre_id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$membre_id]);
+                $selection = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($nb <= 1) {
+                    $wallpapers = $selection[array_rand($selection, 1)];
+                }
+                else {
+                    if ($nb > count($selection)) {
+                        $nb = count($selection);
+                    }
+                    $random=array_rand($selection, $nb);
+                    for ($i=0; $i<$nb; $i++) {
+                        $wallpapers[$i] = $selection[$random[$i]];
+                    }
+                }
+
+                $data = $wallpapers;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
     }
 
     // Ajoute un nouveau wallpaper

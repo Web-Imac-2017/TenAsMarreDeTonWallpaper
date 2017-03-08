@@ -34,9 +34,9 @@ Router::connect('/membre/changeRole/:id', 'membre/changeRole/:id/:role', array('
 // Wallpaper
 Router::connect('/wallpaper/add', 'wallpaper/add', array());
 Router::connect('/wallpaper/get/:id', 'wallpaper/get/:id', array('id' => '[0-9]+'));
-Router::connect('/wallpaper/getAll', 'wallpaper/getAll', array());
-//Router::connect('/wallpaper/change/:id', 'wallpaper/change/:id', array('id' => '[0-9]+'));
 Router::connect('/wallpaper/random/:nb', 'wallpaper/random/:nb', array('nb' => '[0-9]+'));
+Router::connect('/wallpaper/getMines/:nb', 'wallpaper/getMines/:nb', array('nb' => '[0-9]+'));
+//Router::connect('/wallpaper/change/:id', 'wallpaper/change/:id', array('id' => '[0-9]+'));
 
 // Question
 Router::connect('/question/add', 'question/add', array());

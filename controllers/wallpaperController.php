@@ -85,15 +85,20 @@ class wallpaperController extends Controller {
         }
     }
 
-    public function getAll() {
-        $wallpaper = new Wallpaper();
-        $data = $wallpaper->getAll();
-        echo json_encode($data);
-    }
-
     public function get($id) {
         $wallpaper = new Wallpaper();
         $data = $wallpaper->get($id);
+        echo json_encode($data);
+    }
+
+    public function getMines($nb) {
+        if(isset($_SESSION['user'])) {
+            $wallpaper = new Wallpaper();
+            $data = $wallpaper->getMines($_SESSION['user']['id'], $nb);
+        }
+        else {
+            $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté'];
+        }
         echo json_encode($data);
     }
 
