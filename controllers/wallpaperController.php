@@ -31,7 +31,7 @@ class wallpaperController extends Controller {
                     $mel->add("Validé", $_SESSION['user']['id'], $_SESSION['user']['id']);
                 else
                     $mel->add("En attente", $_SESSION['user']['id'], 0);
-                
+
                 $mel_id = $mel->lastInsertId();
 
                 $extensions = array('.jpg', '.jpeg', '.png', '.tiff', '.bmp', '.gif', '.JPG', '.JPEG', '.PNG', '.TIFF', '.BMP', '.GIF');
@@ -56,9 +56,9 @@ class wallpaperController extends Controller {
                         $format = getimagesize($url)['mime'];
 
                         $data = $wallpaper->add($url, $url, $mel_id, $_POST['nom'], $_POST['auteur'], $width, $height, $format);
-                        
+
                         $wallpaper_id = $data['data']['id'];
-                        
+
                         $membre->incrementer_nb_wallpapers_ajoutes($_SESSION['user']['id']);
 
                         $i=1;
@@ -84,16 +84,38 @@ class wallpaperController extends Controller {
             echo json_encode($data);
         }
     }
-    
+
     public function getAll() {
         $wallpaper = new Wallpaper();
         $data = $wallpaper->getAll();
         echo json_encode($data);
     }
-    
+
     public function get($id) {
         $wallpaper = new Wallpaper();
         $data = $wallpaper->get($id);
+        echo json_encode($data);
+    }
+
+    public function delete($id) {
+        if(isset($_SESSION['user'])) {
+            if($_SESSION['user']['admin'] || $_SESSION['user']['moderateur']) {
+                $wallpaper = new Wallpaper();
+                $data = $wallpaper->delete($id);
+            }
+            else {
+                $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas autorisé'];
+            }
+        }
+        else {
+            $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté'];
+        }
+        echo json_encode($data);
+    }
+
+    public function alea($nb) {
+        $wallpaper = new Wallpaper();
+        $data = $wallpaper->alea($nb);
         echo json_encode($data);
     }
 }
