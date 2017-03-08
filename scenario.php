@@ -103,6 +103,8 @@ if(isset($_POST['restart']))
 	<?php
 		}
 
+		/** api/answerFirstQuestion **/
+		
 		// Si on vient de répondre à la première question
 		if(isset($_POST['sub1']) && $_SESSION['num_question'] == 1)
 		{
@@ -133,6 +135,9 @@ if(isset($_POST['restart']))
 				echo "Merci de choisir une réponse";
 			}
 		}
+		/**					  **/
+		
+		/** api/checkContinue **/
 
 		// Si on a répondu à une question autre que la première, on vérifie les conditions d'arrêts
 		if(isset($_POST['sub'.$_SESSION['num_question']]) && $_SESSION['num_question']>1)
@@ -140,6 +145,7 @@ if(isset($_POST['restart']))
 			// On envoie la réponse choisie et on test si on peut continuer ou pas
 			$resultat = checkContinue($_POST['reponse']);
 		}
+		/**					  **/
 
 		// Si on peut continuer et qu'on a trouvé une question
 		if($_SESSION['continue'] == true && isset($_SESSION['question'][$_SESSION['num_question']-1]) && $_SESSION['num_question'] > 1)
