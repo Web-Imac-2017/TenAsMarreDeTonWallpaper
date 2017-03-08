@@ -34,7 +34,8 @@ Router::connect('/membre/changeRole/:id/:role', 'membre/changeRole/:id/:role', a
 // Wallpaper
 Router::connect('/wallpaper/add', 'wallpaper/add', array());
 Router::connect('/wallpaper/get/:id', 'wallpaper/get/:id', array('id' => '[0-9]+'));
-Router::connect('/wallpaper/getAll', 'wallpaper/getAll', array());
+Router::connect('/wallpaper/random/:nb', 'wallpaper/random/:nb', array('nb' => '[0-9]+'));
+Router::connect('/wallpaper/getMines/:nb', 'wallpaper/getMines/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/change/:id', 'wallpaper/change/:id', array('id' => '[0-9]+'));
 Router::connect('/wallpaper/delete', 'wallpaper/delete', array());
 Router::connect('wallpaper/getRandom/:limit', 'wallpaper/getRandom/:limit', array('limit' => '[0-9]+'))
@@ -52,8 +53,3 @@ Router::connect('/categorie/get/:id', 'categorie/get/:id', array('id' => '[0-9]+
 Router::connect('/categorie/getAll', 'categorie/getAll', array());
 Router::connect('/categorie/change/:id', 'categorie/change/:id', array('id' => '[0-9]+'));
 Router::connect('/categorie/delete', 'categorie/delete', array());
-
-// Algo (non définitif, en attente des fonctions par David)
-Router::connect('/algo/getQuestion', 'algo/getQuestion', array());
-Router::connect('/algo/sendRep', 'algo/sendRep', array());
-Router::connect('/algo/getWallpapers', 'algo/getWallpapers', array());

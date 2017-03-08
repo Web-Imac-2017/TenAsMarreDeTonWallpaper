@@ -12,35 +12,33 @@ class Question extends Model {
     // Renvoie les informations de toutes les questions
     public function getAll() {
         $bdd = Database::get();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-        $sqlQuery = 'SELECT * FROM question';
-
+        $data = "";
+        
         try {
-            $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute();
-            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $sqlQuery = 'SELECT * FROM question';
 
-            if(!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
+            try {
+
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute();
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
             }
-            else {
-                $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
             }
         }
-
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
-
-        return $result;
     }
 
     // Renvoie les informations d'une seule question
-    public function get($id) {        
+    public function get($id) {       
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
         $sqlQuery = 'SELECT * FROM question WHERE id=?';
@@ -57,7 +55,7 @@ class Question extends Model {
             }
             else {
                 $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
+                $result['returnMessage'] = 'Echec de la connexion : aucune question trouvée ayant pour id : '.$id;
             }
         }
 
@@ -80,18 +78,12 @@ class Question extends Model {
             $success = $stmt->execute([$q_courte, $q_longue, $importance]);
             $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if(!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
+            $result['data'] = $bddResult[0];
+            $result['returnCode'] = 1;
+            $result['returnMessage'] = 'Connexion réussie !';
 
-                $id_nouveau = $bdd->lastInsertId();
-                addQuestionCategorie($id_nouveau, $categories);
-            }
-            else {
-                $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
-            }
+            $id_nouveau = $bdd->lastInsertId();
+            addQuestionCategorie($id_nouveau, $categories);
         }
 
         catch (PDOException $e) {
@@ -112,6 +104,16 @@ class Question extends Model {
             $req->execute(array($questionID, $cat));
         }
     }
+    
+    function setImportance($questionID)
+	{
+		$bdd = getBdd();
+		$sql = 'SELECT wallpaper_id, COUNT( * ) AS nb_wpp FROM categorie_wallpaper AS c_w INNER JOIN c_w.categorie_question ON categorie_id = categorie_question.categorie_id WHERE question_id=? GROUP BY wallpaper_id';
+		$importance = $bdd->prepare($sql);
+		$importance->execute(array($questionID));
+
+		return $importance;
+	}
 
     // Supprime une question
     function deleteQuestion($questionID) {
@@ -186,7 +188,5 @@ class Question extends Model {
         else
             throw new Exception("Aucune question ne correspond à l'identifiant '$questionID'");
     }
-
-}
 
 }
