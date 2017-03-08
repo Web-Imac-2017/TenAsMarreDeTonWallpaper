@@ -11,7 +11,7 @@ require_once MODEL_DIR . 'membre.php';
 * Classe : wallpaperController
 * Hérite de Controller
 * Utilisé à l'appel d'une route vers "api/categorie/actionName"
-*/
+**/
 
 class wallpaperController extends Controller {
 
