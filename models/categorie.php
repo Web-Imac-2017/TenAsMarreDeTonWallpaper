@@ -7,60 +7,141 @@ class Categorie extends Model {
     public function __construct(){
         parent::__construct();
     }
-	
-	/* GESTION DES CATEGORIES */
-	
-	// Renvoie toutes les catégories
-	public function getCategories() {
-		$bdd = Database::get();
-		$sql = 'SELECT id AS id, nom AS nom FROM categorie';
-		$categories = $bdd->query($sql);
-		return $categories;
-	}
-	
-	// Renvoie la catégorie demandée
-	public function getCategorie($categorieID) {
-		$bdd = Database::get();
-		$sql = 'SELECT id AS id, nom AS nom FROM categorie WHERE id =?';
-		$categorie = $bdd->prepare($sql);
-		$categorie->execute(array($categorieID));
-		if ($categorie->rowCount() == 1)
-			return array("returnCode" => 1, "returnMessage" => $e->getMessage(),  "data" => $categorie->fetch());  // Accès à la première ligne de résultat
-		else
-		{
-			throw new Exception("Aucune catégorie ne correspond à l'identifiant '$categorieID'");
-			return array("returnCode" => -1, "returnMessage" => "Aucune catégorie ne correspond à l'identifiant ".$categorieID,  "data" => $categorie->fetch());
-		}
-	}
-	
-	// Rajoute une catégorie
-	public function addCategorie($nom) {
-		$bdd = Database::get();
-		$sql = 'INSERT INTO categorie(nom) VALUES(:nom)';
-		$req = $bdd->prepare($sql);
-		$req->bindParam(':nom', $nom);
-		$req->execute();
-	}
-	
-	// Supprime une catégorie
-	public function deleteCategorie($categorieID) {
-		$bdd = Database::get();
-		$sql = 'DELETE FROM categorie WHERE id = '.$categorieID.'';
-		$req = $bdd->prepare($sql);
-		$req->execute();
-	}
-	
-	// Modifie une catégorie
-	public function changeCategorie($categorieID, $nom) {
-		$bdd = Database::get();
-		$sql = 'UPDATE categorie SET nom=:nom WHERE id = :categorieID';
-		$req = $bdd->prepare($sql);
-		$req->bindParam(':nom', $nom);
-		$req->bindParam(':categorieID', $categorieID);
-		$req->execute();
-	}
-	
-	/*// Renvoie le nombre d'occurences d'une catégorie dans la table question_categorie
+
+    // Renvoie toutes les catégories
+    public function getAll() {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM categorie';
+
+            try {
+
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute();
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+    // Renvoie une seule catégorie
+    public function get($id) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM categorie WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+    // Ajoute une catégorie
+    public function add($nom) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'INSERT INTO categorie VALUES(NULL, ?)';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $bddResult = $stmt->execute([$nom]);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Catégorie ajoutée",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+    // Supprime une catégorie
+    public function delete($id) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'DELETE FROM categorie WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $bddResult = $stmt->execute([$id]);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Catégorie supprimée",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+    // Modifie une catégorie    
+    public function change($id, $nom) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'UPDATE categorie SET nom=? WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $bddResult = $stmt->execute([$nom, $id]);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Catégorie modifiée",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+    
+    /*// Renvoie le nombre d'occurences d'une catégorie dans la table question_categorie
 	function getCategorieOccurences($categorieID) {
 		$bdd = Database::get();
 		$sql = 'SELECT categorie_id AS id, COUNT( categorie_id ) AS nb_cat FROM categorie_question WHERE categorie_id =?';

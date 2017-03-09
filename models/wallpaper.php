@@ -10,34 +10,32 @@ class Wallpaper extends Model {
     }
 
     // Renvoie les informations d'un seul wallpaper
-    public function get($id) {        
+    public function get($id) {
         $bdd = Database::get();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-        $sqlQuery = 'SELECT * FROM wallpaper WHERE id=?';
+        $data = "";
 
         try {
-            $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute([$id]);
-            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $sqlQuery = 'SELECT * FROM wallpaper WHERE id=?';
 
-            if(!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Requête réussie !';
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
             }
-            else {
-                $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la requête';
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
             }
         }
-
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
-
-        return $result;
     }
+
 
     public function getMines($membre_id, $nb) {
         $bdd = Database::get();
@@ -267,7 +265,7 @@ class Wallpaper extends Model {
             return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
     }
-    
+
     public function getMostAP($nb) {
         $bdd = Database::get();
         $data = "";
