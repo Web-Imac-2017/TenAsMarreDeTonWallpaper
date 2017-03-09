@@ -7,12 +7,14 @@ template     = eval(`\`${template}\``);
 
 import bus from '../../bus/index.js';
 import DefaultLayout from '../../layouts/default-layout/index.js';
+import DlWpp from '../../widgets/dlwpp/index.js';
 
 const TestDlWpp = Vue.extend({
   template,
 
   components: {
       'default-layout': DefaultLayout,
+      'dlwpp': DlWpp,
   },
 
   created(){
