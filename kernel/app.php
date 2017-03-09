@@ -22,7 +22,7 @@ class App {
 		if (! isset($_SESSION['maxQuestion'])) $_SESSION['maxQuestion'] = 5;
 
 		// Pour stocker le résultat
-		if (! isset($_SESSION['$resultat'])) $_SESSION['$resultat'] = array('nb_wpp_left'=>0, 'wallpapers'=>array());
+		if (! isset($_SESSION['resultat'])) $_SESSION['resultat'] = array('nb_wpp_left'=>0, 'wallpapers'=>array());
 		// Le numéro de la question actuelle
 		if (! isset($_SESSION['num_question'])) $_SESSION['num_question'] = 1;
 		// L'importance qui sera de plus en plus petite

@@ -10,6 +10,16 @@ class AlgoController extends Controller {
 		parent::__construct();
 	}
 	
+	/* 	Les fonctions renvoient :								*
+	*	"returnCode", 1 (success) sinon echec 							*
+	* 	'data', qui contient la question actuelle et le nombre			*
+	*	 de wpp restants pour numero_question > 2						*
+	*	OU le nombre de wpp_restants et les infos de ces wpp si			*
+	*	returnCode == 1 et continue == false							*
+	*	"continue" qui indique si on peut continuer(true) ou pas(false)	*
+	*	"returnMessage" qui dit ce qu'il s'est passé					*/
+	
+	// Renvoie la data sous forme de : $_SESSION['question']['q_longue', 'reponses', 'values', 'numero']
 	public function getFirstQuestion($restart = NULL)
 	{
 		$algo = new Algo();
@@ -17,36 +27,40 @@ class AlgoController extends Controller {
 		if ($_SESSION['lock'][0]==false)
 		{
 			$_SESSION['lock'][0] = true;
-			$_SESSION['firstQuestion'] = firstQuestion();
+			$_SESSION['firstQuestion'] = $algo->firstQuestion();
 			$_SESSION['question'][0] = $_SESSION['firstQuestion'];
 		}
 		
 		if ($restart == 1)
 		{
-			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][0], "returnMessage" => "Partie recommencée"];
+			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][0], "continue" => true, "returnMessage" => "Partie recommencée"];
 		}
 		else if ($restart == 2)
 		{
-			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][0], "returnMessage" => "On retourne à la question 1"];
+			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][0], "continue" => true, "returnMessage" => "On retourne à la question 1"];
 		}
 		else
 		{
-			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][0], "returnMessage" => "On affiche la question 1"];
+			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][0], "continue" => true, "returnMessage" => "On affiche la question 1"];
 		}
 		echo json_encode($data);
 	}
 	
-	public function getNextQuestion() {
+	
+	// Renvoie la data sous forme de : $_SESSION['question']['question', 'reponses', 'values', 'numero']
+	// Le 2eme 'question' est un array qui contient ['id', 'nb_a', 'q_longue']
+	// $reponse = $_POST['reponse']
+	public function getNextQuestion($reponse) {
 		$algo = new Algo();
 		
 		// Si on vient de répondre à la première question
 		if($_SESSION['num_question'] == 1)
 		{
 			// Si on a choisi une catégorie
-			if(isset($_POST['categorie'])) // val : 0, 1 2 3 ou 4
+			if(isset($reponse) && !empty($reponse)) // val : 0, 1 2 3 ou 4
 			{	
 				// On stocke les catégories choisies
-				$_SESSION['categories'] = $_SESSION['question'][0]['values'][$_POST['categorie']];
+				$_SESSION['categories'] = $_SESSION['question'][0]['values'][$reponse];
 				
 				// On incrémente le numero de la question
 				$_SESSION['num_question']++;
@@ -61,34 +75,67 @@ class AlgoController extends Controller {
 				// On peut continuer
 				$_SESSION['continue'] = true;
 				
+				$data = ["returnCode" => 1, 'data' => $_SESSION['question'][1], "continue" => true, "returnMessage" => "On affiche la question 2"];
 			}
 			// Sinon ça veut dire qu'on a pas répondu à la 1ère question
 			else
 			{
-				// METTRE MESSAGE D'ERREUR
-				// On arrête
 				$_SESSION['continue'] = false;
-				//echo "Merci de choisir une réponse";
+				$data = ["returnCode" => 0, 'data' => $_SESSION['question'][0], "continue" => false, "returnMessage" => "Vous n'avez pas répondu à la 1ère question"];
 			}
 			
-			// echo json_encode($data);
+			echo json_encode($data);
 		}
 		else if($_SESSION['num_question'] > 1) {
-			if (isset($_POST['response']) && !empty($_POST['response'])) {
-			
+			if (isset($reponse) && !empty($reponse)) {
 				// On envoie la réponse choisie et on test si on peut continuer ou pas
-				$_SESSION['$resultat'] = $algo->checkContinue($_POST['reponse']);
+				$_SESSION['resultat'] = $algo->checkContinue($reponse);
+				// Si on peut continuer
+				if($_SESSION['resultat']['returnCode'] == 1)
+				{
+					$data = ["returnCode" => 1, 'data' => $_SESSION['question'][$_SESSION['num_question']-1], "continue" => true, "returnMessage" => "Vous pouvez continuer"];
+				}
+				// Si on a fini la partie
+				else
+				{
+					$data = ["returnCode" => 1, 'data' => $_SESSION['resultat'], "continue" => false, "returnMessage" => "Vous avez trouvé des wallpapers"];
+				}
 			}
 			// renvoyer les questions
 			else {
-				// MESSAGES D'ERREUR
+				$data = ["returnCode" => 0, 'data' => $_SESSION['question'][$_SESSION['num_question']-1], "continue" => false, "returnMessage" => "Vous n'avez pas répondu à la question".$_SESSION['num_question']];
 			}
 			
 			echo json_encode($data);
 		}
 	}
 	
-	
+	public function currentQuestion()
+	{
+		// Si on est arrivé à la fin, on recommence une partie
+		if ($_SESSION['continue'] == false && $_SESSION['num_question'] > 1)
+		{
+			restart();
+		}
+		// Si c'est la 1ère question, on appelle getFirstQuestion qui va renvoyer la 1ère question (et la générer si pas fait)
+		if($_SESSION['num_question'] == 1)
+		{
+			getFirstQuestion();
+		}
+		// Sinon on retourne la question actuelle
+		else
+		{
+			if (isset($_SESSION['question'][$_SESSION['num_question']-1]))
+			{
+				$data = ["returnCode" => 1, 'data' => $_SESSION['question'][$_SESSION['num_question']-1], "returnMessage" => "Question ".$_SESSION['num_question']." envoyee"];
+				echo json_encode($data);
+			}
+			else
+			{
+				getNextQuestion();
+			}
+		}
+	}
 	
 	public function restart()
 	{		
@@ -124,12 +171,17 @@ class AlgoController extends Controller {
 			$_SESSION['num_question']--;
 		}
 		$_SESSION['continue'] = true;
+		if ($_SESSION['num_question'] == 1)
+		{
+			$data = ["returnCode" => 0, 'data' => $_SESSION['question'][0], "returnMessage" => "On renvoit la question 1"];
+			echo json_encode($data);
+		}
 		if ($_SESSION['num_question'] > 1)
 		{
 			$algo->updateImportance(1);
 		}
-		// si question 1
-		if($_SESSION['num_question'] == 2)
+		// si question on était à la question 2 au moment de l'appel
+		if($_SESSION['num_question'] == 1)
 		{
 			getFirstQuestion(2);
 		}

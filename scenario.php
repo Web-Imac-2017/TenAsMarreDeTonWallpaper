@@ -43,7 +43,7 @@ if(isset($_POST['restart']))
 		if (! isset($_SESSION['maxQuestion'])) $_SESSION['maxQuestion'] = 5;
 		
 		// Pour stocker le résultat
-		$_SESSION['$resultat'] = array('nb_wpp_left'=>0, 'wallpapers'=>array());
+		$_SESSION['resultat'] = array('nb_wpp_left'=>0, 'wallpapers'=>array());
 		// Le numéro de la question actuelle
 		if (! isset($_SESSION['num_question'])) $_SESSION['num_question'] = 1;
 		// L'importance qui sera de plus en plus petite
@@ -85,7 +85,7 @@ if(isset($_POST['restart']))
 			<form action="" method="post">
                 <table>
 					<tr>
-                        <td> <label><?php echo $_SESSION['question'][0]['question']; ?></label></td>
+                        <td> <label><?php echo $_SESSION['question'][0]['q_longue']; ?></label></td>
 						<td>
 						  <input type="radio" name="categorie" value="0"> <?php echo $_SESSION['question'][0]['reponses'][0]; ?>
 						  <input type="radio" name="categorie" value="1"> <?php echo $_SESSION['question'][0]['reponses'][1]; ?>
@@ -143,7 +143,7 @@ if(isset($_POST['restart']))
 		if(isset($_POST['sub'.$_SESSION['num_question']]) && $_SESSION['num_question']>1)
 		{
 			// On envoie la réponse choisie et on test si on peut continuer ou pas
-			$_SESSION['$resultat']= checkContinue($_POST['reponse']);
+			$_SESSION['resultat']= checkContinue($_POST['reponse']);
 		}
 		/**					  **/
 
@@ -158,11 +158,11 @@ if(isset($_POST['restart']))
 					<tr>
                         <td> <label><?php echo $_SESSION['question'][$_SESSION['num_question']-1]['question']['q_longue']; ?></label></td>
 						<td>
-						  <input type="radio" name="reponse" value="0"> Non
-						  <input type="radio" name="reponse" value="25"> Probablement pas
-						  <input type="radio" name="reponse" value="50"> Peut-être
-						  <input type="radio" name="reponse" value="75"> Probablement oui
-						  <input type="radio" name="reponse" value="100"> Oui
+						  <input type="radio" name="reponse" value="0"> <?php $_SESSION['question'][$_SESSION['num_question']-1]['reponses'][0] ?>
+						  <input type="radio" name="reponse" value="1"> <?php $_SESSION['question'][$_SESSION['num_question']-1]['reponses'][1] ?>
+						  <input type="radio" name="reponse" value="2"> <?php $_SESSION['question'][$_SESSION['num_question']-1]['reponses'][2] ?>
+						  <input type="radio" name="reponse" value="3"> <?php $_SESSION['question'][$_SESSION['num_question']-1]['reponses'][3] ?>
+						  <input type="radio" name="reponse" value="4"> <?php $_SESSION['question'][$_SESSION['num_question']-1]['reponses'][4] ?>
 						</td>
                     </tr>
                     <tr>
@@ -176,9 +176,9 @@ if(isset($_POST['restart']))
 		// Sinon, si on ne peut pas continuer, on affiche les résultats
 		else if($_SESSION['continue'] == false)
 		{
-			$wallpapers = $_SESSION['$resultat']['wallpapers'];
+			$wallpapers = $_SESSION['resultat']['wallpapers'];
 			// Pour chaque wallpaper on affiche les infos
-			for ($i = 0; $i < $_SESSION['$resultat']['nb_wpp_left']; $i++)
+			for ($i = 0; $i < $_SESSION['resultat']['nb_wpp_left']; $i++)
 			{
 				echo "<br/> <a href='".$wallpapers[$i]['url']."' download='".$wallpapers[$i]['nom']."'> <img src='".$wallpapers[$i]['url_thumb']."' width='300' height ='180'> </a>";	
 			}

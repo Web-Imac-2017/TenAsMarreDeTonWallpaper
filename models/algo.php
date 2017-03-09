@@ -51,7 +51,7 @@ class Algo extends Model {
 			$categories_id
 		);
 		shuffle($other);
-		$firstQuestion = array("question"=>$question, "reponses"=>$reponses, "values"=>$values, "returnCode" => 1);
+		$firstQuestion = array("q_longue"=>$question, "reponses"=>$reponses, "values"=>$values, "numero"=>$_SESSION['num_question'], "returnCode" => 1);
 		return $firstQuestion;
 	}
 	
@@ -71,6 +71,15 @@ class Algo extends Model {
 		}
 		// On fixe une marge pour l'importance
 		$importanceUp = $_SESSION['importance']+5;
+		
+		// On renseigne le texte des réponses possibles
+		$reponses = array (
+			"Non",
+			"Probablement pas",
+			"Peu importe",
+			"Probablement oui",
+			"Oui"
+		)
 		
 		// On effectue la requete SQL qui récupére la question
 		$bdd = Database::get();
@@ -113,7 +122,7 @@ class Algo extends Model {
 					$selected = $selection[$random_question[1]];	
 				}
 			}
-			$nextQuestion = array('nb_q'=>$nb_q, 'question'=>$selected);
+			$nextQuestion = array('nb_q'=>$nb_q, 'question'=>$selected, "reponses"=>$reponses, "values"=>$values, "numero"=>$_SESSION['num_question']);
 			// Si c'est la 2ème question, on update le nombre d'apparition ici, sinon ça se fera dans une autre fonction
 			if ($_SESSION['num_question'] == 2)
 			{
@@ -124,7 +133,7 @@ class Algo extends Model {
 		// S'il n'y a aucune question qui correspond à la requête
 		else
 		{
-			$nextQuestion = array('nb_q'=>0,'question'=>NULL);
+			$nextQuestion = array('nb_q'=>0,'question'=>NULL, "reponses"=>$reponses, "numero"=>$_SESSION['num_question']);
 			$_SESSION['continue'] = false;
 			$returnCode = 0;
 			$returnMessage = "Aucune question ne correspond à la requête";
@@ -150,6 +159,9 @@ class Algo extends Model {
 	// Renvoie le nombre de wpp correspondant à la requete actuelle
 	function answerQuestion($question_id, $reponse, $requete)
 	{
+		// Les valeurs reçues sont comprises entre 0 et 4. On les veut entre 0 et 100
+		$reponse = $reponse*25;
+		
 		$bdd = Database::get();
 		// On select les wpp qui correspondent aux reponses choisies de la question actuelle
 		$sql = "SELECT DISTINCT wallpaper_id FROM reponse AS r 
@@ -218,7 +230,7 @@ class Algo extends Model {
 		$reponse;
 		$nb_min = 1;
 		// On recupere le nombre de wpp qu'on peut trouver pour chaque reponse fournie
-		for ($reponse = 0; $reponse <= 100; $reponse+=25)
+		for ($reponse = 0; $reponse <= 4; $reponse++)
 		{
 			$wpp = answerQuestion($question_id, $reponse, $requete);
 			array_push($wpp_left, $wpp['nb_wpp_left']);
@@ -274,6 +286,7 @@ class Algo extends Model {
 			$nb_wpp_left = $wppLeft['nb_wpp_left'];
 			$returnCode = 0;
 			$returnMessage = "Il n'y a plus que ".$wppLeft['nb_wpp_left']." wallpapers qui correspondent à vos critères";
+			$data = "";
 		}
 		
 		// Sinon on passe à la question suivante
