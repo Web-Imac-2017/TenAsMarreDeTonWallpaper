@@ -102,6 +102,18 @@ class wallpaperController extends Controller {
         echo json_encode($data);
     }
 
+    public function getMostDL($nb) {
+        $wallpaper = new Wallpaper();
+        $data = $wallpaper->getMostDL($nb);
+        echo json_encode($data);
+    }
+    
+    public function getMostAP($nb) {
+        $wallpaper = new Wallpaper();
+        $data = $wallpaper->getMostAP($nb);
+        echo json_encode($data);
+    }
+
     public function delete($id) {
         if(isset($_SESSION['user'])) {
             if($_SESSION['user']['admin'] || $_SESSION['user']['moderateur']) {
