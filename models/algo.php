@@ -122,7 +122,7 @@ class Algo extends Model {
 					$selected = $selection[$random_question[1]];	
 				}
 			}
-			$nextQuestion = array('nb_q'=>$nb_q, 'question'=>$selected, "reponses"=>$reponses, "values"=>$values, "numero"=>$_SESSION['num_question']);
+			$nextQuestion = array('nb_q'=>$nb_q, 'question'=>$selected, "reponses"=>$reponses, "numero"=>$_SESSION['num_question']);
 			// Si c'est la 2ème question, on update le nombre d'apparition ici, sinon ça se fera dans une autre fonction
 			if ($_SESSION['num_question'] == 2)
 			{
