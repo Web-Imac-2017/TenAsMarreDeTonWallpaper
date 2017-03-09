@@ -136,12 +136,12 @@ class Wallpaper extends Model {
     }
 
     // Associe des catégories à un wallpaper
-    public function setWallpaperCategories($wallpaperID, $categories) {
+    public function setCategories($id, $categories) {
         foreach ($categories as $cat) {
             $bdd = Database::get();
-            $sql = 'INSERT INTO WallpaperCategories VALUES(?,?)';
+            $sql = 'INSERT INTO categorie_wallpaper VALUES(?,?)';
             $req = $bdd->prepare($sql);
-            $req->execute(array($wallpaperID, $cat));
+            $req->execute([$cat, $id]);
         }
     }
 

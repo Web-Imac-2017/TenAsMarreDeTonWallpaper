@@ -51,10 +51,4 @@ class categorieController extends Controller {
         echo json_encode($data);
     }
 
-    public function change($id, $nom) {
-        $categorie = new Categorie();
-        $data = $categorie->delete($id);
-        echo json_encode($data);
-    }
-
 }

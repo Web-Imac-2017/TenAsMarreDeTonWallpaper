@@ -11,27 +11,32 @@ class Mel extends Model {
 
     public function add($statut, $membre_id, $moderateur_id) {
         $bdd = Database::get();
-
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-
-        $sqlQuery = "INSERT INTO mise_en_ligne VALUES(NULL, NULL, ?, ?, ?)";
+        $data = "";
 
         try {
-            $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute([$statut, $membre_id, $moderateur_id]);
-            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $sqlQuery = 'INSERT INTO mise_en_ligne VALUES(NULL, "", ?, ?, ?)';
 
-            $result['data'] = $bddResult[0];
-            $result['returnCode'] = 1;
-            $result['returnMessage'] = 'Connexion réussie !';
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$statut, $membre_id, $moderateur_id]);
+                $lastInsertId = $bdd->lastInsertId();
+
+                $sqlQuery = "SELECT * FROM mise_en_ligne WHERE id=?";
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$lastInsertId]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult[0];
+
+                return array("returnCode" => 1, "returnMessage" => "Mise en ligne effectuée",  "data" => $data);
+            }
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
         }
-
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
-
-        return $result;
     }
 
 }

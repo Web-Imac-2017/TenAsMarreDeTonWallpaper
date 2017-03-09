@@ -26,13 +26,13 @@ class wallpaperController extends Controller {
         $membre = new Membre();
 
         if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
-            if(isset($_POST['nom']) && !empty($_POST['nom']) && isset($_FILES['image']) && !empty($_FILES['image'])) {
+            if(isset($_POST['nom']) && !empty($_POST['nom']) && isset($_FILES['image']) && !empty($_FILES['image']) && isset($_POST['categories']) && !empty($_POST['categories'])) {
                 if($_SESSION['user']['moderateur'] || $_SESSION['user']['admin'])
-                    $mel->add("Validé", $_SESSION['user']['id'], $_SESSION['user']['id']);
+                    $data = $mel->add("Validé", $_SESSION['user']['id'], $_SESSION['user']['id']);
                 else
-                    $mel->add("En attente", $_SESSION['user']['id'], 0);
-
-                $mel_id = $mel->lastInsertId();
+                    $data = $mel->add("En attente", $_SESSION['user']['id'], 0);
+                
+                $mel_id = $data['data']['id'];
 
                 $extensions = array('.jpg', '.jpeg', '.png', '.tiff', '.bmp', '.gif', '.JPG', '.JPEG', '.PNG', '.TIFF', '.BMP', '.GIF');
                 $ext = strrchr($_FILES['image']['name'], '.');
@@ -66,7 +66,9 @@ class wallpaperController extends Controller {
                             $reponse->add($i, $wallpaper_id, $rep[0], $rep[1]);
                             $i++;
                         }
-                    } 
+                        
+                        $wallpaper->setCategories($wallpaper_id, $_POST['categories']);
+                    }
                     else {
                         $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Problème de transfert de fichier'];
                     }
@@ -75,7 +77,6 @@ class wallpaperController extends Controller {
             }
             else {
                 $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants, veuillez vérifier'];
-
                 echo json_encode($data);
             }
         }
