@@ -1,4 +1,17 @@
 .dlwpp {
+  display: flex;
+  flex-flow: row wrap;
+}
+.dlwpp > * { outline: 1px solid red; }
+.dlwpp-wpp-img { width:100%; }
+.dlwpp-xfermer { flex: 1 100%; order:1; }
+.dlwpp-prev    { flex: 1 auto; order:2; }
+.dlwpp-side    { flex: 16 0px; order:3; }
+.dlwpp-wpp     { flex: 42 0px; order:4; }
+.dlwpp-next    { flex: 1 auto; order:5; }
+
+/*
+.dlwpp {
     width: 100%; height: 100%;
     background-color: rgba($color-grey-dark,$opacity-overlay);
 }
@@ -34,3 +47,18 @@
 .dlwpp input {
     width:50%;
 }
+
+
+.dlwpp {
+    display: flex;
+    flex-flow: row wrap;
+}
+.dlwpp > * {
+    flex: 1 100%;
+}
+.dlwpp-wppimg { flex: 2 0px; }
+.dlwpp-leftarrow  { order: 1; }
+.dlwpp-side       { order: 2; }
+.dlwpp-wppimg     { order: 3; }
+.dlwpp-rightarrow { order: 4; }
+*/

@@ -5,21 +5,14 @@ import Vue from 'vue/dist/vue';
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
-const MrWallmatch = Vue.extend({
+const DlWpp = Vue.extend({
   template,
 
-  props: {
-  },
-
-  data() {
-    return {
-
-    };
-  },
-
-  created() {
-      
+methods: {
+  fermer: function() {
+    alert("TODO fermer ce widget !");
   }
+}
 });
 
-export default MrWallmatch;
+export default DlWpp;
