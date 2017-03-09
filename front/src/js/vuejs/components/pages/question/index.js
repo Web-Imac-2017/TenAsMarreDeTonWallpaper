@@ -20,7 +20,7 @@ const QuestionPage = Vue.extend({
       quote: '« Il faut des monuments aux cités de l’Homme, autrement où serait la différence entre la ville et la fourmilière ? »',
       quoteAuthor: '— Victor Hugo',
       number: 1,
-      answerCategories: []
+      answerCategories: ['Une photo', 'Une fractale', 'Ta mère']
     },
     isRaised: false,
     selectedAnswer: 0, /* 1 - 5, 0 si inconnu */
@@ -28,7 +28,11 @@ const QuestionPage = Vue.extend({
   };},
 
   computed:{
-    isFirstQuestion(){ return this.question.number == 1; }
+    isFirstQuestion(){ return this.question.number == 1; },
+    answersList(){ return this.isFirstQuestion 
+                     ? [this.question.answerCategories[0], this.question.answerCategories[1], this.question.answerCategories[2], 'Rien de tout ça', 'Surprenez-moi !']
+                     : ['Non', 'Pas vraiment', 'Peu importe', 'Éventuellement', 'Oui'];
+                 }
   },
 
   components: {
