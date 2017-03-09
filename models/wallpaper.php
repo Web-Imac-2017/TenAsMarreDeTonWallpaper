@@ -231,23 +231,6 @@ class Wallpaper extends Model {
         }
     }
 
-    function getRandomWallpapers($N) {
-        $i;
-        $bdd = Database::get();
-        $sql = 'SELECT * FROM wallpaper';
-        $req = $bdd->prepare($sql);
-        $req->execute();
-        $selection = $req->fetchAll(PDO::FETCH_ASSOC);
-
-        $random=array_rand($selection,$N);
-        for ($i =0; $i < $N; $i++)
-        {
-            $wallpapers[$i] = $selection[random[$i]];
-        }
-
-        return $wallpapers;
-    }
-
     function getMostDLWallpapers ($N)
     {
         $i;

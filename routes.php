@@ -38,7 +38,6 @@ Router::connect('/wallpaper/random/:nb', 'wallpaper/random/:nb', array('nb' => '
 Router::connect('/wallpaper/getMines/:nb', 'wallpaper/getMines/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/change/:id', 'wallpaper/change/:id', array('id' => '[0-9]+'));
 Router::connect('/wallpaper/delete', 'wallpaper/delete', array());
-Router::connect('wallpaper/getRandom/:limit', 'wallpaper/getRandom/:limit', array('limit' => '[0-9]+'));
 
 // Question
 Router::connect('/question/add', 'question/add', array());
