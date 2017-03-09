@@ -132,7 +132,7 @@ class AlgoController extends Controller {
 			}
 			else
 			{
-				getNextQuestion();
+				getNextQuestion(2);
 			}
 		}
 	}
