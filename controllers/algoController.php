@@ -179,8 +179,6 @@ class AlgoController extends Controller {
 		if($_SESSION['num_question'] == 1)
 		{
 			getFirstQuestion(2);
-			$data = ["returnCode" => 0, 'data' => $_SESSION['question'][0], "continue" => true, "returnMessage" => "On renvoit la question 1"];
-			echo json_encode($data);
 		}
 		// sinon
 		else
