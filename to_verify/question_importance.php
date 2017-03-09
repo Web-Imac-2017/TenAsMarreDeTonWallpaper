@@ -1,4 +1,7 @@
 <?php
+
+require_once MODERL_DIR . 'reponse.php';
+
 function importance($qid){
 	$bdd = Database::get();
 
@@ -57,5 +60,28 @@ function importance($qid){
     }
     $req4->closeCursor();
 
+}
+function setreponseforquestion($qid){
+    $bdd = Database::get();
+
+    $query = 'SELECT COUNT(*) as nb FROM wallpaper';
+    try {
+        $req = $bdd->prepare($query);
+        $req->execute();
+        $res = $req->fetchAll(PDO::FETCH_ASSOC);
+        if($res) {
+            $val=$res['nb'];
+        }
+    }
+    catch (PDOException $e) {
+        //error
+    }
+    $req->closeCursor();
+
+    $reponse=new Reponse();
+    for ($i=0; $i < $val; $i++) { 
+        $reponse->add($qid, $i,0, 50);
+    }
+    
 }
 ?>
