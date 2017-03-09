@@ -3,6 +3,7 @@
 import VueRouter from 'vue-router';
 
 import Home from '../components/pages/home';
+import TestDlWpp from '../components/pages/test-dlwpp';
 
 const router = new VueRouter({
   mode  : 'history',
@@ -12,6 +13,11 @@ const router = new VueRouter({
       name     : 'home',
       path     : '/',
       component: Home,
+    },
+    {
+      name     : 'test-dlwpp',
+      path     : '/test-dlwpp',
+      component: TestDlWpp,
     },
   ],
 });
