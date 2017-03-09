@@ -68,7 +68,15 @@
             @extend :hover;
             height: calc(100vh - #{$header-main-height});
         }
-        transition: height $timing-function $transition-duration;
+        transition: height $timing-function $transition-duration, box-shadow $timing-function $transition-duration, background-color $timing-function $transition-duration;
+    }
+
+    &.first-question{
+        .answer-1{background: $color-grey-dark;}
+        .answer-2{background: $color-grey-medium-dark;}
+        .answer-3{background: $color-grey-medium;}
+        .answer-4{background: $color-grey-medium-light;}
+        .answer-5{background: $color-grey-light;}
     }
 
 }

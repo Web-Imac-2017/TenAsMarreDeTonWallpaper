@@ -7,6 +7,10 @@ template     = eval(`\`${template}\``);
 
 const RainbowAnswer = Vue.extend({
   template,
+
+  methods: {
+    onClick(){ this.$emit('click'); }
+  }
 });
 
 export default RainbowAnswer;

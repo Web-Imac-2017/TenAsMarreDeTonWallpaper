@@ -1,4 +1,4 @@
-<default-layout class="question-page">
+<default-layout class="question-page" :class="{'first-question': isFirstQuestion}">
     <mr-wallmatch-content class="question-content">
         <p slot="mr-wallmatch-says">{{ question.text }}</p>
         <p slot="mr-wallmatch-says-deco" class="question-sign">?</p>
@@ -11,9 +11,9 @@
         <a href="#" class="prev-question-link">Corriger</a>
         <div class="question-counter">Question n°<span class="question-number">{{ question.number }}</span></div>
     </div>
-    <rainbow-answer class="answer-1">Non</rainbow-answer>
-    <rainbow-answer class="answer-2">Pas vraiment</rainbow-answer>
-    <rainbow-answer class="answer-3">Peu importe</rainbow-answer>
-    <rainbow-answer class="answer-4">Éventuellement</rainbow-answer>
-    <rainbow-answer class="answer-5">Oui</rainbow-answer>
+    <rainbow-answer class="answer-1" :class="{up: isRaised}" v-on:click="answerQuestion(0)" :style="answersStyles[0]">Non</rainbow-answer>
+    <rainbow-answer class="answer-2" :class="{up: isRaised}" v-on:click="answerQuestion(1)" :style="answersStyles[1]">Pas vraiment</rainbow-answer>
+    <rainbow-answer class="answer-3" :class="{up: isRaised}" v-on:click="answerQuestion(2)" :style="answersStyles[2]">Peu importe</rainbow-answer>
+    <rainbow-answer class="answer-4" :class="{up: isRaised}" v-on:click="answerQuestion(3)" :style="answersStyles[3]">Éventuellement</rainbow-answer>
+    <rainbow-answer class="answer-5" :class="{up: isRaised}" v-on:click="answerQuestion(4)" :style="answersStyles[4]">Oui</rainbow-answer>
 </default-layout>
