@@ -233,7 +233,7 @@ class Wallpaper extends Model {
 
     function getRandomWallpapers($N) {
         $i;
-        $bdd = getBdd();
+        $bdd = Database::get();
         $sql = 'SELECT * FROM wallpaper';
         $req = $bdd->prepare($sql);
         $req->execute();
@@ -251,7 +251,7 @@ class Wallpaper extends Model {
     function getMostDLWallpapers ($N)
     {
         $i;
-        $bdd = getBdd();
+        $bdd = Database::get();
         $sql = 'SELECT * FROM wallpaper ORDER BY nb_telechargement ASC';
         $req = $bdd->prepare($sql);
         $req->execute();
@@ -269,7 +269,7 @@ class Wallpaper extends Model {
     function getMostAPWallpapers ($N)
     {
         $i;
-        $bdd = getBdd();
+        $bdd = Database::get();
         $sql = 'SELECT * FROM wallpaper ORDER BY nb_apparition ASC';
         $req = $bdd->prepare($sql);
         $req->execute();
