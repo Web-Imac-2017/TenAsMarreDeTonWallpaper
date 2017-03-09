@@ -108,6 +108,31 @@ const QuestionPage = Vue.extend({
           .then(function(){ _this.riseDownAnswers(id); })
           // Error caught
           .catch(function(error){ alert(error.message); console.log(error.message);});
+    },
+    prevQuestion(){
+        let _this = this;
+        if(_this.isRaised) return false;
+        _this.riseUpAnswers(id);
+
+        fetch("/TenAsMarreDeTonWallpaper/api/question/prev/", {
+              method: 'get',
+            }
+          )
+          .then(() => new Promise(resolve => setTimeout(resolve, 1000)))
+          // Handle bad http response
+          .then(handleHttpError)
+          // Handle Json parse
+          .then(function(response){ return response.json(); })
+          // Handle request errors
+          .then(handleRequestError)
+          // Next Question ok
+          .then(function(response){
+            if(!('question' in response)) throw Error('Données de question manquantes.');
+            _this.setQuestion(response.question);
+          })
+          .then(function(){ _this.riseDownAnswers(id); })
+          // Error caught
+          .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
     }
   },
 

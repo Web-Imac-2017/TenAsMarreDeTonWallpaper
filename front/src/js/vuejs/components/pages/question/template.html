@@ -8,7 +8,7 @@
         </div>
     </mr-wallmatch-content>
     <div class="top-infos" v-if="hasQuestion">
-        <a href="#" class="prev-question-link">Corriger</a>
+        <a href="#" class="prev-question-link" v-on:click="prevQuestion">Corriger</a>
         <div class="question-counter">Question n°<span class="question-number">{{ question.number }}</span></div>
     </div>
     <rainbow-answer class="answer-1" :class="{up: isRaised}" v-on:click="answerQuestion(0)" :style="answersStyles[0]">{{ answersList[0] }}</rainbow-answer>
