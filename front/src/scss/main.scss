@@ -121,7 +121,7 @@ a{
 	color: $color-sunset-red;
 	:hover{
 		color: $color-sunset-orange;
-		box-shadow: $color-sunset-red -1px 0 inset;
+		box-shadow: $color-sunset-red 0 -1px inset;
 	}
 }
 
@@ -149,5 +149,5 @@ LOAD COMPONENTS
 
 /* widgets */
 @import '../js/vuejs/components/widgets/mr-wallmatch/style';
-@import '../js/vuejs/components/widgets/rainbow-answers/style';
+@import '../js/vuejs/components/widgets/rainbow-answer/style';
 @import '../js/vuejs/components/widgets/rainbow-bar/style';

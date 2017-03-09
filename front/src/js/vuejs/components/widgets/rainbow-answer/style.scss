@@ -1,0 +1,21 @@
+.rainbow-answer{
+    height: $question-choices-height;
+    color: $color-background;
+    @include typo-brandon-up-black();
+    @include font-size-larger();
+    display: flex; flex-flow: column nowrap; align-items: stretch; justify-content: flex-end;
+    box-shadow: 0 (8rem/24) rgba($color-background, 0.5) inset;
+
+    transition: box-shadow $timing-function $transition-duration;
+
+    &:hover{
+        box-shadow: 0 0 rgba($color-background, 0.5) inset;
+        border: none; color: $color-background;
+    }
+
+    .rainbow-answer-container{
+        flex: 0 $question-choices-height;
+        display: flex; align-items: center; justify-content: center;
+        color: inherit; box-shadow: none;
+    }
+}

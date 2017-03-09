@@ -7,7 +7,7 @@ template     = eval(`\`${template}\``);
 
 import bus from '../../bus/index.js';
 import DefaultLayout from '../../layouts/default-layout/index.js';
-import RainbowAnswers from '../../widgets/rainbow-answers/index.js';
+import RainbowAnswer from '../../widgets/rainbow-answer/index.js';
 import MrWallmatchContent from '../../layouts/mr-wallmatch-content/index.js';
 
 const QuestionPage = Vue.extend({
@@ -30,7 +30,7 @@ const QuestionPage = Vue.extend({
   components: {
       'default-layout': DefaultLayout,
       'mr-wallmatch-content': MrWallmatchContent,
-      'rainbow-answers': RainbowAnswers,
+      'rainbow-answer': RainbowAnswer,
   },
 
   created(){

@@ -57,4 +57,18 @@
         }
     }
 
+    .rainbow-answer{
+        position: fixed; bottom: 0; width: 20%;
+        &.answer-1{background: $color-sunset-purple; left: 0;}
+        &.answer-2{background: $color-sunset-pink; left: 20%;}
+        &.answer-3{background: $color-sunset-red; left: 40%;}
+        &.answer-4{background: $color-sunset-orange; left: 60%;}
+        &.answer-5{background: $color-sunset-yellow; left: 80%;}
+        &.up{
+            @extend :hover;
+            height: calc(100vh - #{$header-main-height});
+        }
+        transition: height $timing-function $transition-duration;
+    }
+
 }
