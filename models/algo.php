@@ -160,6 +160,7 @@ class Algo extends Model {
 		{
 			$sql .= " AND wallpaper_id IN ( ".$requete." )";
 			// Ou alors faire une série de AND ... AND ...  (plus performant)
+			// Après test, le AND ... AND ne fonctionne pas
 		}
 
 		$req = $bdd->prepare($sql);
@@ -246,6 +247,7 @@ class Algo extends Model {
 	// Retourne la question actuelle
 	public function getCurrentQuestion()
 	{
+		//$_SESSION['question'][$_SESSION['num_question']] array_push.. num question.. valeurs.. reponses
 		return array("question"=>$_SESSION['question'][$_SESSION['num_question']], "returnCode" => 1);
 	}
 	

@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+/** api/algo/restart **/
 // Si on a redémarrer la session (il faut actualiser la page pour que ça se mette à jour)
 if(isset($_POST['restart']))
 {
@@ -35,15 +36,14 @@ if(isset($_POST['restart']))
 		require('models/scenario_functions.php');
 		
 		// Declarations des variables
-		
-		// Pour gérer les boucles for
-		$i;
-		// Pour stocker le résultat
-		$resultat = array('nb_wpp_left'=>0, 'wallpapers'=>array());
+
 		// Si on trouve moins de wpp que ce nombre, on arrête
 		if (! isset($_SESSION['minWPP'])) $_SESSION['minWPP'] = 3;
-		// Si on atteint ce nombre de questions, on arrête
+		// Si on atteint mbre de quce noestions, on arrête
 		if (! isset($_SESSION['maxQuestion'])) $_SESSION['maxQuestion'] = 5;
+		
+		// Pour stocker le résultat
+		$_SESSION['$resultat'] = array('nb_wpp_left'=>0, 'wallpapers'=>array());
 		// Le numéro de la question actuelle
 		if (! isset($_SESSION['num_question'])) $_SESSION['num_question'] = 1;
 		// L'importance qui sera de plus en plus petite
@@ -103,7 +103,7 @@ if(isset($_POST['restart']))
 	<?php
 		}
 
-		/** api/answerFirstQuestion **/
+		/** api/algo/answerFirstQuestion **/
 		
 		// Si on vient de répondre à la première question
 		if(isset($_POST['sub1']) && $_SESSION['num_question'] == 1)
@@ -132,7 +132,7 @@ if(isset($_POST['restart']))
 			{
 				// On arrête
 				$_SESSION['continue'] = false;
-				echo "Merci de choisir une réponse";
+				//echo "Merci de choisir une réponse";
 			}
 		}
 		/**					  **/
@@ -143,7 +143,7 @@ if(isset($_POST['restart']))
 		if(isset($_POST['sub'.$_SESSION['num_question']]) && $_SESSION['num_question']>1)
 		{
 			// On envoie la réponse choisie et on test si on peut continuer ou pas
-			$resultat = checkContinue($_POST['reponse']);
+			$_SESSION['$resultat']= checkContinue($_POST['reponse']);
 		}
 		/**					  **/
 
@@ -176,9 +176,9 @@ if(isset($_POST['restart']))
 		// Sinon, si on ne peut pas continuer, on affiche les résultats
 		else if($_SESSION['continue'] == false)
 		{
-			$wallpapers = $resultat['wallpapers'];
+			$wallpapers = $_SESSION['$resultat']['wallpapers'];
 			// Pour chaque wallpaper on affiche les infos
-			for ($i = 0; $i < $resultat['nb_wpp_left']; $i++)
+			for ($i = 0; $i < $_SESSION['$resultat']['nb_wpp_left']; $i++)
 			{
 				echo "<br/> <a href='".$wallpapers[$i]['url']."' download='".$wallpapers[$i]['nom']."'> <img src='".$wallpapers[$i]['url_thumb']."' width='300' height ='180'> </a>";	
 			}
