@@ -127,7 +127,7 @@ class AlgoController extends Controller {
 		{
 			if (isset($_SESSION['question'][$_SESSION['num_question']-1]))
 			{
-				$data = ["returnCode" => 1, 'data' => $_SESSION['question'][$_SESSION['num_question']-1], "returnMessage" => "Question ".$_SESSION['num_question']." envoyee"];
+				$data = ["returnCode" => 1, 'data' => $_SESSION['question'][$_SESSION['num_question']-1], "continue" => true, "returnMessage" => "Question ".$_SESSION['num_question']." envoyee"];
 				echo json_encode($data);
 			}
 			else
@@ -171,11 +171,6 @@ class AlgoController extends Controller {
 			$_SESSION['num_question']--;
 		}
 		$_SESSION['continue'] = true;
-		if ($_SESSION['num_question'] == 1)
-		{
-			$data = ["returnCode" => 0, 'data' => $_SESSION['question'][0], "returnMessage" => "On renvoit la question 1"];
-			echo json_encode($data);
-		}
 		if ($_SESSION['num_question'] > 1)
 		{
 			$algo->updateImportance(1);
@@ -184,11 +179,13 @@ class AlgoController extends Controller {
 		if($_SESSION['num_question'] == 1)
 		{
 			getFirstQuestion(2);
+			$data = ["returnCode" => 0, 'data' => $_SESSION['question'][0], "continue" => true, "returnMessage" => "On renvoit la question 1"];
+			echo json_encode($data);
 		}
 		// sinon
 		else
 		{
-			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][$_SESSION['num_question']-1], "returnMessage" => "On revient à la question ".$_SESSION['num_question']];
+			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][$_SESSION['num_question']-1], "continue" => true, "returnMessage" => "On revient à la question ".$_SESSION['num_question']];
 			echo json_encode($data);
 		}
 	}
