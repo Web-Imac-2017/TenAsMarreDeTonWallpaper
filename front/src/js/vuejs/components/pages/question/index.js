@@ -15,24 +15,28 @@ const QuestionPage = Vue.extend({
   template,
 
   data(){return{
-    question:{
+    /*question:{
       text: 'Votre wallpaper représenterait-il un paysage urbain',
       quote: '« Il faut des monuments aux cités de l’Homme, autrement où serait la différence entre la ville et la fourmilière ? »',
       quoteAuthor: '— Victor Hugo',
       number: 1,
       answerCategories: ['Une photo', 'Une fractale', 'Ta mère']
-    },
-    isRaised: false,
+    },*/
+    //question: null,
+    isRaised: true,
     selectedAnswer: 0, /* 1 - 5, 0 si inconnu */
     answersStyles: [],
   };},
 
   computed:{
     isFirstQuestion(){ return this.question.number == 1; },
-    answersList(){ return this.isFirstQuestion 
-                     ? [this.question.answerCategories[0], this.question.answerCategories[1], this.question.answerCategories[2], 'Rien de tout ça', 'Surprenez-moi !']
-                     : ['Non', 'Pas vraiment', 'Peu importe', 'Éventuellement', 'Oui'];
-                 }
+    answersList(){ return this.hasQuestion
+                      ? this.isFirstQuestion 
+                          ? [this.question.answerCategories[0], this.question.answerCategories[1], this.question.answerCategories[2], 'Rien de tout ça', 'Surprenez-moi !']
+                          : ['Non', 'Pas vraiment', 'Peu importe', 'Éventuellement', 'Oui']
+                      : ['', '', '', '', ''];
+                 },
+    hasQuestion(){ return this.question != null; }
   },
 
   components: {
@@ -47,7 +51,7 @@ const QuestionPage = Vue.extend({
       if(_this.isRaised) return false;
       _this.riseUpAnswers(id);
 
-      fetch("/TenAsMarreDeTonWallpaper/question/next/"+id, {
+      fetch("/TenAsMarreDeTonWallpaper/api/question/next/"+id, {
             method: 'get',
           }
         )
@@ -63,6 +67,7 @@ const QuestionPage = Vue.extend({
           if(!('question' in response)) throw Error('Données de question manquantes.');
           _this.setQuestion(response.question);
         })
+        .then(function(){ _this.riseDownAnswers(id); })
         // Error caught
         .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
 
@@ -80,6 +85,29 @@ const QuestionPage = Vue.extend({
         }*/ // these are already computed
 
         this.isRaised = false;
+    },
+    getQuestion(){
+        let _this = this;
+
+        fetch("/TenAsMarreDeTonWallpaper/api/question/current/", {
+              method: 'get',
+            }
+          )
+          .then(() => new Promise(resolve => setTimeout(resolve, 1000)))
+          // Handle bad http response
+          .then(handleHttpError)
+          // Handle Json parse
+          .then(function(response){ return response.json(); })
+          // Handle request errors
+          .then(handleRequestError)
+          // Current Question ok
+          .then(function(response){
+            if(!('question' in response)) throw Error('Données de question manquantes.');
+            _this.setQuestion(response.question);
+          })
+          .then(function(){ _this.riseDownAnswers(id); })
+          // Error caught
+          .catch(function(error){ alert(error.message); console.log(error.message);});
     }
   },
 
@@ -87,6 +115,10 @@ const QuestionPage = Vue.extend({
     // Add 'Participate' link in header
     bus.headerLinks['question-participate'] = { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' };
     bus.headerLinks['question-abandon'] = { text: 'Abandonner', url:'/TenAsMarreDeTonWallpaper/' };
+  },
+
+  mounted(){
+    this.getQuestion();
   },
 
   beforeDestroy(){

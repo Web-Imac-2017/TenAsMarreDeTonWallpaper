@@ -1,5 +1,5 @@
-<default-layout class="question-page" :class="{'first-question': isFirstQuestion}">
-    <mr-wallmatch-content class="question-content">
+<default-layout class="question-page" :class="{'first-question': !hasQuestion || isFirstQuestion}">
+    <mr-wallmatch-content class="question-content" v-if="hasQuestion">
         <p slot="mr-wallmatch-says">{{ question.text }}</p>
         <p slot="mr-wallmatch-says-deco" class="question-sign">?</p>
         <div class="question-quote-wrapper">
@@ -7,7 +7,7 @@
             <div class="question-quote-author">{{ question.quoteAuthor }}</div>
         </div>
     </mr-wallmatch-content>
-    <div class="top-infos">
+    <div class="top-infos" v-if="hasQuestion">
         <a href="#" class="prev-question-link">Corriger</a>
         <div class="question-counter">Question n°<span class="question-number">{{ question.number }}</span></div>
     </div>
