@@ -36,6 +36,7 @@ Router::connect('/wallpaper/add', 'wallpaper/add', array());
 Router::connect('/wallpaper/get/:id', 'wallpaper/get/:id', array('id' => '[0-9]+'));
 Router::connect('/wallpaper/random/:nb', 'wallpaper/random/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/getMines/:nb', 'wallpaper/getMines/:nb', array('nb' => '[0-9]+'));
+Router::connect('/wallpaper/getByCategorie/:id', 'wallpaper/getByCategorie/:id', array('id' => '[0-9]+'));
 Router::connect('/wallpaper/getMostDL/:nb', 'wallpaper/getMostDL/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/getMostAP/:nb', 'wallpaper/getMostAP/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/delete', 'wallpaper/delete', array());

@@ -164,14 +164,31 @@ class Wallpaper extends Model {
         $req->execute(array($wallpaperID));
     }	
 
-    // Renvoie les catégories d'un wallpaper
-    public function getWallpaperCategories($id) {
+    // Renvoie les wallpapers appartenant à une catégorie
+    public function getByCategorie($id) {
         $bdd = Database::get();
-        $sql = 'SELECT * FROM WallpaperCategories INNER JOIN categorie ON categorie_id = Categorie.id WHERE wallpaper_id=?';
-        $data['categories'] = $bdd->prepare($sql);
-        $data['categories']->execute(array($id));
+        $data = "";
 
-        return json_encode($data);
+        try {
+            $sqlQuery = 'SELECT * FROM wallpaper INNER JOIN categorie_wallpaper ON wallpaper.id=wallpaper_id WHERE categorie_id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
     }
 
     // Incrémente la colonne nb_apparition

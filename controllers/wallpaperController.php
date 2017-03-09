@@ -136,4 +136,10 @@ class wallpaperController extends Controller {
         $data = $wallpaper->random($nb);
         echo json_encode($data);
     }
+    
+    public function getByCategorie($id) {
+        $wallpaper = new Wallpaper();
+        $data = $wallpaper->getByCategorie($id);
+        echo json_encode($data);
+    }
 }
