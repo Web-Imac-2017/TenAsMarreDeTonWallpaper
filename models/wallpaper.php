@@ -109,19 +109,27 @@ class Wallpaper extends Model {
 
     }
 
-    // Supprime un wallpaper
+    // Supprime un wallpaper, sa mise en ligne, ses réponses et ses catégories
     public function delete($id) {
         $bdd = Database::get();
         $data = "";
 
+        $sqlQuery = 'SELECT mise_en_ligne_id FROM wallpaper WHERE id=?';
+        $stmt = $bdd->prepare($sqlQuery);
+        $stmt->execute([$id]);
+        $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $mel_id = $bddResult[0]['mise_en_ligne_id'];
+
         try {
-            $sqlQuery = 'DELETE FROM wallpaper WHERE id=?';
+            $sqlQuery = 'DELETE FROM mise_en_ligne WHERE id=?';
 
             try {
                 $stmt = $bdd->prepare($sqlQuery);
-                $bddResult = $stmt->execute([$id]);
+                $stmt->execute([$mel_id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                $data = $bddResult;
+                $data = $bddResult[0];
 
                 return array("returnCode" => 1, "returnMessage" => "Wallpaper supprimé",  "data" => $data);
             }
