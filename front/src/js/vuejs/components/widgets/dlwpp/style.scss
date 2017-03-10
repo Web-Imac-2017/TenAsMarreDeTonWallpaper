@@ -1,42 +1,100 @@
+// Layout principal en Flex
 .dlwpp {
+  width: 100%; height: 100%;
   display: flex;
   flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: rgba($color-grey-dark,$opacity-overlay);
 }
-.dlwpp > * { outline: 1px solid red; }
-.dlwpp-wpp-img { width:100%; }
-.dlwpp-xfermer { flex: 1 100%; order:1; }
-.dlwpp-prev    { flex: 1 auto; order:2; }
-.dlwpp-side    { flex: 16 0px; order:3; }
-.dlwpp-wpp     { flex: 42 0px; order:4; }
-.dlwpp-next    { flex: 1 auto; order:5; }
-
-/*
-.dlwpp {
-    width: 100%; height: 100%;
-    background-color: rgba($color-grey-dark,$opacity-overlay);
-}
+//.dlwpp > * { outline: 1px solid red; }
 .dlwpp * {
     color:$color-white;
 }
-.dlwpp-side, .dlwpp-wppimg {
-    display: inline-block;
-    height:100%;
+.dlwpp-wpp-img { max-width:100%; max-height: 100%;}
+.dlwpp-xfermer { flex: 1 100%; order:1; }
+.dlwpp-prev    { flex: 0 auto; order:2; }
+.dlwpp-side    { flex: 10 0px; order:3; }
+.dlwpp-wpp     { flex: 52 0px; order:4; }
+.dlwpp-next    { flex: 0 auto; order:5; }
+
+.dlwpp-prev, .dlwpp-next {
+    display:flex;
+    align-items: center;
+    align-self: stretch;
+}
+
+// Décos
+.dlwpp-dlicon {
+    width:1em;
+    float:left;
+    margin:0 (4em / 24);
+    margin-top:(4em / 24);
+    box-shadow: none !important;
+}
+.dlwpp-sep {
+    display:block;
+    border-top:1px solid $color-white;
+    width:100%;
+    margin: 1em 0;
+}
+
+.dlwpp-prev a:hover *, .dlwpp-next a:hover * {
+    box-shadow: none;
+}
+.dlwpp-arrow-l, .dlwpp-arrow-r {
+    width:(50rem / 24); height:(50rem / 24);
+    border-top: 2px solid $color-white;
+    border-left:2px solid $color-white;
+}
+$dlwpp-arrow-pushmargin : (16rem / 24);
+$dlwpp-arrow-pullmargin : (-10rem / 24);
+.dlwpp-arrow-l {
+    transform: rotate(-45deg);
+    margin-left: $dlwpp-arrow-pushmargin;
+    margin-right: $dlwpp-arrow-pullmargin;
+}
+.dlwpp-arrow-r {
+    transform: rotate(135deg);
+    margin-right: $dlwpp-arrow-pushmargin;
+    margin-left: $dlwpp-arrow-pullmargin;
+}
+
+// Colors
+// Déso pour les !important. J'ai pas trouvé d'alternatives pour le moment.
+.dlwpp-c1 { color:$color-dark-brown !important; }
+.dlwpp-c1 { background: $color-sunset-yellow !important; }
+.dlwpp-c2 { background: $color-sunset-orange !important; }
+.dlwpp-c3 { background: $color-sunset-red    !important; }
+.dlwpp-c4 { background: $color-sunset-pink   !important; }
+.dlwpp-c5 { background: $color-sunset-purple !important; }
+
+// Misc
+.dlwpp-side, .dlwpp-wpp {
+    //max-height: calc(100vh - #{$header-main-height});
+}
+.dlwpp-wpp {
+    text-align:center;
+}
+.dlwpp-side, .dlwpp-wpp {
+    padding: 0 1em;
 }
 .dlwpp-side {
     @include font-size-small();
-    width:19%;
-    padding:10px;
+    line-height: 1.8em; // XXX HACK
+    overflow: hidden;
 }
-.dlwpp-wppimg {
-    width:88%;
-    height:100px;
-    margin:10px;
+.dlwpp-side h2 {
+    margin: 0;
 }
 .dlwpp-xfermer {
-    @include typo-brandon-up-medium();
+    @include typo-brandon-up-light();
+    @include font-size-small();
+    margin:1em;
 }
 .dlwpp .abutton, .dlwpp input {
     @include typo-brandon-sc-light();
+    @include font-size-small();
     font-variant: normal;
     padding:0;
     width:100%;
@@ -44,21 +102,18 @@
 .dlwpp .abutton {
     text-align:center;
 }
-.dlwpp input {
-    width:50%;
+.dlwpp-ipt-dlicon-wrapper {
+    display: inline-block;
+    width:20%;
 }
-
-
-.dlwpp {
-    display: flex;
-    flex-flow: row wrap;
+.dlwpp input[type='number'] {
+    width:40%;
+    -moz-appearance:textfield;
 }
-.dlwpp > * {
-    flex: 1 100%;
+// http://stackoverflow.com/a/4298216
+.dlwpp input::-webkit-outer-spin-button,
+.dlwpp input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
-.dlwpp-wppimg { flex: 2 0px; }
-.dlwpp-leftarrow  { order: 1; }
-.dlwpp-side       { order: 2; }
-.dlwpp-wppimg     { order: 3; }
-.dlwpp-rightarrow { order: 4; }
-*/

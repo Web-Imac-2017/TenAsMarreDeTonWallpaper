@@ -11,8 +11,13 @@ const DlWpp = Vue.extend({
 methods: {
   fermer: function() {
     alert("TODO fermer ce widget !");
-  }
-}
+  },
+  prev: function() {
+    alert("TODO Wallpaper précédent !");
+  },
+  next: function() {
+    alert("TODO Wallpaper suivant !");
+  }}
 });
 
 export default DlWpp;
