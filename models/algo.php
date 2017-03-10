@@ -308,7 +308,7 @@ class Algo extends Model {
 				
 			// On met à jour la requete
 			$_SESSION['requete'][$_SESSION['num_question']-1] = $wppLeft['requete'];
-			//print_r($_SESSION['question']);
+
 			// On check si on peut trouver des wpp avec la prochaine question
 			$checkQuestion = $this->checkQuestion($_SESSION['question'][$_SESSION['num_question']]['question']['id'], $_SESSION['requete'][$_SESSION['num_question']-1]);
 
