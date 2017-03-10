@@ -9,6 +9,9 @@ template     = eval(`\`${template}\``);
 const DlWpp = Vue.extend({
     template,
 
+    // TODO(yoan): Détecter le rapport largeur:hauteur.
+    // TODO(yoan): Aligner les logos de téléchargement sur la gauche.
+    // TODO(yoan): Qu'ets-ce qui se passe s'il veut télécharger avec une résolution trop grande ? Et pas assez ?
     data: () => ({
         // Pas 0, sinon le placeholder ne s'affiche pas.
         largeur_custom:"",

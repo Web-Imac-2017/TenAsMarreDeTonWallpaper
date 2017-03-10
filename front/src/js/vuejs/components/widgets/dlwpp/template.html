@@ -35,12 +35,10 @@
     <a href="javascript:void(0);" v-on:click="telecharger(1024,768)" class="abutton dlwpp-c4"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">1024 x 768 px</a><br>
     <a href="javascript:void(0);" v-on:click="telecharger(800,600)" class="abutton dlwpp-c4"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">800 x 600 px</a><br>
     Libre à vous :<br>
-    <input type="number" class="dlwpp-c5" placeholder="Largeur" v-model="largeur_custom"></input>
-    <input type="number" class="dlwpp-c5" placeholder="Hauteur" v-model="hauteur_custom"></input>
-    <a class="dlwpp-ipt-dlicon-a" href="javascript:void(0);" v-on:click="telecharger_custom">
-      <div class="dlwpp-c5 dlwpp-ipt-dlicon-wrapper">
-        <img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">
-      </div>
-    </a>
+    <form v-on:submit="telecharger_custom" action="javascript:void(0);">
+      <input type="number" class="dlwpp-c5" placeholder="Largeur" v-model="largeur_custom"></input>
+      <input type="number" class="dlwpp-c5" placeholder="Hauteur" v-model="hauteur_custom"></input>
+      <input type="image"  class="dlwpp-c5" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg"></input>
+    </form>
   </div>
 </div>
