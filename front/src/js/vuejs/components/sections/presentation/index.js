@@ -10,21 +10,18 @@ import MrWallmatchContent from '../../layouts/mr-wallmatch-content/index.js';
 const Presentation = Vue.extend({
   template,
 
-  props: {
-  },
-
-  data() {
-    return {
-
-    };
-  },
+  data(){ return {
+    randomInt: 0
+  };},
 
   components: {
     'mr-wallmatch-content': MrWallmatchContent
   },
 
-  created() {
-
+  methods:{
+    rollWallmatch(){
+      this.randomInt = Math.random();
+    }
   }
 });
 

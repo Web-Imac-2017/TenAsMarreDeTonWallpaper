@@ -12,7 +12,8 @@ const MrWallmatchContent = Vue.extend({
   template,
 
   props: {
-    'showBackground': {type: Boolean, default: function(){ return true; }}
+    'showBackground': {type: Boolean, default: function(){ return true; }},
+    'roll' : {type: Number}
   },
 
   data() {

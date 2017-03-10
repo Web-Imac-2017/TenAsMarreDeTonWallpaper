@@ -1,5 +1,5 @@
 <default-layout class="question-page" :class="{'first-question': !hasQuestion || isFirstQuestion}" :header-links="headerLinks">
-    <mr-wallmatch-content class="question-content" v-if="hasQuestion">
+    <mr-wallmatch-content class="question-content" v-if="hasQuestion" :roll="randomInt">
         <p slot="mr-wallmatch-says">{{ question.text }}</p>
         <p slot="mr-wallmatch-says-deco" class="question-sign">?</p>
         <div class="question-quote-wrapper">

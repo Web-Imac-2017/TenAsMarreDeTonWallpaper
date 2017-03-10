@@ -15,7 +15,7 @@ const Home = Vue.extend({
   data(){return{
     headerLinks: {
       'home-participate': { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' },
-    }
+    },
   };},
 
   components: {

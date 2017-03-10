@@ -29,7 +29,8 @@ const QuestionPage = Vue.extend({
     headerLinks: {
       'question-participate': { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' },
       'question-abandon': { text: 'Abandonner', url:'/TenAsMarreDeTonWallpaper/' }
-    }
+    },
+    randomInt: 0
   };},
 
   computed:{
@@ -142,6 +143,7 @@ const QuestionPage = Vue.extend({
       this.question.quote = null;
       this.question.quoteAuthor = null;
       this.question.answerCategories = reponses;
+      this.randomInt = Math.random();
     }
   },
 
