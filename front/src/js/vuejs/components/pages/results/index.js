@@ -14,8 +14,7 @@ const Results = Vue.extend({
 
   data(){return{
     headerLinks: {
-      'results-participate': { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' },
-      'results-retry': { text: 'Recommencer', url:'/TenAsMarreDeTonWallpaper/find' },
+      'results-retry': { text: 'Recommencer', url:{name: 'findYourWallpaper'} },
     },
     randomInt: 0
   };},

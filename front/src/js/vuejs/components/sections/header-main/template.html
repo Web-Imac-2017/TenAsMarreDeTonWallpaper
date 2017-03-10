@@ -5,7 +5,7 @@
         </ul>
         <ul class="menu-right">
             <li v-for="(curlink, keylink) in links" :key="keylink">
-                <a v-bind:href="curlink.url">{{curlink.text}}</a>
+                <router-link v-bind:to="curlink.url">{{curlink.text}}</router-link>
             </li>
             <li>
                 <a href="#" v-on:click.prevent="onToggleSidebarButton">

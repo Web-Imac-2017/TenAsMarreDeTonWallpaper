@@ -27,8 +27,7 @@ const QuestionPage = Vue.extend({
     selectedAnswer: 0, /* 1 - 5, 0 si inconnu */
     answersStyles: [],
     headerLinks: {
-      'question-participate': { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' },
-      'question-abandon': { text: 'Abandonner', url:'/TenAsMarreDeTonWallpaper/' }
+      'question-abandon': { text: 'Abandonner', url:{name: 'home'} }
     },
     randomInt: 0
   };},
