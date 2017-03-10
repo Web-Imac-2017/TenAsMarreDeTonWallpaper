@@ -93,11 +93,10 @@ const QuestionPage = Vue.extend({
     getQuestion(){
         let _this = this;
 
-        fetch("/TenAsMarreDeTonWallpaper/api/question/current/", {
+        fetch("/TenAsMarreDeTonWallpaper/api/algo/currentQuestion/", {
               method: 'get',
             }
           )
-          .then(() => new Promise(resolve => setTimeout(resolve, 1000)))
           // Handle bad http response
           .then(handleHttpError)
           // Handle Json parse
@@ -106,8 +105,8 @@ const QuestionPage = Vue.extend({
           .then(handleRequestError)
           // Current Question ok
           .then(function(response){
-            if(!('question' in response)) throw Error('Données de question manquantes.');
-            _this.setQuestion(response.question);
+            if(!('question' in response) || !('reponses') in responses || !('numero' in response)) throw Error('Données de question manquantes.');
+            _this.setQuestion(response.numero, response.question, response.reponses);
           })
           .then(function(){ _this.riseDownAnswers(id); })
           // Error caught
@@ -122,7 +121,6 @@ const QuestionPage = Vue.extend({
               method: 'get',
             }
           )
-          .then(() => new Promise(resolve => setTimeout(resolve, 1000)))
           // Handle bad http response
           .then(handleHttpError)
           // Handle Json parse
@@ -137,6 +135,13 @@ const QuestionPage = Vue.extend({
           .then(function(){ _this.riseDownAnswers(id); })
           // Error caught
           .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
+    },
+    setQuestion(numero, question, reponses){
+      this.question.number = numero;
+      this.question.text = question.q_longue;
+      this.question.quote = null;
+      this.question.quoteAuthor = null;
+      this.question.answerCategories = reponses;
     }
   },
 
