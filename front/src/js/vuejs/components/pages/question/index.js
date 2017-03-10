@@ -26,10 +26,14 @@ const QuestionPage = Vue.extend({
     isRaised: true,
     selectedAnswer: 0, /* 1 - 5, 0 si inconnu */
     answersStyles: [],
+    headerLinks: {
+      'question-participate': { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' },
+      'question-abandon': { text: 'Abandonner', url:'/TenAsMarreDeTonWallpaper/' }
+    }
   };},
 
   computed:{
-    isFirstQuestion(){ return this.question.number == 1; },
+    isFirstQuestion(){ return this.question != null && this.question.number == 1; },
     answersList(){ return this.hasQuestion
                       ? this.isFirstQuestion 
                           ? [this.question.answerCategories[0], this.question.answerCategories[1], this.question.answerCategories[2], 'Rien de tout ça', 'Surprenez-moi !']
@@ -136,21 +140,10 @@ const QuestionPage = Vue.extend({
     }
   },
 
-  created(){
-    // Add 'Participate' link in header
-    bus.headerLinks['question-participate'] = { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' };
-    bus.headerLinks['question-abandon'] = { text: 'Abandonner', url:'/TenAsMarreDeTonWallpaper/' };
-  },
-
   mounted(){
     this.getQuestion();
   },
-
-  beforeDestroy(){
-    // Remove 'Participate' link in header
-    delete bus.headerLinks['question-participate'];
-    delete bus.headerLinks['question-abandon'];
-  }
+  
 });
 
 export default QuestionPage;

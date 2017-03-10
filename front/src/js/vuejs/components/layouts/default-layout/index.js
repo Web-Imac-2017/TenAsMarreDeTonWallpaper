@@ -17,6 +17,10 @@ const DefaultLayout = Vue.extend({
     sidebarState: 0 /* 0 = Hidden, 1 = Shown, 2 = Closed (hidden after shown) */
   };},
 
+  props:{
+    'headerLinks': {type: Object, default: function(){ return {}; }}
+  },
+
   computed:{
     bus: function(){ return bus; },
     sidebarHidden: function() { return this.sidebarState == 0; },
@@ -35,7 +39,7 @@ const DefaultLayout = Vue.extend({
       this.sidebarOpen ? this.closeSidebar() : this.openSidebar();
     },
     closeSidebar: function(){
-      this.sidebarState = 2;
+      if(!this.sidebarHidden) this.sidebarState = 2;
     },
     openSidebar: function(){
       this.sidebarState = 1;
