@@ -79,7 +79,7 @@ class Algo extends Model {
 			"Peu importe",
 			"Probablement oui",
 			"Oui"
-		)
+		);
 		
 		// On effectue la requete SQL qui récupére la question
 		$bdd = Database::get();
