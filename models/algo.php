@@ -17,7 +17,7 @@ class Algo extends Model {
 	public function firstQuestion() {
 		$categorie = new Categorie();
 		// On récupére toutes les catégories
-		$categories = $categorie->getCategories();
+		$categories = $categorie->getAll();
 		// On en tire 3 au hasard
 		$random_categorie=array_rand($categories,3);
 		// Intitulé de la question
