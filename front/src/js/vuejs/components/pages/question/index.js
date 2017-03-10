@@ -69,6 +69,9 @@ const QuestionPage = Vue.extend({
         .then(handleRequestError)
         // Next Question ok
         .then(function(response){
+          if('continue' in response && response.continue == false){
+            router.push({name: 'results'}); return;
+          }
           if(!('question' in response)) throw Error('Données de question manquantes.');
           _this.setQuestion(response.question);
         })
