@@ -4,6 +4,32 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
 require_once KERNEL . 'kernel.php';
 require_once MODEL_DIR . 'algo.php';
 
+		// Si on trouve moins de wpp que ce nombre, on arrête
+		if (! isset($_SESSION['minWPP'])) $_SESSION['minWPP'] = 3;
+		// Si on atteint mbre de quce noestions, on arrête
+		if (! isset($_SESSION['maxQuestion'])) $_SESSION['maxQuestion'] = 5;
+
+		// Pour stocker le résultat
+		if (! isset($_SESSION['resultat'])) $_SESSION['resultat'] = array('nb_wpp_left'=>0, 'wallpapers'=>array());
+		// Le numéro de la question actuelle
+		if (! isset($_SESSION['num_question'])) $_SESSION['num_question'] = 1;
+		// L'importance qui sera de plus en plus petite
+		if (! isset($_SESSION['importance'])) $_SESSION['importance'] = 50;
+		// Un string qui contient les différents SELECT après chaque question
+		if (! isset($_SESSION['requete'])) $_SESSION['requete'] = array("");
+		// Si ce booléan est 'false', on s'arrête
+		if (! isset($_SESSION['continue'])) $_SESSION['continue'] = false;
+		// Stock les questions qui sont passées
+		if (! isset($_SESSION['question'])) $_SESSION['question'] = array();
+		// Empêche les fonctions d'être appelée à nouveau (pour éviter d'avoir une nouvelle question après un UNDO)
+		if (! isset($_SESSION['lock'])) 
+		{
+			for($i = 0; $i < $_SESSION['maxQuestion']; $i++)
+			{
+				$_SESSION['lock'][$i] = false;
+			}
+		}
+
 class AlgoController extends Controller {
 
 	public function __construct(){
@@ -23,14 +49,14 @@ class AlgoController extends Controller {
 	public function getFirstQuestion($restart = NULL)
 	{
 		$algo = new Algo();
-		
+
 		if ($_SESSION['lock'][0]==false)
 		{
 			$_SESSION['lock'][0] = true;
 			$_SESSION['firstQuestion'] = $algo->firstQuestion();
 			$_SESSION['question'][0] = $_SESSION['firstQuestion'];
 		}
-		
+
 		if ($restart == 1)
 		{
 			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][0], "continue" => true, "returnMessage" => "Partie recommencée"];
@@ -43,6 +69,7 @@ class AlgoController extends Controller {
 		{
 			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][0], "continue" => true, "returnMessage" => "On affiche la question 1"];
 		}
+
 		echo json_encode($data);
 	}
 	
@@ -56,8 +83,9 @@ class AlgoController extends Controller {
 		// Si on vient de répondre à la première question
 		if($_SESSION['num_question'] == 1)
 		{
+			print_r($reponse);
 			// Si on a choisi une catégorie
-			if(isset($reponse) && !empty($reponse)) // val : 0, 1 2 3 ou 4
+			if(isset($reponse)) // val : 0, 1 2 3 ou 4
 			{	
 				// On stocke les catégories choisies
 				$_SESSION['categories'] = $_SESSION['question'][0]['values'][$reponse];
@@ -87,7 +115,7 @@ class AlgoController extends Controller {
 			echo json_encode($data);
 		}
 		else if($_SESSION['num_question'] > 1) {
-			if (isset($reponse) && !empty($reponse)) {
+			if (isset($reponse)) {
 				// On envoie la réponse choisie et on test si on peut continuer ou pas
 				$_SESSION['resultat'] = $algo->checkContinue($reponse);
 				// Si on peut continuer
@@ -115,12 +143,12 @@ class AlgoController extends Controller {
 		// Si on est arrivé à la fin, on recommence une partie
 		if ($_SESSION['continue'] == false && $_SESSION['num_question'] > 1)
 		{
-			restart();
+			$this->restart();
 		}
 		// Si c'est la 1ère question, on appelle getFirstQuestion qui va renvoyer la 1ère question (et la générer si pas fait)
 		if($_SESSION['num_question'] == 1)
 		{
-			getFirstQuestion();
+			$this->getFirstQuestion();
 		}
 		// Sinon on retourne la question actuelle
 		else
@@ -132,7 +160,7 @@ class AlgoController extends Controller {
 			}
 			else
 			{
-				getNextQuestion(2);
+				$this->getNextQuestion(2);
 			}
 		}
 	}
@@ -158,7 +186,7 @@ class AlgoController extends Controller {
 			$_SESSION['lock'][$i] = false;
 		}
 		
-		getFirstQuestion(1);
+		$this->getFirstQuestion(1);
 	}
 	
 	public function undo()
@@ -178,7 +206,7 @@ class AlgoController extends Controller {
 		// si question on était à la question 2 au moment de l'appel
 		if($_SESSION['num_question'] == 1)
 		{
-			getFirstQuestion(2);
+			$this->getFirstQuestion(2);
 		}
 		// sinon
 		else
