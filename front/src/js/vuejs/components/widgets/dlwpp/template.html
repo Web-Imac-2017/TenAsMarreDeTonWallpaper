@@ -1,8 +1,10 @@
 <div class="dlwpp">
   <div class="dlwpp-xfermer"><a href="javascript:void(0);" v-on:click="fermer">X fermer</a></div>
   <div class="dlwpp-wpp">
-    <img class="dlwpp-wpp-img" alt="foo"
-     src="/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png">
+    <a target="_blank" href="/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png">
+      <img class="dlwpp-wpp-img" alt="foo"
+           src="/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png">
+    </a>
   </div>
   <div class="dlwpp-prev">
       <a href="javascript:void(0);" v-on:click="prev">
@@ -20,22 +22,22 @@
     <span class="dlwpp-sep"></span>
     Peinture numérique<br>
     2560 x 1540 px<br>
-    <a class="abutton dlwpp-c1"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-black.svg">Taille originale</a><br>
+    <a href="javascript:void(0);" v-on:click="telecharger(2560,1540)" class="abutton dlwpp-c1"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-black.svg">Taille originale</a><br>
     <span class="dlwpp-sep"></span>
     Votre définition :<br>
-    <a class="abutton dlwpp-c2"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">Foo x Bar px</a><br>
+    <a href="javascript:void(0);" v-on:click="telecharger_native" class="abutton dlwpp-c2"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">{{ largeur_ecran }} x {{ hauteur_ecran }} px</a><br>
     Votre format (16:9) :<br>
-    <a class="abutton dlwpp-c3"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">3840 x 2160 px</a><br>
-    <a class="abutton dlwpp-c3"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">1600 x 900 px</a><br>
-    <a class="abutton dlwpp-c3"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">1366 x 768 px</a><br>
-    <a class="abutton dlwpp-c3"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">1280 x 720 px</a><br>
+    <a href="javascript:void(0);" v-on:click="telecharger(3840,2160)" class="abutton dlwpp-c3"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">3840 x 2160 px</a><br>
+    <a href="javascript:void(0);" v-on:click="telecharger(1600,900)" class="abutton dlwpp-c3"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">1600 x 900 px</a><br>
+    <a href="javascript:void(0);" v-on:click="telecharger(1366,768)" class="abutton dlwpp-c3"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">1366 x 768 px</a><br>
+    <a href="javascript:void(0);" v-on:click="telecharger(1280,720)" class="abutton dlwpp-c3"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">1280 x 720 px</a><br>
     Encore d'autres :<br>
-    <a class="abutton dlwpp-c4"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">1024 x 768 px</a><br>
-    <a class="abutton dlwpp-c4"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">800 x 600 px</a><br>
+    <a href="javascript:void(0);" v-on:click="telecharger(1024,768)" class="abutton dlwpp-c4"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">1024 x 768 px</a><br>
+    <a href="javascript:void(0);" v-on:click="telecharger(800,600)" class="abutton dlwpp-c4"><img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">800 x 600 px</a><br>
     Libre à vous :<br>
-    <input type="number" class="dlwpp-c5" placeholder="Largeur" v-model="largeur"></input>
-    <input type="number" class="dlwpp-c5" placeholder="Hauteur" v-model="hauteur"></input>
-    <a href="javascript:void(0);" v-on:click="telecharger">
+    <input type="number" class="dlwpp-c5" placeholder="Largeur" v-model="largeur_custom"></input>
+    <input type="number" class="dlwpp-c5" placeholder="Hauteur" v-model="hauteur_custom"></input>
+    <a class="dlwpp-ipt-dlicon-a" href="javascript:void(0);" v-on:click="telecharger_custom">
       <div class="dlwpp-c5 dlwpp-ipt-dlicon-wrapper">
         <img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">
       </div>

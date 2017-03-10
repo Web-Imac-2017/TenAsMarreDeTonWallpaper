@@ -11,21 +11,28 @@ const DlWpp = Vue.extend({
 
     data: () => ({
         // Pas 0, sinon le placeholder ne s'affiche pas.
-        largeur:"", hauteur:""
+        largeur_custom:"",
+        hauteur_custom:"",
+        largeur_ecran:window.screen.width,
+        hauteur_ecran:window.screen.height
     }),
 
     methods: {
       fermer: function() { alert("TODO fermer ce widget !"); },
       prev: function() { alert("TODO Wallpaper précédent !"); },
       next: function() { alert("TODO Wallpaper suivant !"); },
-      telecharger: function() {
-          let l = this.$data.largeur;
-          let h = this.$data.hauteur;
+      telecharger: function(l, h) {
           if(!(isInt(l) || isInt(h)) || l==0 || h==0) {
               alert("XXX Entrées invalides !");
-              return false;
+              return;
           }
           alert("TODO Télécharger wallpaper (" + l + " x " + h + ")");
+      },
+      telecharger_native: function() {
+          this.telecharger(this.$data.largeur_ecran, this.$data.hauteur_ecran);
+      },
+      telecharger_custom: function() {
+          this.telecharger(this.$data.largeur_custom, this.$data.hauteur_custom);
       }
     }
 });
