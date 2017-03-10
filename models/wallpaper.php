@@ -9,86 +9,147 @@ class Wallpaper extends Model {
         parent::__construct();
     }
 
-    // Renvoie les informations de tous les wallpapers
-    public function getAll() {
-        $bdd = Database::get();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-        $sqlQuery = 'SELECT * FROM wallpaper';
-
-        try {
-            $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute();
-            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if(!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
-            }
-            else {
-                $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
-            }
-        }
-
-        catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
-        }
-
-        return $result;
-    }
-
     // Renvoie les informations d'un seul wallpaper
     public function get($id) {
         $bdd = Database::get();
-        $sql = 'SELECT * FROM wallpaper WHERE id=?';
-        $data['content'] = $bdd->prepare($sql);
-        $data['content']->execute(array($id));
-        if ($data['content']->rowCount() == 1)
-            $data['content']->fetch();  // Accès à la première ligne de résultat
-        else
-            throw new Exception("Aucune wallpaper ne correspond à l'identifiant '$wallpaperID'");
-        return $data;
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM wallpaper WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+
+    public function getMines($membre_id, $nb) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM wallpaper INNER JOIN mise_en_ligne on mise_en_ligne_id=mise_en_ligne.id WHERE membre_id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$membre_id]);
+                $selection = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($nb <= 1) {
+                    $wallpapers = $selection[array_rand($selection, 1)];
+                }
+                else {
+                    if ($nb > count($selection)) {
+                        $nb = count($selection);
+                    }
+                    $random=array_rand($selection, $nb);
+                    for ($i=0; $i<$nb; $i++) {
+                        $wallpapers[$i] = $selection[$random[$i]];
+                    }
+                }
+
+                $data = $wallpapers;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
     }
 
     // Ajoute un nouveau wallpaper
-    public function add() {
+    public function add($url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $format) {
         $bdd = Database::get();
-        $sql = 'INSERT INTO wallpaper VALUES(NULL, ?, ?)';
-        $req = $bdd->prepare($sql);
-        $req->execute(array($_POST['url'], 0));
+        $data = "";
 
-        $id = getIdLastWallpaper(); // on récupère l'id du nouvel wallpaper
-        setWallpaperCategories($id, $categories); // on associe le wallpaper aux différentes catégories
+        try {
+            $sqlQuery = 'INSERT INTO wallpaper VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$url, $url_thumb, $mel_id, $nom, $auteur, $width, $height, $format, date("Y-m-d"), 0, 0]);
+                $lastInsertId = $bdd->lastInsertId();
+
+                $sqlQuery = "SELECT * FROM wallpaper WHERE id=?";
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$lastInsertId]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult[0];
+
+                return array("returnCode" => 1, "returnMessage" => "Wallpaper ajouté",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+
     }
 
-    // Renvoie l'id du dernier wallpaper inséré
-    public function getIdLastWallpaper() {
+    // Supprime un wallpaper, sa mise en ligne, ses réponses et ses catégories
+    public function delete($id) {
         $bdd = Database::get();
-        $sql = 'SELECT id FROM wallpaper ORDER BY id DESC LIMIT 1';
-        $req = $bdd->prepare($sql);
-        $req->execute();
-        $id = $req->fetch();
+        $data = "";
 
-        return $id['id'];
-    }
+        $sqlQuery = 'SELECT mise_en_ligne_id FROM wallpaper WHERE id=?';
+        $stmt = $bdd->prepare($sqlQuery);
+        $stmt->execute([$id]);
+        $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Supprime un wallpaper
-    public function deleteWallpaper($wallpaperID) {
-        $bdd = Database::get();
-        $sql = 'DELETE FROM wallpaper WHERE id=?';
-        $req = $bdd->prepare($sql);
-        $req->execute(array($wallpaperID));
+        $mel_id = $bddResult[0]['mise_en_ligne_id'];
+
+        try {
+            $sqlQuery = 'DELETE FROM mise_en_ligne WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$mel_id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult[0];
+
+                return array("returnCode" => 1, "returnMessage" => "Wallpaper supprimé",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
     }
 
     // Associe des catégories à un wallpaper
-    public function setWallpaperCategories($wallpaperID, $categories) {
+    public function setCategories($id, $categories) {
         foreach ($categories as $cat) {
             $bdd = Database::get();
-            $sql = 'INSERT INTO WallpaperCategories VALUES(?,?)';
+            $sql = 'INSERT INTO categorie_wallpaper VALUES(?,?)';
             $req = $bdd->prepare($sql);
-            $req->execute(array($wallpaperID, $cat));
+            $req->execute([$cat, $id]);
         }
     }
 
@@ -111,14 +172,160 @@ class Wallpaper extends Model {
         $req->execute(array($wallpaperID));
     }	
 
-    // Renvoie les catégories d'un wallpaper
-    public function getWallpaperCategories($id) {
+    // Renvoie les wallpapers appartenant à une catégorie
+    public function getByCategorie($id) {
         $bdd = Database::get();
-        $sql = 'SELECT * FROM WallpaperCategories INNER JOIN categorie ON categorie_id = Categorie.id WHERE wallpaper_id=?';
-        $data['categories'] = $bdd->prepare($sql);
-        $data['categories']->execute(array($id));
+        $data = "";
 
-        return json_encode($data);
+        try {
+            $sqlQuery = 'SELECT * FROM wallpaper INNER JOIN categorie_wallpaper ON wallpaper.id=wallpaper_id WHERE categorie_id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+    // Incrémente la colonne nb_apparition
+    public function incrementer_nb_apparition($id) {
+        $bdd = Database::get();
+        $sqlQuery = "UPDATE wallpaper SET nb_apparition=nb_apparition+1 WHERE id=?";
+        $stmt = $bdd->prepare($sqlQuery);
+        $stmt->execute([$id]);		
+    }
+
+    // Incrémente la colonne nb_telechargement
+    public function incrementer_nb_telechargement($id) {
+        $bdd = Database::get();
+        $sqlQuery = "UPDATE wallpaper SET nb_telechargement=nb_telechargement+1 WHERE id=?";
+        $stmt = $bdd->prepare($sqlQuery);
+        $stmt->execute([$id]);		
+    }
+
+    public function random($nb) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = "SELECT * FROM wallpaper INNER JOIN mise_en_ligne ON wallpaper.id=mise_en_ligne.id WHERE statut='Validé'";
+
+            try {
+                $req = $bdd->prepare($sqlQuery);
+                $req->execute();
+                $selection = $req->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($nb <= 1) {
+                    $wallpapers = $selection[array_rand($selection, 1)];
+                }
+                else {
+                    if ($nb > count($selection)) {
+                        $nb = count($selection);
+                    }
+                    $random=array_rand($selection, $nb);
+                    for ($i=0; $i<$nb; $i++) {
+                        $wallpapers[$i] = $selection[$random[$i]];
+                    }
+                }
+
+                $data = $wallpapers;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+    public function getMostDL($nb) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM wallpaper ORDER BY nb_telechargement DESC';
+
+            try {
+                $req = $bdd->prepare($sqlQuery);
+                $req->execute();
+                $selection = $req->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($nb <= 1) {
+                    $nb = 1;
+                }
+                else if ($nb > count($selection)) {
+                    $nb = count($selection);
+                }
+
+                for ($i=0; $i<$nb; $i++){
+                    $wallpapers[$i] = $selection[$i];
+                }
+
+                $data = $wallpapers;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+    public function getMostAP($nb) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM wallpaper ORDER BY nb_apparition DESC';
+
+            try {
+                $req = $bdd->prepare($sqlQuery);
+                $req->execute();
+                $selection = $req->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($nb <= 1) {
+                    $nb = 1;
+                }
+                else if ($nb > count($selection)) {
+                    $nb = count($selection);
+                }
+
+                for ($i=0; $i<$nb; $i++){
+                    $wallpapers[$i] = $selection[$i];
+                }
+
+                $data = $wallpapers;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
     }
 
 }
