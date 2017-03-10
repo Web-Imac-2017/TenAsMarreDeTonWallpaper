@@ -30,6 +30,10 @@
             right: 0;
         }
 
+        &.notransition{
+            animation: none;
+        }
+
         h2{
             @include typo-brandon-up-black();
             @include font-size-large();

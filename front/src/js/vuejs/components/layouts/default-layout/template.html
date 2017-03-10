@@ -1,10 +1,10 @@
 <div class="default-layout">
     <header-main v-on:toggle-sidebar="toggleSidebar"></header-main>
-    <div class="sidebar" :class="{active: sidebarOpen}">
+    <div class="sidebar" :class="{active: sidebarOpen, notransition: sidebarHidden}">
         <profile-menu v-if="bus.isUserLoggedIn"></profile-menu>
         <login-form v-else></login-form>
     </div>
-    <div class="content" v-on:click="hideSidebar">
+    <div class="content" v-on:click="closeSidebar">
         <slot>Aucun slot</slot>
     </div>
 </div>

@@ -14,11 +14,14 @@ const DefaultLayout = Vue.extend({
   template,
 
   data(){ return{
-    sidebarOpen: false
+    sidebarState: 0 /* 0 = Hidden, 1 = Shown, 2 = Closed (hidden after shown) */
   };},
 
   computed:{
-    bus: function(){ return bus; }
+    bus: function(){ return bus; },
+    sidebarHidden: function() { return this.sidebarState == 0; },
+    sidebarOpen: function() { return this.sidebarState == 1; },
+    sidebarClosed: function() { return this.sidebarState == 2; }
   },
 
   components: {
@@ -29,10 +32,13 @@ const DefaultLayout = Vue.extend({
 
   methods: {
     toggleSidebar: function(){
-      this.sidebarOpen = !this.sidebarOpen;
+      this.sidebarOpen ? this.closeSidebar() : this.openSidebar();
     },
-    hideSidebar: function(){
-      this.sidebarOpen = false;
+    closeSidebar: function(){
+      this.sidebarState = 2;
+    },
+    openSidebar: function(){
+      this.sidebarState = 1;
     }
   }
 });
