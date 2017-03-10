@@ -14,24 +14,19 @@ class Question extends Model {
         $bdd = Database::get();
         $data = "";
         
+        $sqlQuery = 'SELECT * FROM question';
+
         try {
-            $sqlQuery = 'SELECT * FROM question';
 
-            try {
+            $stmt = $bdd->prepare($sqlQuery);
+            $success = $stmt->execute();
+            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                $stmt = $bdd->prepare($sqlQuery);
-                $success = $stmt->execute();
-                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $data = $bddResult;
 
-                $data = $bddResult;
-
-                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
-            }
-
-            catch (PDOException $e) {
-                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
-            }
+            return array("returnCode" => 1, "returnMessage" => "Questions récupérées",  "data" => $data);
         }
+
         catch (PDOException $e) {
             return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
@@ -51,11 +46,11 @@ class Question extends Model {
             if(!empty($bddResult)) {
                 $result['data'] = $bddResult[0];
                 $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
+                $result['returnMessage'] = 'Question récupérée';
             }
             else {
                 $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : aucune question trouvée ayant pour id : '.$id;
+                $result['returnMessage'] = 'Echec de la requête : aucune question trouvée ayant pour id : '.$id;
             }
         }
 
@@ -68,49 +63,79 @@ class Question extends Model {
     }
 
     // Ajoute une question
-    function add($q_courte, $q_longue, $importance, $categories) {
+    function add($q_courte, $q_longue, $importance, $idUser, $categories) {
         $bdd = Database::get();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-        $sqlQuery = 'INSERT INTO question VALUES(NULL, ?, ?, ?, 0)';
 
         try {
-            $stmt = $bdd->prepare($sqlQuery);
-            $success = $stmt->execute([$q_courte, $q_longue, $importance]);
-            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $result['data'] = $bddResult[0];
-            $result['returnCode'] = 1;
-            $result['returnMessage'] = 'Connexion réussie !';
+        // Création de la mise en ligne
+        $sqlQuery = 'INSERT INTO mise_en_ligne(statut  membre_id   moderateur_id) VALUES("En attente", 1, 1)';
+        $stmt = $bdd->prepare($sqlQuery);
+        $stmt->execute();
+        $miseEnLigneId = $bdd->lastInsertId();
 
-            $id_nouveau = $bdd->lastInsertId();
-            addQuestionCategorie($id_nouveau, $categories);
+        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+
+            try {
+                $sqlQuery = 'INSERT INTO question(q_courte, q_longue, mise_en_ligne_id, importance, nb_apparition ) VALUES(?, ?, ?, ?, 0)';
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$q_courte, $q_longue, $miseEnLigneId, $importance]);
+
+                $id_nouveau = $bdd->lastInsertId();
+
+                $stmt = $bdd->prepare('SELECT * FROM question WHERE id = ?');
+                $stmt->execute([$id_nouveau]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $result['data'] = $bddResult[0];
+                $result['returnCode'] = 1;
+                $result['returnMessage'] = 'Insertion de la question réussie';
+
+                addQuestionCategorie($id_nouveau, $categories);
+            }
+
+            catch (PDOException $e) {
+                $result['returnCode'] = -1;
+                $result['returnMessage'] = "Echec de la mise en ligne : " . $e->getMessage();	// Changer pour le message de PDO	
+            } 
         }
-
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la connexion : " . $e->getMessage();	// Changer pour le message de PDO	
+                $result['returnCode'] = -1;
+                $result['returnMessage'] = "Echec de la mise en ligne : " . $e->getMessage();   // Changer pour le message de PDO
         }
 
         return $result;
     }
 
     // Associe une catégorie à une question
-    function addQuestionCategorie($questionID, $categoriesID)
-    {
-        foreach ($categoriesID as $cat) {
-            $bdd = Database::get();
-            $sql = 'INSERT INTO categorie_question VALUES(?, ?)';
-            $req = $bdd->prepare($sql);
-            $req->execute(array($questionID, $cat));
+    function addQuestionCategorie($questionID, $categoriesID) {
+        $bdd = Database::get();
+        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+
+        try {
+            foreach ($categoriesID as $cat) {
+                $sql = 'INSERT INTO categorie_question VALUES(?, ?)';
+                $req = $bdd->prepare($sql);
+                $req->execute(array($questionID, $cat));
+            }  
+        }
+        catch (PDOException $e) {
+
         }
     }
     
-    function setImportance($questionID)
-	{
+    function setImportance($questionID) {
 		$bdd = getBdd();
-		$sql = 'SELECT wallpaper_id, COUNT( * ) AS nb_wpp FROM categorie_wallpaper AS c_w INNER JOIN c_w.categorie_question ON categorie_id = categorie_question.categorie_id WHERE question_id=? GROUP BY wallpaper_id';
-		$importance = $bdd->prepare($sql);
-		$importance->execute(array($questionID));
+        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+
+        try {
+    		$sql = 'SELECT wallpaper_id, COUNT( * ) AS nb_wpp FROM categorie_wallpaper AS c_w INNER JOIN c_w.categorie_question ON categorie_id = categorie_question.categorie_id WHERE question_id=? GROUP BY wallpaper_id';
+    		$importance = $bdd->prepare($sql);
+    		$importance->execute(array($questionID));
+        }
+        catch (PDOException $e) {
+            $result['returnCode'] = -1;
+            $result['returnMessage'] = "Echec de la mise à jour";
+        }
 
 		return $importance;
 	}
@@ -118,17 +143,17 @@ class Question extends Model {
     // Supprime une question
     function deleteQuestion($questionID) {
         $bdd = Database::get();
-        $sql = 'DELETE FROM question WHERE id = '.$questionID.'';
+        $sql = 'DELETE FROM question WHERE id = ?';
         $req = $bdd->prepare($sql);
-        $req->execute();
+        $req->execute([$questionID]);
     }
 
     // Supprime une question de la table question_categorie
     function deleteQuestionCategorie($questionID) {
         $bdd = Database::get();
-        $sql = 'DELETE FROM categorie_question WHERE question_id = '.$questionID.'';
+        $sql = 'DELETE FROM categorie_question WHERE question_id = ?';
         $req = $bdd->prepare($sql);
-        $req->execute();
+        $req->execute([$questionID]);
     }
 
     // Modifie une question
