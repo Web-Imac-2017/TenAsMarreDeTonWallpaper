@@ -57,7 +57,6 @@ class AlgoController extends Controller {
 		// Si on vient de répondre à la première question
 		if($_SESSION['num_question'] == 1)
 		{
-			print_r($reponse);
 			// Si on a choisi une catégorie
 			if(isset($reponse)) // val : 0, 1 2 3 ou 4
 			{	
