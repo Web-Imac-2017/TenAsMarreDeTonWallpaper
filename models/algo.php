@@ -17,7 +17,8 @@ class Algo extends Model {
 	public function firstQuestion() {
 		$categorie = new Categorie();
 		// On récupére toutes les catégories
-		$categories = $categorie->getCategories();
+		$data = $categorie->getAll();
+		$categories = $data['data'];
 		// On en tire 3 au hasard
 		$random_categorie=array_rand($categories,3);
 		// Intitulé de la question
@@ -79,7 +80,7 @@ class Algo extends Model {
 			"Peu importe",
 			"Probablement oui",
 			"Oui"
-		)
+		);
 		
 		// On effectue la requete SQL qui récupére la question
 		$bdd = Database::get();
@@ -122,12 +123,13 @@ class Algo extends Model {
 					$selected = $selection[$random_question[1]];	
 				}
 			}
-			$nextQuestion = array('nb_q'=>$nb_q, 'question'=>$selected, "reponses"=>$reponses, "values"=>$values, "numero"=>$_SESSION['num_question']);
+			$nextQuestion = array('nb_q'=>$nb_q, 'question'=>$selected, "reponses"=>$reponses, "numero"=>$_SESSION['num_question']);
 			// Si c'est la 2ème question, on update le nombre d'apparition ici, sinon ça se fera dans une autre fonction
 			if ($_SESSION['num_question'] == 2)
 			{
-				updateNb_aQ($selected['id'],$selected['nb_a']);
+				$this->updateNb_aQ($selected['id'],$selected['nb_a']);
 			}
+			$returnCode = 1;
 			$returnMessage = "Une question a bien été sélectionnée";
 		}
 		// S'il n'y a aucune question qui correspond à la requête
@@ -232,7 +234,7 @@ class Algo extends Model {
 		// On recupere le nombre de wpp qu'on peut trouver pour chaque reponse fournie
 		for ($reponse = 0; $reponse <= 4; $reponse++)
 		{
-			$wpp = answerQuestion($question_id, $reponse, $requete);
+			$wpp = $this->answerQuestion($question_id, $reponse, $requete);
 			array_push($wpp_left, $wpp['nb_wpp_left']);
 		}
 		
@@ -275,14 +277,14 @@ class Algo extends Model {
 		$_SESSION['reponse'] = $reponse;
 
 		// On compte combien de wpp on trouve et on met à jour la requete
-		$wppLeft = answerQuestion($_SESSION['question'][$_SESSION['num_question']-1]['question']['id'],$_SESSION['reponse'],$_SESSION['requete'][$_SESSION['num_question']-2]);
-		
+		$wppLeft = $this->answerQuestion($_SESSION['question'][$_SESSION['num_question']-1]['question']['id'],$_SESSION['reponse'],$_SESSION['requete'][$_SESSION['num_question']-2]);
+
 		// Si on trouve moins de $minWPP wpp, on arrête
 		if($wppLeft['nb_wpp_left']<=$_SESSION['minWPP'] || $_SESSION['num_question'] == $_SESSION['maxQuestion'])
 		{
 			$_SESSION['continue'] = false;
 			// On récupére les infos de tous les wpp qu'il reste
-			$wallpapers = stopGame($wppLeft['id']);
+			$wallpapers = $this->stopGame($wppLeft['id']);
 			$nb_wpp_left = $wppLeft['nb_wpp_left'];
 			$returnCode = 0;
 			$returnMessage = "Il n'y a plus que ".$wppLeft['nb_wpp_left']." wallpapers qui correspondent à vos critères";
@@ -293,28 +295,28 @@ class Algo extends Model {
 		else
 		{
 			// On met à jour l'importance
-			updateImportance(-1);
+			$this->updateImportance(-1);
 						
 			// Si on n'est pas dans le cas "undo", on cherche une nouvelle question (sinon elle a déjà été trouvée)
 			if ($_SESSION['lock'][$_SESSION['num_question']]==false)
 			{	
 				$_SESSION['lock'][$_SESSION['num_question']] = true;
 				// On prépare la prochaine question
-				$nextQuestion = nextQuestion();
+				$nextQuestion = $this->nextQuestion();
 				$_SESSION['question'][$_SESSION['num_question']] = $nextQuestion['question'];
 			}
 				
 			// On met à jour la requete
 			$_SESSION['requete'][$_SESSION['num_question']-1] = $wppLeft['requete'];
-				
+
 			// On check si on peut trouver des wpp avec la prochaine question
-			$checkQuestion = checkQuestion($_SESSION['question'][$_SESSION['num_question']]['question']['id'], $_SESSION['requete'][$_SESSION['num_question']-1]);
+			$checkQuestion = $this->checkQuestion($_SESSION['question'][$_SESSION['num_question']]['question']['id'], $_SESSION['requete'][$_SESSION['num_question']-1]);
 
 			// Si on ne peut pas, on arrête
 			if($checkQuestion['continue']==false)
 			{
 				$_SESSION['continue'] = false;
-				$wallpapers = stopGame($wppLeft['id']);
+				$wallpapers = $this->stopGame($wppLeft['id']);
 				// S'il y en a moins que le minimum, la limite = le nombre de wpp qu'il reste
 				if($wppLeft['nb_wpp_left']<$_SESSION['minWPP'])
 				{
@@ -334,7 +336,7 @@ class Algo extends Model {
 				// On incrémente le numero de la question
 				$_SESSION['num_question']++;
 				$_SESSION['continue'] = true;
-				updateNb_aQ($_SESSION['question'][$_SESSION['num_question']-1]['question']['id'],$_SESSION['question'][$_SESSION['num_question']-1]['question']['nb_a']);
+				$this->updateNb_aQ($_SESSION['question'][$_SESSION['num_question']-1]['question']['id'],$_SESSION['question'][$_SESSION['num_question']-1]['question']['nb_a']);
 				$returnCode = 1;
 				$returnMessage = "La réponse permet de passer à la question suivante";
 			}
@@ -353,7 +355,7 @@ class Algo extends Model {
 		$_SESSION['continue'] = true;
 		if ($_SESSION['num_question'] > 1)
 		{
-			updateImportance(1);
+			$this->updateImportance(1);
 		}
 		return array("returnCode" => 1, "returnMessage" => "On revient à la question précédente");
 	}
