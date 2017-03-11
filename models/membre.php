@@ -38,7 +38,7 @@ class Membre extends Model {
 
         try {
 
-            $sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (?, ?, ?, 0, 0)";
+            $sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur, url_avatar, nb_questions_ajoutees, nb_wallpaper_ajoutes) VALUES (?, ?, ?, 0, 0, '', )";
 
             try {
 
