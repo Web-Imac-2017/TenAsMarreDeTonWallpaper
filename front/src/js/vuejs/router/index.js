@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 
 import Home from '../components/pages/home';
 import Question from '../components/pages/question';
+import TestDlWpp from '../components/pages/test-dlwpp';
 
 const router = new VueRouter({
   mode  : 'history',
@@ -19,6 +20,10 @@ const router = new VueRouter({
       path    : '/find',
       component: Question
     }
+      name     : 'test-dlwpp',
+      path     : '/test-dlwpp',
+      component: TestDlWpp,
+    },
   ],
 });
 
