@@ -165,6 +165,7 @@ class Membre extends Model {
             $result['returnCode'] = -1;
             $result['returnMessage']  = "Supression échouée :";	
         }
+        return $result;
     }
 
     // Obtenir les informations sur un membre avec son pseudo
