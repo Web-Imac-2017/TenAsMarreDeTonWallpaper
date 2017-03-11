@@ -253,18 +253,21 @@ class Question extends Model {
             $sql = 'SELECT categorie_id AS cat_id FROM categorie_question WHERE question_id =?';
             $req = $bdd->prepare($sql);
             $req->execute(array($questionID));
+            $categories = [];
             while ($cat_id = $req->fetch()) {
                 $categories[$i] = getCategorie($cat_id['cat_id']);
                 $i++;
             }
+
             $result['data'] = $categories;
+
             if (empty($categories)) {
                 $result['returnCode'] = 0;
-                $result['returnMessage'] = "Aucune question ne correspond à l'identifiant '$questionID'";
+                $result['returnMessage'] = "Aucune catégorie ne correspond à la question à l'identifiant '$questionID'";
             }
             else {
                 $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Récupérations des catégories pour une question OK';
+                $result['returnMessage'] = 'Récupération des catégories pour une question OK';
             }
         }
         catch (PDOException $e){
@@ -279,16 +282,29 @@ class Question extends Model {
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
-        $sql = 'SELECT question_id AS id, COUNT( question_id ) AS nb_cat FROM categorie_question WHERE question_id =?';
-        $req = $bdd->prepare($sql);
-        $req->execute(array($questionID));
-        if ($req->rowCount() >= 1)
-        {
-            $occurences = $req->fetch(); // Accès à la première ligne première colone de résultat (id)
-            return $occurences['nb_cat'];
+        try {
+            $sql = 'SELECT question_id AS id, COUNT( question_id ) AS nb_cat FROM categorie_question WHERE question_id =?';
+            $req = $bdd->prepare($sql);
+            $req->execute(array($questionID));
+
+            if ($req->rowCount() >= 1) {
+                $occurences = $req->fetch(); // Accès à la première ligne première colone de résultat (id)
+                $result['data'] = $occurences['nb_cat'];
+                $result['returnCode'] = 1;
+                $result['returnMessage'] = 'Récupération du nombre d\'apparition d\'une question OK';
+            }
+            else {
+                $result['returnCode'] = 1;
+                $result['returnMessage'] = 'La question n\'apparaît aucune fois';
+            }
         }
-        else
-            throw new Exception("Aucune question ne correspond à l'identifiant '$questionID'");
+        catch (PDOException $e) {
+            $result['returnCode'] = -1;
+            $result['returnMessage'] = "Echec de la récupération des catégories";
+
+        }
+        return $result;
+
     }
 
 }
