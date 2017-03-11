@@ -3,6 +3,7 @@
 import VueRouter from 'vue-router';
 
 import Home from '../components/pages/home';
+import Question from '../components/pages/question';
 
 const router = new VueRouter({
   mode  : 'history',
@@ -13,6 +14,11 @@ const router = new VueRouter({
       path     : '/',
       component: Home,
     },
+    {
+      name    : 'findYourWallpaper',
+      path    : '/find',
+      component: Question
+    }
   ],
 });
 

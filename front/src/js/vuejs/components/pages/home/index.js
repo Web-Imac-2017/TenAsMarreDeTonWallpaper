@@ -13,21 +13,17 @@ import Slider_wpp_home from '../../sections/slider-wpp-home/index.js'
 const Home = Vue.extend({
   template,
 
+  data(){return{
+    headerLinks: {
+      'home-participate': { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' },
+    },
+  };},
+
   components: {
       'default-layout': DefaultLayout,
       'presentation': Presentation,
       'slider' : Slider_wpp_home
   },
-
-  created(){
-    // Add 'Participate' link in header
-    bus.headerLinks['home-participate'] = { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' };
-  },
-
-  beforeDestroy(){
-    // Remove 'Participate' link in header
-    delete bus.headerLinks['home-participate'];
-  }
 });
 
 export default Home;

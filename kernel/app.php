@@ -12,10 +12,38 @@ class App {
 
    public function __construct() {
       $this->launch();
+	  $this->initialize();
    }
 
-   public function launch() {
+    public function initialize() {
+		// Si on trouve moins de wpp que ce nombre, on arrête
+		if (! isset($_SESSION['minWPP'])) $_SESSION['minWPP'] = 3;
+		// Si on atteint mbre de quce noestions, on arrête
+		if (! isset($_SESSION['maxQuestion'])) $_SESSION['maxQuestion'] = 5;
 
+		// Pour stocker le résultat
+		if (! isset($_SESSION['resultat'])) $_SESSION['resultat'] = array('nb_wpp_left'=>0, 'wallpapers'=>array());
+		// Le numéro de la question actuelle
+		if (! isset($_SESSION['num_question'])) $_SESSION['num_question'] = 1;
+		// L'importance qui sera de plus en plus petite
+		if (! isset($_SESSION['importance'])) $_SESSION['importance'] = 50;
+		// Un string qui contient les différents SELECT après chaque question
+		if (! isset($_SESSION['requete'])) $_SESSION['requete'] = array("");
+		// Si ce booléan est 'false', on s'arrête
+		if (! isset($_SESSION['continue'])) $_SESSION['continue'] = false;
+		// Stock les questions qui sont passées
+		if (! isset($_SESSION['question'])) $_SESSION['question'] = array();
+		// Empêche les fonctions d'être appelée à nouveau (pour éviter d'avoir une nouvelle question après un UNDO)
+		if (! isset($_SESSION['lock'])) 
+		{
+			for($i = 0; $i < $_SESSION['maxQuestion']; $i++)
+			{
+				$_SESSION['lock'][$i] = false;
+			}
+		}
+    }
+   
+   public function launch() {
 
       $this->router = new Router();
 

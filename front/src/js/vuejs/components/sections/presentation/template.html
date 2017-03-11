@@ -1,8 +1,8 @@
-<mr-wallmatch-content class="presentation">
+<mr-wallmatch-content class="presentation" :roll="randomInt">
     <p slot="mr-wallmatch-says">En auriez-vous marre de votre wallpaper ?</p>
     <p slot="mr-wallmatch-says">Entrez, je vais vous aider à en trouver un autre.</p>
     <div class="presentation-find-wallpaper">
-        <a class="abutton">Trouvez-moi un wallpaper</div>
+        <router-link :to="{name: 'findYourWallpaper'}" class="abutton">Trouvez-moi un wallpaper</router-link>
     </div>
     <div class="lined-up">
         <h2>Mr. Wallmatch, conservateur du Musée National du Wallpaper</h2>
