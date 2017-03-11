@@ -34,11 +34,11 @@ class Membre extends Model {
             return array("returnCode" => 0, "returnMessage" => "Pseudo existant",  "data" => $data);
         }
 
-        $password = sha1($password);
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
         try {
 
-            $sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur) VALUES (?, ?, ?, 0, 0)";
+            $sqlQuery = "INSERT INTO membre (pseudo, mdp, mail, admin, moderateur, url_avatar, nb_questions_ajoutees, nb_wallpaper_ajoutes) VALUES (?, ?, ?, 0, 0, '', 0, 0)";
 
             try {
 
@@ -72,26 +72,37 @@ class Membre extends Model {
 
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
-        $password = sha1($password);
-        $sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE ? AND mdp = ?";
+        $sqlQuery = "SELECT * FROM membre WHERE pseudo LIKE ?";
 
         try {
             $stmt = $bdd->prepare($sqlQuery);
-            $stmt->execute([$pseudo, $password]);
+            $stmt->execute([$pseudo]);
             $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if (!empty($bddResult)) {
-                $result['data'] = $bddResult[0];
-                $result['returnCode'] = 1;
-                $result['returnMessage'] = 'Connexion réussie !';
 
-                // S'il n'y a pas de session démarrée
-                session_status() == PHP_SESSION_ACTIVE ? "" : session_start();
-                $_SESSION['user'] = $bddResult[0];
+                $verification = password_verify($password, $bddResult[0]['mdp']);
+
+                if ($verification) {
+
+                    $result['data'] = $bddResult[0];
+                    $result['returnCode'] = 1;
+                    $result['returnMessage'] = 'Connexion réussie !';
+
+                    // S'il n'y a pas de session démarrée
+                    session_status() == PHP_SESSION_ACTIVE ? "" : session_start();
+                    $_SESSION['user'] = $bddResult[0];
+
+                }
+                else {
+                    $result['returnCode'] = 0;
+                    $result['returnMessage'] = 'Echec de la connexion : mot de passe incorrect !';
+
+                }
             }
             else {
                 $result['returnCode'] = 0;
-                $result['returnMessage'] = 'Echec de la connexion : pseudo ou mot de passe incorrect !';
+                $result['returnMessage'] = 'Echec de la connexion : pseudo inexistant !';
             }
         }
 
