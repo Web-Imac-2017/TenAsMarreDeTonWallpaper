@@ -6,6 +6,7 @@ let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
 import bus from '../../bus/index.js';
+import router from '../../../router/index.js';
 import DefaultLayout from '../../layouts/default-layout/index.js';
 import RainbowAnswer from '../../widgets/rainbow-answer/index.js';
 import MrWallmatchContent from '../../layouts/mr-wallmatch-content/index.js';
@@ -27,7 +28,26 @@ const QuestionPage = Vue.extend({
     selectedAnswer: 0, /* 1 - 5, 0 si inconnu */
     answersStyles: [],
     headerLinks: {
-      'question-abandon': { text: 'Abandonner', url:{name: 'home'} }
+      'question-abandon': { text: 'Abandonner', callback: function(){
+        let _this = this;
+        fetch("/TenAsMarreDeTonWallpaper/api/algo/restart", {
+            method: 'get',
+            credentials: 'include'
+          }
+        )
+        // Handle bad http response
+        .then(handleHttpError)
+        // Handle Json parse
+        .then(function(response){ return response.json(); })
+        // Handle request errors
+        .then(handleRequestError)
+        // Reset ok
+        .then(function(response){
+          router.push({name: 'home'}); return;
+        })
+        // Error caught
+        .catch(function(error){ alert(error.message); console.log(error.message);});
+      } }
     },
     randomInt: 0
   };},
@@ -55,12 +75,11 @@ const QuestionPage = Vue.extend({
       if(_this.isRaised) return false;
       _this.riseUpAnswers(id);
 
-      fetch("/TenAsMarreDeTonWallpaper/api/question/next/"+id, {
+      fetch("/TenAsMarreDeTonWallpaper/api/algo/getNextQuestion/"+id, {
             method: 'get',
             credentials: 'include'
           }
         )
-        .then(() => new Promise(resolve => setTimeout(resolve, 1000)))
         // Handle bad http response
         .then(handleHttpError)
         // Handle Json parse
@@ -72,8 +91,8 @@ const QuestionPage = Vue.extend({
           if('continue' in response && response.continue == false){
             router.push({name: 'results'}); return;
           }
-          if(!('question' in response)) throw Error('Données de question manquantes.');
-          _this.setQuestion(response.question);
+          if(!('data' in response)) throw Error('Données de question manquantes.');
+          _this.setQuestion(response.data);
         })
         .then(function(){ _this.riseDownAnswers(id); })
         // Error caught
@@ -120,7 +139,7 @@ const QuestionPage = Vue.extend({
     prevQuestion(){
         let _this = this;
         if(_this.isRaised) return false;
-        _this.riseUpAnswers(id);
+        _this.riseUpAnswers(0);
 
         fetch("/TenAsMarreDeTonWallpaper/api/question/prev/", {
               method: 'get',
@@ -138,7 +157,7 @@ const QuestionPage = Vue.extend({
             if(!('question' in response)) throw Error('Données de question manquantes.');
             _this.setQuestion(response.question);
           })
-          .then(function(){ _this.riseDownAnswers(id); })
+          .then(function(){ _this.riseDownAnswers(0); })
           // Error caught
           .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
     },
