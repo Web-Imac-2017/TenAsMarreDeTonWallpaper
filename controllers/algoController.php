@@ -10,7 +10,7 @@ class AlgoController extends Controller {
 		parent::__construct();
 	}
 	
-	/* 	Les fonctions renvoient :								*
+	/* 	Les fonctions renvoient :										*
 	*	"returnCode", 1 (success) sinon echec 							*
 	* 	'data', qui contient la question actuelle et le nombre			*
 	*	 de wpp restants pour numero_question > 2						*
