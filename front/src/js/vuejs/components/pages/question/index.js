@@ -7,6 +7,7 @@ template     = eval(`\`${template}\``);
 
 import bus from '../../bus/index.js';
 import router from '../../../router/index.js';
+import onTransitionEnd from '../../../utils/transitionend.js';
 import DefaultLayout from '../../layouts/default-layout/index.js';
 import RainbowAnswer from '../../widgets/rainbow-answer/index.js';
 import MrWallmatchContent from '../../layouts/mr-wallmatch-content/index.js';
@@ -27,6 +28,7 @@ const QuestionPage = Vue.extend({
     isRaised: true,
     selectedAnswer: 0, /* 1 - 5, 0 si inconnu */
     answersStyles: [],
+    isTransitionEnded: [false, false, false, false, false],
     headerLinks: {
       'question-abandon': { text: 'Abandonner', callback: function(){
         let _this = this;
@@ -74,8 +76,10 @@ const QuestionPage = Vue.extend({
       let _this = this;
       if(_this.isRaised) return false;
       _this.riseUpAnswers(id);
-
-      fetch("/TenAsMarreDeTonWallpaper/api/algo/getNextQuestion/"+id, {
+      
+      Promise.all([ // on promise aussi avec les transitions visuelles, afin que le tout soit fluide
+        _this.riseUpAnswers(id),
+        fetch("/TenAsMarreDeTonWallpaper/api/algo/getNextQuestion/"+id, {
             method: 'get',
             credentials: 'include'
           }
@@ -94,9 +98,11 @@ const QuestionPage = Vue.extend({
           if(!('data' in response)) throw Error('Données de question manquantes.');
           _this.setQuestion(response.data);
         })
-        .then(function(){ _this.riseDownAnswers(id); })
-        // Error caught
-        .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
+        .then(function(){return;})
+      ])
+      .then(function(){ _this.riseDownAnswers(id); })
+      // Error caught
+      .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
 
     },
     riseUpAnswers(id){
@@ -105,6 +111,14 @@ const QuestionPage = Vue.extend({
         }
 
         this.isRaised = true;
+
+        return Promise.all([
+          onTransitionEnd(this.$refs.answer1.$el, 500),
+          onTransitionEnd(this.$refs.answer2.$el, 500),
+          onTransitionEnd(this.$refs.answer3.$el, 500),
+          onTransitionEnd(this.$refs.answer4.$el, 500),
+          onTransitionEnd(this.$refs.answer5.$el, 500),
+        ]);
     },
     riseDownAnswers(id){
         /*for(let i = 0 ; i<5 ; ++i){
