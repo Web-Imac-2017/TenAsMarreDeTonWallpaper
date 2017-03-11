@@ -2,9 +2,12 @@
 
 import Vue from 'vue/dist/vue';
 import {isInt} from '../../../utils/isInt';
+import {rapports} from '../../../utils/rapports';
 
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
+
+console.log(rapports);
 
 const DlWpp = Vue.extend({
     template,
