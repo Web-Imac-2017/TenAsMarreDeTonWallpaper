@@ -38,8 +38,8 @@ h1.title {
 .button-dark-purple {
 	@include box-with-shadow (70px, 100px, $color-dark-red);
 	&:hover {
-		@include transform-scale; 
-	} 
+		@include transform-scale;
+	}
 
 	p {
 		font: $normal-font;
@@ -140,6 +140,7 @@ LOAD COMPONENTS
 @import '../js/vuejs/components/pages/home/style';
 @import '../js/vuejs/components/pages/question/style';
 @import '../js/vuejs/components/pages/results/style';
+@import '../js/vuejs/components/pages/test-dlwpp/style';
 
 /* sections */
 @import '../js/vuejs/components/sections/header-main/style';
@@ -152,3 +153,4 @@ LOAD COMPONENTS
 @import '../js/vuejs/components/widgets/mr-wallmatch/style';
 @import '../js/vuejs/components/widgets/rainbow-answer/style';
 @import '../js/vuejs/components/widgets/rainbow-bar/style';
+@import '../js/vuejs/components/widgets/dlwpp/style';
