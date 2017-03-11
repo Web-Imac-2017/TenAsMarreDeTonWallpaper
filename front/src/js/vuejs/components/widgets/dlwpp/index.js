@@ -20,7 +20,8 @@ const DlWpp = Vue.extend({
     data: () => ({
         // Pas 0, sinon le placeholder ne s'affiche pas.
         custom:{l:"", h:""},
-        ecran:ecran
+        ecran:ecran,
+        afficher_fleches:true // Mettre à false si on n'implémente pas prev et next
     }),
 
     computed: {
@@ -43,6 +44,8 @@ const DlWpp = Vue.extend({
             return [
                 {vu:true, texte:"Votre définition :", classe:"dlwpp-c2", res:[ ecran ]},
                 {vu:trouve!=null, texte:"Votre format ("+format.l+":"+format.h+") :", classe:"dlwpp-c3", res: format.res },
+
+                // XXX Un jour faudra peut-être les faire varier celles-là
                 {vu:true, texte:trouve==null?"Autres : ":"Encore d'autres :", classe:"dlwpp-c4", res:[
                     {l:1024,h:768},
                     {l:800,h:600}
@@ -56,17 +59,15 @@ const DlWpp = Vue.extend({
       prev: function() { alert("TODO Wallpaper précédent !"); },
       next: function() { alert("TODO Wallpaper suivant !"); },
       on_dim_custom: function(e, min, max) {
-          let v = e.target.value;
-          e.target.style.outline = "green solid 2px";
-          if(v == "")
-              e.target.style.outlineWidth = "0px";
-          else if(!isInt(v) || v==0)
-              e.target.style.outlineColor = "red";
+          let v = e.target.valueAsNumber;
+          e.target.style.color = "white";
+          if(v==NaN || v==0)
+              e.target.style.color = "tomato";
           else if(!(min < v && v < max))
-              e.target.style.outlineColor = "orange";
+              e.target.style.color = "orange";
       },
-      on_largeur_custom: function(e) { this.on_dim_custom(e, 500, this.$data.wpp.l); },
-      on_hauteur_custom: function(e) { this.on_dim_custom(e, 500, this.$data.wpp.h); },
+      on_largeur_custom: function(e) { this.on_dim_custom(e, 99, this.wpp.l); },
+      on_hauteur_custom: function(e) { this.on_dim_custom(e, 99, this.wpp.h); },
       telecharger: function(l, h) {
           if(!(isInt(l) || isInt(h)) || l==0 || h==0) {
               alert("Veuillez entrer des dimensions valides.");

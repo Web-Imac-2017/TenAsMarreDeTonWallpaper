@@ -13,13 +13,13 @@
         </a>
     </div>
 
-    <div class="dlwpp-prev">
+    <div class="dlwpp-prev" v-if="afficher_fleches">
         <a href="javascript:void(0);" v-on:click="prev">
             <div class="dlwpp-arrow-l"></div>
         </a>
     </div>
 
-    <div class="dlwpp-next">
+    <div class="dlwpp-next" v-if="afficher_fleches">
         <a href="javascript:void(0);" v-on:click="next">
             <div class="dlwpp-arrow-r"></div>
         </a>

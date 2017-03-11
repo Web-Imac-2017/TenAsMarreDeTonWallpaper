@@ -66,7 +66,7 @@ $dlwpp-arrow-pullmargin : (-10rem / 24);
 .dlwpp-c2, .dlwpp-c2 *,
 .dlwpp-c3, .dlwpp-c3 *,
 .dlwpp-c4, .dlwpp-c4 *,
-.dlwpp-c5, .dlwpp-c5 * { color:$color-white !important; }
+.dlwpp-c5:not(input), .dlwpp-c5 *:not(input) { color:$color-white !important; }
 .dlwpp-c1 { background: $color-sunset-yellow !important; }
 .dlwpp-c2 { background: $color-sunset-orange !important; }
 .dlwpp-c3 { background: $color-sunset-red    !important; }
