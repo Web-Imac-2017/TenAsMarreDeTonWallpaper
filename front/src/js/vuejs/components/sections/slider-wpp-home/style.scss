@@ -22,7 +22,6 @@ $box-shadow-top-only: 0 0 0 2px rgba(0, 0, 0, 0.2);
 }
 
 .slider {
-	display: flex; flex-flow: row nowrap; align-items: stretch;
     width: 100%; flex: 1 0 auto;
     position: relative;
 	align-items: center; 
@@ -30,17 +29,27 @@ $box-shadow-top-only: 0 0 0 2px rgba(0, 0, 0, 0.2);
     margin-bottom: 1rem;
 	margin-top: 1rem;
 	border-top: 2px solid grey;
-		#text_slider {
-			text-align: center;
-			p {
-				margin-top: 5px;
-				@include typo-brandon-medium();
-				color: $color-light-grey;
-			}
-		}
 
-	.images_slider {
-		display: inline-block;
+	#text_slider {
+		text-align: center;
+		p {
+			margin-top: 5px;
+			@include typo-brandon-medium();
+			color: $color-light-grey;
+		}
 	}
+
+    .bottom-arrow-wrapper{
+        position: absolute; bottom: 0; right: 1rem;
+        display: flex; align-items: right; justify-content: right;
+        width: 100%; height: 4rem; margin-bottom: 1rem;
+
+        .bottom-arrow{
+            width: 3rem; height: 3rem;
+            border-right: solid 2px $color-foreground;
+            border-bottom: solid 2px $color-foreground;
+            transform: rotate(315deg);
+        }
+    }
 }
 
