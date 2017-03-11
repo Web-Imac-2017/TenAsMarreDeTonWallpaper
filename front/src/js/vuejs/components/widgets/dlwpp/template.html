@@ -1,0 +1,68 @@
+<div class="dlwpp">
+
+    <div class="dlwpp-xfermer">
+        <a href="javascript:void(0);" v-on:click="fermer">
+            <img alt="X" src="/TenAsMarreDeTonWallpaper/www/assets/icons/x-white.png">
+            fermer
+        </a>
+    </div>
+
+    <div class="dlwpp-wpp">
+        <a target="_blank" v-bind:href="wpp.url">
+            <img class="dlwpp-wpp-img" v-bind:alt="wpp.titre" v-bind:src="wpp.url">
+        </a>
+    </div>
+
+    <div class="dlwpp-prev" v-if="afficher_fleches">
+        <a href="javascript:void(0);" v-on:click="prev">
+            <div class="dlwpp-arrow-l"></div>
+        </a>
+    </div>
+
+    <div class="dlwpp-next" v-if="afficher_fleches">
+        <a href="javascript:void(0);" v-on:click="next">
+            <div class="dlwpp-arrow-r"></div>
+        </a>
+    </div>
+
+    <div class="dlwpp-side">
+
+        <h2 class="dlwpp-titre">{{wpp.titre}}</h2>
+        {{wpp.uploadeur.pseudo}}<br>
+        <span class="dlwpp-sep"></span>
+        {{wpp.genre}}<br>
+        {{wpp.l}} x {{wpp.h}} px<br>
+        <a href="javascript:void(0);"
+           v-on:click="telecharger(wpp.l,wpp.h)"
+           class="abutton dlwpp-c1 dlwpp-abutton">
+           <img class="dlwpp-dlicon" alt="dl"
+                src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-black.svg">
+           <span class="dlwpp-abutton-text">Taille originale</span>
+        </a>
+
+        <span class="dlwpp-sep"></span>
+
+        <span v-for="sec in sections" v-if="sec.vu">
+            {{sec.texte}} <br>
+            <a v-for="res in sec.res"
+               v-on:click="telecharger(res.l,res.h)"
+               v-bind:class="sec.classe"
+               class="abutton dlwpp-abutton"
+               href="javascript:void(0);">
+               <img class="dlwpp-dlicon" alt="dl"
+                    src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">
+               <span class="dlwpp-abutton-text">{{res.l}} x {{res.h}} px</span>
+           </a>
+        </span>
+
+        Libre à vous :<br>
+        <form v-on:submit="telecharger_custom" action="javascript:void(0);">
+            <input type="number" class="dlwpp-c5" placeholder="Largeur" v-model="custom.l" v-on:input="on_largeur_custom">
+            <input type="number" class="dlwpp-c5" placeholder="Hauteur" v-model="custom.h" v-on:input="on_hauteur_custom">
+            <button type="submit" class="dlwpp-c5">
+                <img class="dlwpp-dlicon" alt="dl" src="/TenAsMarreDeTonWallpaper/www/assets/icons/dl-white.svg">
+            </button>
+        </form>
+
+    </div> <!-- Fin dlwpp-side -->
+</div>

@@ -53,7 +53,7 @@ class AlgoController extends Controller {
 	// $reponse = $_POST['reponse']
 	public function getNextQuestion($reponse) {
 		$algo = new Algo();
-		
+
 		// Si on vient de répondre à la première question
 		if($_SESSION['num_question'] == 1)
 		{
@@ -70,8 +70,9 @@ class AlgoController extends Controller {
 				{
 					$_SESSION['lock'][1] = true;
 					// On appelle la 2eme question (les autres questions seront appellées au-dessus après vérifications)
-					$nextQuestion = $algo->nextQuestion();
-					$_SESSION['question'][1] = $nextQuestion['question'];
+					$next = $algo->nextQuestion();
+					$tmp = array('q_longue'=>$next['question']['question']['q_longue'], 'reponses'=>$next['question']['reponses'],'numero'=>$next['question']['numero'], 'id'=>$next['question']['question']['id'], 'nb_a'=>$next['question']['question']['nb_a']);
+					$_SESSION['question'][1] = $tmp;
 				}
 				// On peut continuer
 				$_SESSION['continue'] = true;
