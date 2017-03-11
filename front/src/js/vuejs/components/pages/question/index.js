@@ -22,7 +22,7 @@ const QuestionPage = Vue.extend({
       number: 1,
       answerCategories: ['Une photo', 'Une fractale', 'Ta mère']
     },*/
-    //question: null,
+    question: null,
     isRaised: true,
     selectedAnswer: 0, /* 1 - 5, 0 si inconnu */
     answersStyles: [],
@@ -57,6 +57,7 @@ const QuestionPage = Vue.extend({
 
       fetch("/TenAsMarreDeTonWallpaper/api/question/next/"+id, {
             method: 'get',
+            credentials: 'include'
           }
         )
         .then(() => new Promise(resolve => setTimeout(resolve, 1000)))
@@ -96,8 +97,9 @@ const QuestionPage = Vue.extend({
     getQuestion(){
         let _this = this;
 
-        fetch("/TenAsMarreDeTonWallpaper/api/algo/currentQuestion/", {
+        fetch("/TenAsMarreDeTonWallpaper/api/algo/currentQuestion", {
               method: 'get',
+              credentials: 'include'
             }
           )
           // Handle bad http response
@@ -108,10 +110,10 @@ const QuestionPage = Vue.extend({
           .then(handleRequestError)
           // Current Question ok
           .then(function(response){
-            if(!('question' in response) || !('reponses') in responses || !('numero' in response)) throw Error('Données de question manquantes.');
-            _this.setQuestion(response.numero, response.question, response.reponses);
+            if(!('data' in response)) throw Error('Données de question manquantes.');
+            _this.setQuestion(response.data);
           })
-          .then(function(){ _this.riseDownAnswers(id); })
+          .then(function(){ _this.riseDownAnswers(2); })
           // Error caught
           .catch(function(error){ alert(error.message); console.log(error.message);});
     },
@@ -122,6 +124,7 @@ const QuestionPage = Vue.extend({
 
         fetch("/TenAsMarreDeTonWallpaper/api/question/prev/", {
               method: 'get',
+              credentials: 'include'
             }
           )
           // Handle bad http response
@@ -139,12 +142,14 @@ const QuestionPage = Vue.extend({
           // Error caught
           .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
     },
-    setQuestion(numero, question, reponses){
-      this.question.number = numero;
-      this.question.text = question.q_longue;
-      this.question.quote = null;
-      this.question.quoteAuthor = null;
-      this.question.answerCategories = reponses;
+    setQuestion(data){
+      this.question = {
+        number: data.numero,
+        text: data.q_longue,
+        quote: null,
+        quoteAuthor: null,
+        answerCategories: data.reponses
+      }
       this.randomInt = Math.random();
     }
   },

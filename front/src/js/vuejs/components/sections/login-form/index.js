@@ -34,6 +34,7 @@ const LoginForm = Vue.extend({
 
       fetch("/TenAsMarreDeTonWallpaper/api/membre/login", {
             method: 'post',
+            credentials: 'include',
             body: _this.getLoginFormData()
           }
         )
@@ -58,6 +59,7 @@ const LoginForm = Vue.extend({
 
       fetch("/TenAsMarreDeTonWallpaper/api/membre/add", {
             method: 'post',
+            credentials: 'include',
             body: _this.getRegisterFormData()
           }
         )
