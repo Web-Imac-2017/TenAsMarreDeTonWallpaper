@@ -42,7 +42,7 @@
 
         <span class="dlwpp-sep"></span>
 
-        <span v-for="sec in sections">
+        <span v-for="sec in sections" v-if="sec.vu">
             {{sec.texte}} <br>
             <a v-for="res in sec.res"
                v-on:click="telecharger(res.l,res.h)"
