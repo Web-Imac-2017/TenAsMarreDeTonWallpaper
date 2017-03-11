@@ -168,7 +168,7 @@ class AlgoController extends Controller {
 		$algo = new Algo();
 		
 		// Si on a voulu corriger la question précédente, on revient à la question précédente
-		if ($_SESSION['continue'] == true)
+		if ($_SESSION['continue'] == true && $_SESSION['num_question']>1)
 		{
 			$_SESSION['num_question']--;
 		}
