@@ -19,7 +19,7 @@ const Slider_wpp_home = Vue.extend({
 
   data() {
     return {
-    	index: 0
+    	index: 0,
     	slides: []
     };
   },
@@ -50,4 +50,3 @@ const Slider_wpp_home = Vue.extend({
 });
 
 export default Slider_wpp_home;
-

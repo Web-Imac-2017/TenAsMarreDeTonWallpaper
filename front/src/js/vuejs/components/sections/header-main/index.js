@@ -26,6 +26,10 @@ const HeaderMain = Vue.extend({
   methods:{
     onToggleSidebarButton : function(){
       this.$emit('toggle-sidebar');
+    },
+    onClickHeaderLink: function(curlink){
+      if('url' in curlink){ router.push(curlink.url); return; }
+      if('callback' in curlink){ curlink.callback(); return; }
     }
   }
 });

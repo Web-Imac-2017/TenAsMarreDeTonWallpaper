@@ -7,22 +7,28 @@ template     = eval(`\`${template}\``);
 
 import bus from '../../bus/index.js';
 import DefaultLayout from '../../layouts/default-layout/index.js';
-import Presentation from '../../sections/presentation/index.js';
-import Slider_wpp_home from '../../sections/slider-wpp-home/index.js'
+import MrWallmatchContent from '../../layouts/mr-wallmatch-content/index.js';
 
-const Home = Vue.extend({
+const Results = Vue.extend({
   template,
 
   data(){return{
     headerLinks: {
+      'results-retry': { text: 'Recommencer', url:{name: 'findYourWallpaper'} },
     },
+    randomInt: 0
   };},
 
   components: {
       'default-layout': DefaultLayout,
-      'presentation': Presentation,
-      'slider' : Slider_wpp_home
+      'mr-wallmatch-content': MrWallmatchContent,
   },
+
+  methods:{
+      prevQuestion(){
+        let _this = this;
+    },
+  }
 });
 
-export default Home;
+export default Results;

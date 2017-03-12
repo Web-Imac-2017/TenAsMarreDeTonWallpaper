@@ -5,12 +5,12 @@
         </ul>
         <ul class="menu-right">
             <li v-for="(curlink, keylink) in links" :key="keylink">
-                <a v-bind:href="curlink.url">{{curlink.text}}</a>
+                <a href="#" v-on:click.prevent="onClickHeaderLink(curlink)">{{curlink.text}}</a>
             </li>
             <li>
                 <a href="#" v-on:click.prevent="onToggleSidebarButton">
                     <template v-if="bus.isUserLoggedIn">
-                        <img class="user-avatar" alt="avatar" :src="bus.userLoggedIn.avatar"/>
+                        <img class="user-avatar" alt="avatar" :src="bus.avatar">
                         <span>{{bus.userLoggedIn.pseudo}}</span>
                     </template>
                     <span v-else>Connexion</span>
