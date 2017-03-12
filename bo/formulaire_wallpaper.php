@@ -60,7 +60,7 @@
             $(document).ready(function() {
                 var rep = ['Oui', 'Eventuellement', 'Peu importe', 'Pas vraiment', 'Non'];
                 $.ajax({
-                    url: "/Tenasmarredetonwallpaper/api/categorie/getAll",
+                    url: "/TenAsMarreDeTonWallpaper/api/categorie/getAll",
                     type: "POST",
                     success: function(data, textStatus, jqXHR) {
                         var chaine = "";
@@ -74,7 +74,7 @@
                 });
 
                 $.ajax({
-                    url: "/Tenasmarredetonwallpaper/api/question/getAll",
+                    url: "/TenAsMarreDeTonWallpaper/api/question/getAll",
                     type: "POST",
                     success: function(data, textStatus, jqXHR) {
                         var chaine = "";
