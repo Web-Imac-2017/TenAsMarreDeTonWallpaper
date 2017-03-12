@@ -19,7 +19,8 @@ const router = new VueRouter({
       name    : 'findYourWallpaper',
       path    : '/find',
       component: Question
-    }
+    },
+    {
       name     : 'test-dlwpp',
       path     : '/test-dlwpp',
       component: TestDlWpp,
