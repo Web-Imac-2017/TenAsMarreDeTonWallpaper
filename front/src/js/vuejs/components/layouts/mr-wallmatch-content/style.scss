@@ -7,7 +7,7 @@
     position: relative;
 
     .left-part{
-        flex: 0 1 $left-part-width;
+        flex: 0 0 $left-part-width;
         min-width: 10rem;
         display: flex; flex-flow: row nowrap; align-items: flex-start; justify-content: center;
     }

@@ -6,6 +6,8 @@ let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
 import bus from '../../bus/index.js';
+import router from '../../../router/index.js';
+import onTransitionEnd from '../../../utils/transitionend.js';
 import DefaultLayout from '../../layouts/default-layout/index.js';
 import RainbowAnswer from '../../widgets/rainbow-answer/index.js';
 import MrWallmatchContent from '../../layouts/mr-wallmatch-content/index.js';
@@ -22,13 +24,32 @@ const QuestionPage = Vue.extend({
       number: 1,
       answerCategories: ['Une photo', 'Une fractale', 'Ta mère']
     },*/
-    //question: null,
+    question: null,
     isRaised: true,
     selectedAnswer: 0, /* 1 - 5, 0 si inconnu */
     answersStyles: [],
+    isTransitionEnded: [false, false, false, false, false],
     headerLinks: {
-      'question-participate': { text: 'Participer', url:'/TenAsMarreDeTonWallpaper/participate' },
-      'question-abandon': { text: 'Abandonner', url:'/TenAsMarreDeTonWallpaper/' }
+      'question-abandon': { text: 'Abandonner', callback: function(){
+        let _this = this;
+        fetch("/TenAsMarreDeTonWallpaper/api/algo/restart", {
+            method: 'get',
+            credentials: 'include'
+          }
+        )
+        // Handle bad http response
+        .then(handleHttpError)
+        // Handle Json parse
+        .then(function(response){ return response.json(); })
+        // Handle request errors
+        .then(handleRequestError)
+        // Reset ok
+        .then(function(response){
+          router.push({name: 'home'}); return;
+        })
+        // Error caught
+        .catch(function(error){ alert(error.message); console.log(error.message);});
+      } }
     },
     randomInt: 0
   };},
@@ -55,12 +76,14 @@ const QuestionPage = Vue.extend({
       let _this = this;
       if(_this.isRaised) return false;
       _this.riseUpAnswers(id);
-
-      fetch("/TenAsMarreDeTonWallpaper/api/question/next/"+id, {
+      
+      Promise.all([ // on promise aussi avec les transitions visuelles, afin que le tout soit fluide
+        _this.riseUpAnswers(id),
+        fetch("/TenAsMarreDeTonWallpaper/api/algo/getNextQuestion/"+id, {
             method: 'get',
+            credentials: 'include'
           }
         )
-        .then(() => new Promise(resolve => setTimeout(resolve, 1000)))
         // Handle bad http response
         .then(handleHttpError)
         // Handle Json parse
@@ -69,12 +92,17 @@ const QuestionPage = Vue.extend({
         .then(handleRequestError)
         // Next Question ok
         .then(function(response){
-          if(!('question' in response)) throw Error('Données de question manquantes.');
-          _this.setQuestion(response.question);
+          if('continue' in response && response.continue == false){
+            router.push({name: 'results'}); return;
+          }
+          if(!('data' in response)) throw Error('Données de question manquantes.');
+          _this.setQuestion(response.data);
         })
-        .then(function(){ _this.riseDownAnswers(id); })
-        // Error caught
-        .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
+        .then(function(){return;})
+      ])
+      .then(function(){ _this.riseDownAnswers(id); })
+      // Error caught
+      .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
 
     },
     riseUpAnswers(id){
@@ -83,6 +111,14 @@ const QuestionPage = Vue.extend({
         }
 
         this.isRaised = true;
+
+        return Promise.all([
+          onTransitionEnd(this.$refs.answer1.$el, 500),
+          onTransitionEnd(this.$refs.answer2.$el, 500),
+          onTransitionEnd(this.$refs.answer3.$el, 500),
+          onTransitionEnd(this.$refs.answer4.$el, 500),
+          onTransitionEnd(this.$refs.answer5.$el, 500),
+        ]);
     },
     riseDownAnswers(id){
         /*for(let i = 0 ; i<5 ; ++i){
@@ -94,8 +130,9 @@ const QuestionPage = Vue.extend({
     getQuestion(){
         let _this = this;
 
-        fetch("/TenAsMarreDeTonWallpaper/api/algo/currentQuestion/", {
+        fetch("/TenAsMarreDeTonWallpaper/api/algo/currentQuestion", {
               method: 'get',
+              credentials: 'include'
             }
           )
           // Handle bad http response
@@ -106,20 +143,21 @@ const QuestionPage = Vue.extend({
           .then(handleRequestError)
           // Current Question ok
           .then(function(response){
-            if(!('question' in response) || !('reponses') in responses || !('numero' in response)) throw Error('Données de question manquantes.');
-            _this.setQuestion(response.numero, response.question, response.reponses);
+            if(!('data' in response)) throw Error('Données de question manquantes.');
+            _this.setQuestion(response.data);
           })
-          .then(function(){ _this.riseDownAnswers(id); })
+          .then(function(){ _this.riseDownAnswers(2); })
           // Error caught
           .catch(function(error){ alert(error.message); console.log(error.message);});
     },
     prevQuestion(){
         let _this = this;
         if(_this.isRaised) return false;
-        _this.riseUpAnswers(id);
+        _this.riseUpAnswers(0);
 
         fetch("/TenAsMarreDeTonWallpaper/api/question/prev/", {
               method: 'get',
+              credentials: 'include'
             }
           )
           // Handle bad http response
@@ -133,16 +171,18 @@ const QuestionPage = Vue.extend({
             if(!('question' in response)) throw Error('Données de question manquantes.');
             _this.setQuestion(response.question);
           })
-          .then(function(){ _this.riseDownAnswers(id); })
+          .then(function(){ _this.riseDownAnswers(0); })
           // Error caught
           .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
     },
-    setQuestion(numero, question, reponses){
-      this.question.number = numero;
-      this.question.text = question.q_longue;
-      this.question.quote = null;
-      this.question.quoteAuthor = null;
-      this.question.answerCategories = reponses;
+    setQuestion(data){
+      this.question = {
+        number: data.numero,
+        text: data.q_longue,
+        quote: null,
+        quoteAuthor: null,
+        answerCategories: data.reponses
+      }
       this.randomInt = Math.random();
     }
   },

@@ -10,14 +10,30 @@
 //.dlwpp > * { outline: 1px solid red; }
 .dlwpp * {
     color:$color-white;
+    box-shadow:none !important; // XXX A cause du box-shadow globalement mis pour les a:hover.
+}
+.dlwpp *:not(input) {
     outline:none !important;
 }
 .dlwpp-wpp-img { max-width:100%; max-height: 100%;}
+
+
 .dlwpp-xfermer { flex: 1 100%; order:1; }
 .dlwpp-prev    { flex: 0 auto; order:2; }
 .dlwpp-side    { flex: 10 0px; order:3; }
 .dlwpp-wpp     { flex: 52 0px; order:4; }
 .dlwpp-next    { flex: 0 auto; order:5; }
+
+@media screen and (max-width : $width-small) {
+    .dlwpp-side    { flex: 1 0px; }
+    .dlwpp-wpp     { flex: 3 0px; }
+}
+@media screen and (max-width : $width-xxsmall) {
+    .dlwpp-prev, .dlwpp-next { display:none !important; }
+    .dlwpp-side    { flex: 1 auto; order:4; }
+    .dlwpp-wpp     { flex: 3 auto; order:3; }
+}
+
 
 .dlwpp-prev, .dlwpp-next {
     display:flex;
@@ -25,13 +41,13 @@
     align-self: stretch;
 }
 
+
 // Décos
 .dlwpp-dlicon {
     width:1em;
     /*float:left;*/
     margin:0 (4em / 24);
     margin-top:(4em / 24);
-    box-shadow: none !important;
 }
 .dlwpp-sep {
     display:block;
@@ -40,9 +56,6 @@
     margin: 1em 0;
 }
 
-.dlwpp-prev a:hover *, .dlwpp-next a:hover * {
-    box-shadow: none;
-}
 .dlwpp-arrow-l, .dlwpp-arrow-r {
     width:(50rem / 24); height:(50rem / 24);
     border-top: 2px solid $color-white;
@@ -63,7 +76,11 @@ $dlwpp-arrow-pullmargin : (-10rem / 24);
 
 // Colors
 // Déso pour les !important. J'ai pas trouvé d'alternatives pour le moment.
-.dlwpp-c1 { color:$color-dark-brown !important; }
+.dlwpp-c1, .dlwpp-c1 * { color:$color-dark-brown !important; }
+.dlwpp-c2, .dlwpp-c2 *,
+.dlwpp-c3, .dlwpp-c3 *,
+.dlwpp-c4, .dlwpp-c4 *,
+.dlwpp-c5:not(input), .dlwpp-c5 *:not(input) { color:$color-white !important; }
 .dlwpp-c1 { background: $color-sunset-yellow !important; }
 .dlwpp-c2 { background: $color-sunset-orange !important; }
 .dlwpp-c3 { background: $color-sunset-red    !important; }
@@ -71,6 +88,17 @@ $dlwpp-arrow-pullmargin : (-10rem / 24);
 .dlwpp-c5 { background: $color-sunset-purple !important; }
 
 // Misc
+.dlwpp-abutton {
+    display:flex !important;
+    margin: (1rem / 4) 0;
+}
+.dlwpp-abutton img {
+    align-self: flex-start;
+}
+.dlwpp-abutton-text {
+    align-self: stretch;
+    width:100%;
+}
 .dlwpp-side, .dlwpp-wpp {
     //max-height: calc(100vh - #{$header-main-height});
 }
@@ -84,21 +112,25 @@ $dlwpp-arrow-pullmargin : (-10rem / 24);
     padding: 0 1em;
 }
 .dlwpp-side {
-    @include font-size-small();
+    //@include font-size-small();
     line-height: 1.8em; // XXX HACK
     overflow: hidden;
 }
-.dlwpp-side h2 {
+.dlwpp-titre {
     margin: 0;
 }
 .dlwpp-xfermer {
     @include typo-brandon-up-light();
-    @include font-size-small();
+    //@include font-size-small();
     margin:1em;
+}
+.dlwpp-xfermer img {
+    max-height: (1rem / 2);
+    margin-right: (1rem / 4);
 }
 .dlwpp .abutton, .dlwpp input {
     @include typo-brandon-sc-light();
-    @include font-size-small();
+    //@include font-size-small();
     font-variant: normal;
     padding:0;
     width:100%;
@@ -108,9 +140,6 @@ $dlwpp-arrow-pullmargin : (-10rem / 24);
 }
 .dlwpp-ipt-dlicon-a {
     width:20%;
-}
-.dlwpp-ipt-dlicon-a * {
-    box-shadow: none !important;
 }
 .dlwpp-ipt-dlicon-wrapper {
     display: inline-block;
@@ -125,11 +154,15 @@ $dlwpp-arrow-pullmargin : (-10rem / 24);
     width:40%;
     height:100%;
     -moz-appearance:textfield;
+    border-bottom: none !important;
+    border-right:2px solid $color-dark-brown;
+    padding-left: (1em / 2);
 }
-.dlwpp input[type='image'] {
+.dlwpp button {
     width:20%;
     height:100%;
-    border:none;
+    border:none !important;
+    padding:0;
 }
 // http://stackoverflow.com/a/4298216
 .dlwpp input::-webkit-outer-spin-button,
@@ -138,3 +171,10 @@ $dlwpp-arrow-pullmargin : (-10rem / 24);
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
+/*
+// http://stackoverflow.com/a/15378182
+.dlwpp :-moz-placeholder { text-align: center; }
+.dlwpp ::-moz-placeholder { text-align: center; }
+.dlwpp :-ms-input-placeholder { text-align: center; }
+.dlwpp ::-webkit-input-placeholder { text-align: center; }
+*/

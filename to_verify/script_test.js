@@ -6,7 +6,7 @@ function myPage(){
     var me = this;
     this.start = function(){
 
-        var url = "http://localhost/TenAsMarreDeTonWallpaper/api/membre/add";
+        var url = "http://localhost/TenAsMarreDeTonWallpaper/api/membre/login";
 
         $('#myForm').submit(function(e){
 

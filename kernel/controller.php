@@ -7,7 +7,8 @@ class Controller {
 	}
 
 	public function error() {
-		$data = "Error";
-		echo $data;
+		$returnMessage = utf8_encode("La route est inexistante ou invalide, vérifiez les paramètres");
+		$data = ["returnCode" => 1, "returnMessage" => $returnMessage, "data" => ''];
+		echo json_encode($data);
 	}
 }
