@@ -52,6 +52,10 @@ class wallpaperController extends Controller {
                 else {
                     $url = 'upload/'.uniqid().$ext;
 
+                    //echo (is_writable('upload/') ? "writable" : "not writable!").'<br>';
+                    //$dirs = glob('*');
+                    //print_r( $dirs);
+
                     if (move_uploaded_file($_FILES['image']['tmp_name'], $url)) {
                         $width = getimagesize($url)[0];
                         $height = getimagesize($url)[1];
