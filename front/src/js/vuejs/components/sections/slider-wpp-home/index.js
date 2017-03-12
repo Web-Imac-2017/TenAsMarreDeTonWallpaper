@@ -1,7 +1,7 @@
 'use strict';
 
 import Vue from 'vue/dist/vue';
-import Slide from '../slide_wpp/index.js';
+import Slide from '../slide-wpp/index.js';
 
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
@@ -29,7 +29,7 @@ const Slider_wpp_home = Vue.extend({
   },
 
   mounted () {
-  	this.slides = this.children
+  	this.slides = this.$children
   	this.slides.forEach((slide,i) => {
   		slide.index = i
   	})
