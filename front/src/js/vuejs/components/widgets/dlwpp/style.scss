@@ -25,7 +25,13 @@
 .dlwpp-next    { flex: 0 auto; order:5; }
 
 @media screen and (max-width : $width-small) {
-
+    .dlwpp-side    { flex: 1 0px; }
+    .dlwpp-wpp     { flex: 3 0px; }
+}
+@media screen and (max-width : $width-xxsmall) {
+    .dlwpp-prev, .dlwpp-next { display:none !important; }
+    .dlwpp-side    { flex: 1 auto; order:4; }
+    .dlwpp-wpp     { flex: 3 auto; order:3; }
 }
 
 
