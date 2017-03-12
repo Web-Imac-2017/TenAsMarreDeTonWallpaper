@@ -25,7 +25,7 @@ const Slide_wpp = Vue.extend({
 
   computed: {
     visible() {
-        return this.index === this.parent.index
+        return this.index === this.$parent.index
     }
   },
 
