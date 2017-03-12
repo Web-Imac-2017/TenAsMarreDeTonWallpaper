@@ -15,7 +15,7 @@ const Slide_wpp = Vue.extend({
   data() {
     return {
     	wallpapers:[
-			{ thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', width: 1920, height: 1080 },
+			      { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', width: 1920, height: 1080 },
             { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/nyan-cat.jpg', width: 1920, height: 1080 },
             { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', width: 2000, height: 1500 }
         ],
