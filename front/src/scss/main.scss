@@ -76,13 +76,13 @@ html{
 }
 
 // XXX
-@media screen and (max-width:$width-desktop-medium) {
+@media screen and (max-width:$width-medium) {
     html {
         font-size:18px;
         line-height: 1.2em;
     }
 }
-@media screen and (max-width:$width-desktop-small) {
+@media screen and (max-width:$width-small) {
     html {
         font-size:14px;
         line-height: 1em;
