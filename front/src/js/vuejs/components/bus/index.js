@@ -16,7 +16,13 @@ const Bus = Vue.extend({
       return this.userLoggedIn != null;
     },
     avatar : function() {
-        return this.userLoggedIn.avatar ? this.userLoggedIn.avatar : this.altAvatar;
+        if(!this.userLoggedIn)
+            return this.altAvatar;
+        if(!this.userLoggedIn.avatar)
+            return this.altAvatar;
+        if(this.userLoggedIn.avatar == "")
+            return this.altAvatar;
+        return this.userLoggedIn.avatar;
     }
   },
 
