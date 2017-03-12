@@ -63,10 +63,36 @@ class wallpaperController extends Controller {
 
                         $membre->incrementer_nb_wallpapers_ajoutes($_SESSION['user']['id']);
 
-                        $i=1;
-                        foreach($_POST['rep'] as $rep) {
-                            $reponse->add($i, $wallpaper_id, $rep[0], $rep[1]);
-                            $i++;
+                        $min = 0;
+                        $max = 0;
+                        foreach($_POST['rep'] as $key=>$rep) {
+                            switch($rep) {
+                                case 0: // Oui
+                                    $min = 80;
+                                    $max = 100;
+                                    break;
+                                case 1: // Eventuellement
+                                    $min = 60;
+                                    $max = 80;
+                                    break;
+                                case 2: // Peu importe
+                                    $min = 40;
+                                    $max = 60;
+                                    break;
+                                case 3: // Pas vraiment
+                                    $min = 20;
+                                    $max = 40;
+                                    break;
+                                case 4: // Non
+                                    $min = 0;
+                                    $max = 20;
+                                    break;
+                                default:
+                                    $min = 0;
+                                    $max = 20;
+                                    break;
+                            }
+                            $reponse->add($key, $wallpaper_id, $min, $max);
                         }
 
                         $wallpaper->setCategories($wallpaper_id, $_POST['categories']);

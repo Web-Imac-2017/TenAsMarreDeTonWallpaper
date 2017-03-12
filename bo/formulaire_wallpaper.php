@@ -58,6 +58,7 @@
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
         <script type="text/javascript">
             $(document).ready(function() {
+                var rep = ['Oui', 'Eventuellement', 'Peu importe', 'Pas vraiment', 'Non'];
                 $.ajax({
                     url: "/Tenasmarredetonwallpaper/api/categorie/getAll",
                     type: "POST",
@@ -79,10 +80,13 @@
                         var chaine = "";
                         var res = JSON.parse(data);
                         for(var i=0; i<res.data.length; i++) {
-                            chaine += "<tr><td>" + res.data[i].q_longue + "</td><td><input type='text' name='rep[" + res.data[i].id + "][0]' value='0' /></td><td><input type='text' name='rep[" + res.data[i].id + "][1]' value='49' /></td></tr>";
+                            chaine += "<tr><td>" + res.data[i].q_longue + "</td><td><select name='rep[" + res.data[i].id + "]'>";
+                            for(var j=0; j<rep.length; j++) {
+                                chaine += "<option value='" + j + "'>" + rep[j] + "</option>";
+                            }
+                            chaine += "</select></td></tr>";
                         }
                         $("#rep").append(chaine);
-
                     }
                 });
             });
