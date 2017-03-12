@@ -15,7 +15,7 @@
     <body>
         <div class="container">
 
-            <h1>Formulaire wallpaper</h1>
+            <!--<h1>Formulaire wallpaper</h1>-->
             <h4>Ajouter un nouveau wallpaper</h4>
             <hr>
 
