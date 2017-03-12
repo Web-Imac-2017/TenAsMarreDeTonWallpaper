@@ -31,7 +31,7 @@ class wallpaperController extends Controller {
                     $data = $mel->add("Validé", $_SESSION['user']['id'], $_SESSION['user']['id']);
                 }
                 else {
-                    $data = $mel->add("En attente", $_SESSION['user']['id'], "NULL");
+                    $data = $mel->add("En attente", $_SESSION['user']['id'], NULL);
                 }
 
                 $mel_id = $data['data']['id'];
