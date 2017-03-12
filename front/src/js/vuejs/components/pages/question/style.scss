@@ -1,0 +1,82 @@
+.question-page{
+
+    .top-infos{
+        position: absolute; top: 0; left: 0;
+        display: flex; flex-flow: row nowrap;
+        
+        &>*{
+            padding: 0.8rem 1.2rem;
+            color: $color-sunset-purple;
+            display: flex; flex-flow: row nowrap; align-items: center;
+        }
+        .prev-question-link{
+            @include typo-brandon-up-black();
+            &::before{
+                content: ''; display: block;
+                width: 1rem; height: 1rem;
+                border-left: solid 2px;
+                border-bottom: solid 2px;
+                transform: rotate(45deg);
+            }
+            &:hover{
+                color: $color-sunset-orange;
+            }
+        }
+    }
+
+    .mr-wallmatch-says{
+        color: $color-sunset-purple;
+        margin-bottom: (60rem / 24) * 1.4;
+        .mr-wallmatch-says-deco{
+            @include font-size-giant();
+            margin-top: (60rem / 24) * 1.4;
+            margin-left: 1.2rem;
+        }
+    }
+
+    .right-part{
+        display: flex; flex-flow: column nowrap; justify-content: space-between;
+        padding-bottom: $question-choices-height;
+
+        *{ flex: 0 0 auto; }
+    }
+
+    .question-quote-wrapper{
+        flex: 1;
+        display: flex; flex-flow: column nowrap; justify-content: center; align-items: stretch;
+        color: $color-sunset-red;
+        @include font-size-large();
+        @include mr-wallmatch-content-margin-right();
+        .question-quote{
+            border-top: solid 1px;
+            padding: 0.6rem;
+        }
+        .question-quote-author{
+            text-align: right;
+            padding: 0 0.6rem;
+        }
+    }
+
+    .rainbow-answer{
+        position: fixed; bottom: 0; width: 20%;
+        &.answer-1{background: $color-sunset-purple; left: 0;}
+        &.answer-2{background: $color-sunset-pink; left: 20%;}
+        &.answer-3{background: $color-sunset-red; left: 40%;}
+        &.answer-4{background: $color-sunset-orange; left: 60%;}
+        &.answer-5{background: $color-sunset-yellow; left: 80%;}
+        &.up{
+            @extend :hover;
+            height: calc(100vh - #{$header-main-height});
+        }
+        transition: height $timing-function $transition-duration, box-shadow $timing-function $transition-duration, background-color $timing-function $transition-duration;
+    }
+
+    &.first-question{
+        .answer-1{background: $color-grey-dark;}
+        .answer-2{background: $color-grey-medium-dark;}
+        .answer-3{background: $color-grey-medium;}
+        .answer-4{background: $color-grey-medium-light;}
+        .answer-5{background: $color-grey-light;}
+    }
+
+}

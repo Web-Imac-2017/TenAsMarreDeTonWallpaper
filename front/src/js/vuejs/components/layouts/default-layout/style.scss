@@ -10,6 +10,7 @@
     .content{
         display: flex; flex-flow: column nowrap; align-items: stretch;
         flex: 1;
+        position: relative;
     }
 
     .sidebar{
@@ -27,6 +28,10 @@
         &.active{
             animation: sidebarShow $timing-function $transition-duration;
             right: 0;
+        }
+
+        &.notransition{
+            animation: none;
         }
 
         h2{

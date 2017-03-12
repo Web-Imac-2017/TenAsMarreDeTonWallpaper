@@ -38,8 +38,8 @@ h1.title {
 .button-dark-purple {
 	@include box-with-shadow (70px, 100px, $color-dark-red);
 	&:hover {
-		@include transform-scale; 
-	} 
+		@include transform-scale;
+	}
 
 	p {
 		font: $normal-font;
@@ -74,6 +74,20 @@ html{
 	font-size: 24px; // base font-size.
 	line-height: 1.6em;
 }
+
+@media screen and (max-width:$width-medium) {
+    html {
+        font-size:18px;
+        line-height: 1.2em;
+    }
+}
+@media screen and (max-width:$width-xsmall) {
+    html {
+        font-size:14px;
+        line-height: 1em;
+    }
+}
+
 html, body{	// full-viewport html
 	height: 100%;
 	color: $color-foreground;
@@ -121,7 +135,7 @@ a{
 	color: $color-sunset-red;
 	:hover{
 		color: $color-sunset-orange;
-		box-shadow: $color-sunset-red -1px 0 inset;
+		box-shadow: $color-sunset-red 0 -1px inset;
 	}
 }
 
@@ -138,6 +152,9 @@ LOAD COMPONENTS
 
 /* pages */
 @import '../js/vuejs/components/pages/home/style';
+@import '../js/vuejs/components/pages/question/style';
+@import '../js/vuejs/components/pages/results/style';
+@import '../js/vuejs/components/pages/test-dlwpp/style';
 
 /* sections */
 @import '../js/vuejs/components/sections/header-main/style';
@@ -148,4 +165,6 @@ LOAD COMPONENTS
 
 /* widgets */
 @import '../js/vuejs/components/widgets/mr-wallmatch/style';
+@import '../js/vuejs/components/widgets/rainbow-answer/style';
 @import '../js/vuejs/components/widgets/rainbow-bar/style';
+@import '../js/vuejs/components/widgets/dlwpp/style';
