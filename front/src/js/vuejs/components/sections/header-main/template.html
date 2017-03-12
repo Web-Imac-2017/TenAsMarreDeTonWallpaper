@@ -10,7 +10,11 @@
             <li>
                 <a href="#" v-on:click.prevent="onToggleSidebarButton">
                     <template v-if="bus.isUserLoggedIn">
-                        <img class="user-avatar" alt="avatar" :src="bus.userLoggedIn.avatar"/>
+                        <!-- En attendant qu'on aie des avatars... -->
+                        <!-- Précédemment un attribut de cette img : -->
+                        <!-- v-bind:src="bus.userLoggedIn.avatar" -->
+                        <img class="user-avatar" alt="avatar"
+                        src="/TenAsMarreDeTonWallpaper/www/assets/icons/user-white.png"/>
                         <span>{{bus.userLoggedIn.pseudo}}</span>
                     </template>
                     <span v-else>Connexion</span>
