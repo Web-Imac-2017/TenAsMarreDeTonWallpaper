@@ -15,7 +15,7 @@
     <body>
         <div class="container">
 
-            <h1>Formulaire connexion</h1>
+            <h1>Se connecter</h1>
             <hr>
 
             <form action="../api/membre/login" method="post">

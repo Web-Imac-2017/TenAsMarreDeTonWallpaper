@@ -34,7 +34,7 @@
         ?>
         <div class="container">
 
-            <h1>Formulaire question</h1>
+            <!--<h1>Formulaire question</h1>-->
             <h4>Ajouter une nouvelle question</h4>
             <hr>
 

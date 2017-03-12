@@ -15,7 +15,7 @@
     <body>
         <div class="container">
 
-            <h1>Formulaire inscription</h1>
+            <h1>S'inscrire</h1>
             <hr>
 
             <form action="../api/membre/add" method="post">

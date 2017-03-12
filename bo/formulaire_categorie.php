@@ -15,7 +15,7 @@
     <body>
         <div class="container">
 
-            <h1>Formulaire catégorie</h1>
+            <!--<h1>Formulaire catégorie</h1>-->
             <h4>Ajouter une nouvelle catégorie</h4>
             <hr>
 
