@@ -80,7 +80,7 @@
                         var chaine = "";
                         var res = JSON.parse(data);
                         for(var i=0; i<res.data.length; i++) {
-                            chaine += "<tr><td>" + res.data[i].q_longue + "</td><td><select name='rep[" + res.data[i].id + "]'>";
+                            chaine += "<tr><td>" + res.data[i].q_courte + "</td><td><select name='rep[" + res.data[i].id + "]'>";
                             for(var j=0; j<rep.length; j++) {
                                 chaine += "<option value='" + j + "'>" + rep[j] + "</option>";
                             }

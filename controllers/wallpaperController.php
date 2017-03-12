@@ -68,28 +68,28 @@ class wallpaperController extends Controller {
                         foreach($_POST['rep'] as $key=>$rep) {
                             switch($rep) {
                                 case 0: // Oui
-                                    $min = 80;
+                                    $min = 100;
                                     $max = 100;
                                     break;
                                 case 1: // Eventuellement
-                                    $min = 60;
-                                    $max = 80;
+                                    $min = 75;
+                                    $max = 99;
                                     break;
                                 case 2: // Peu importe
-                                    $min = 40;
-                                    $max = 60;
+                                    $min = 50;
+                                    $max = 74;
                                     break;
                                 case 3: // Pas vraiment
-                                    $min = 20;
-                                    $max = 40;
+                                    $min = 25;
+                                    $max = 49;
                                     break;
                                 case 4: // Non
                                     $min = 0;
-                                    $max = 20;
+                                    $max = 24;
                                     break;
                                 default:
                                     $min = 0;
-                                    $max = 20;
+                                    $max = 50;
                                     break;
                             }
                             $reponse->add($key, $wallpaper_id, $min, $max);
