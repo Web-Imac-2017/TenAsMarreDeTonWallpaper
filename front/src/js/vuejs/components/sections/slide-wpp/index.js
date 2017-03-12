@@ -9,7 +9,7 @@ const Slide_wpp = Vue.extend({
   template,
 
   props: {
-    'wallpapers-height-rem': { type: Number, default: function(){ return 6; }}
+    'wallpapers-height-rem': { type: Number, default: function(){ return 8; }}
   },
 
   data() {
@@ -24,6 +24,9 @@ const Slide_wpp = Vue.extend({
   },
 
   computed: {
+    transition() {
+      return 'slide-' + this.$parent.direction
+    },
     visible() {
         return this.index === this.$parent.index
     }
