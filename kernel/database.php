@@ -6,9 +6,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/DbConfig.php
 
 class Database {
     private static $instance = null; // instance
-    
+
     public $base = null; // objet PDO
-    
+
     public function __construct() {
         $dbConfig = new DbConfig();
         $config = DbConfig::$config;
@@ -23,11 +23,11 @@ class Database {
             /*if(isdebug('db'))
                 echo 'Connexion échouée : ' . $e->getMessage();
             else*/
-                echo 'Echec de connexion à la BDD.';
+                echo 'Echec de connexion à la BDD. Raison : <br>' . $e->getMessage();
             exit();
         }
     }
-    
+
     public static function get() {
         if(!self::$instance)
             self::$instance = new Database(DbConfig::$config);
