@@ -17,8 +17,8 @@ const Slide_wpp = Vue.extend({
     	wallpapers:[
 			{ thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', width: 1920, height: 1080 },
             { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/nyan-cat.jpg', width: 1920, height: 1080 },
-            { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', width: 2000, height: 1500 }     
-        ]
+            { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', width: 2000, height: 1500 }
+        ],
         index: 0
     };
   },
@@ -27,7 +27,7 @@ const Slide_wpp = Vue.extend({
     visible() {
         return this.index === this.parent.index
     }
-  }
+  },
 
   methods: {
     getThumbnailCss(wallpaper){
@@ -44,4 +44,3 @@ const Slide_wpp = Vue.extend({
 });
 
 export default Slide_wpp;
-
