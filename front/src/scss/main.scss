@@ -74,6 +74,21 @@ html{
 	font-size: 24px; // base font-size.
 	line-height: 1.6em;
 }
+
+// XXX
+@media screen and (max-width:$width-desktop-medium) {
+    html {
+        font-size:18px;
+        line-height: 1.2em;
+    }
+}
+@media screen and (max-width:$width-desktop-small) {
+    html {
+        font-size:14px;
+        line-height: 1em;
+    }
+}
+
 html, body{	// full-viewport html
 	height: 100%;
 	color: $color-foreground;

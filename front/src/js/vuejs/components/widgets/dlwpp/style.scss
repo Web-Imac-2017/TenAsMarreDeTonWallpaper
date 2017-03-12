@@ -98,16 +98,16 @@ $dlwpp-arrow-pullmargin : (-10rem / 24);
     padding: 0 1em;
 }
 .dlwpp-side {
-    @include font-size-small();
+    //@include font-size-small();
     line-height: 1.8em; // XXX HACK
     overflow: hidden;
 }
-.dlwpp-side h2 {
+.dlwpp-titre {
     margin: 0;
 }
 .dlwpp-xfermer {
     @include typo-brandon-up-light();
-    @include font-size-small();
+    //@include font-size-small();
     margin:1em;
 }
 .dlwpp-xfermer img {
@@ -116,7 +116,7 @@ $dlwpp-arrow-pullmargin : (-10rem / 24);
 }
 .dlwpp .abutton, .dlwpp input {
     @include typo-brandon-sc-light();
-    @include font-size-small();
+    //@include font-size-small();
     font-variant: normal;
     padding:0;
     width:100%;
