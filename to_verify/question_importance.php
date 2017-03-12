@@ -61,27 +61,31 @@ function importance($qid){
     $req4->closeCursor();
 
 }
-function setreponseforquestion($qid){
+function setReponseforQuestion($qid){
     $bdd = Database::get();
+    $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
     $query = 'SELECT COUNT(*) as nb FROM wallpaper';
-    try {
-        $req = $bdd->prepare($query);
-        $req->execute();
-        $res = $req->fetchAll(PDO::FETCH_ASSOC);
-        if($res) {
-            $val=$res['nb'];
-        }
-    }
-    catch (PDOException $e) {
-        //error
-    }
-    $req->closeCursor();
+        try {
+            $req = $bdd->prepare($query);
+            $req->execute();
+            $res = $req->fetchAll(PDO::FETCH_ASSOC);
+            if($res) {
+                $val=$res['nb'];
+            }
+            $req->closeCursor();
+            $reponse=new Reponse();
+            for ($i=0; $i < $val; $i++) { 
+                $result['data'] =$result['data'].$reponse->add($qid, $i,0, 50)['data'];
+            }
+            $result['returnCode'] = 1;
+            $result['returnMessage'] = 'Insertion de la question réussie';
 
-    $reponse=new Reponse();
-    for ($i=0; $i < $val; $i++) { 
-        $reponse->add($qid, $i,0, 50);
+        }
+        catch (PDOException $e) {
+            $result['returnCode'] = -1;
+            $result['returnMessage'] = "Echec de la mise en ligne : " . $e->getMessage();   // Changer pour le message de PDO
+        }
+    return $result;
     }
-    
-}
 ?>
