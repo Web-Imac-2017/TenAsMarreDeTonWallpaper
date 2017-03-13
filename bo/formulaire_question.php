@@ -51,7 +51,7 @@ include('header.php');
         </tr>
     </table>
 </form>
-</div>
+
 <?php
 if(isset($_POST['submit'])) {
     if(isset($_POST['q_longue']) && isset($_POST['q_courte']) && isset($_POST['case']) && isset($_SESSION['id'])) {
@@ -71,5 +71,7 @@ if(isset($_POST['submit'])) {
     }
 }
 ?>
-</body>
-</html>
+
+<?php
+include('footer.php');
+?>

@@ -14,6 +14,7 @@ include('header.php');
         </tr>
     </table>
 </form>
-</div>
-</body>
-</html>
+
+<?php
+include('footer.php');
+?>
