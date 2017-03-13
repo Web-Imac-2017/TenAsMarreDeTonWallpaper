@@ -20,10 +20,10 @@ include('header.php');
 
 <div class="col-md-6 col-sm-12">
     <h2 class="sub-header">Ajouter une catégorie</h2>
-    <form action="../api/categorie/add" method="POST" class="form-inline">
+    <form id="add" class="form-inline">
         <div class="form-group">
-            <label for="nom">Nom<span style="color:red;">*</span> :</label>
-            <input type="text" class="form-control" name="nom" id="nom" />
+            <label>Nom<span style="color:red;">*</span> :</label>
+            <input type="text" class="form-control nom" />
         </div>
         <input type="submit" value="Ajouter" name="submit" class="btn btn-success" />
     </form>
@@ -31,11 +31,11 @@ include('header.php');
 
 <div class="col-md-6 col-sm-12">
     <h2 class="sub-header">Modifier une catégorie</h2>
-    <form action="../api/categorie/change" method="POST" class="form-inline">
+    <form id="change" class="form-inline">
         <div class="form-group">
-           <select name="id" class="select form-control"></select>
-            <label for="nom">Nouveau nom<span style="color:red;">*</span> :</label>
-            <input type="text" class="form-control" name="nom" id="nom" />
+            <select class="select form-control"></select>
+            <label>Nouveau nom<span style="color:red;">*</span> :</label>
+            <input type="text" class="form-control nom" />
         </div>
         <input type="submit" value="Modifier" name="submit" class="btn btn-info" />
     </form>
@@ -43,8 +43,8 @@ include('header.php');
 
 <div class="col-md-6 col-sm-12">
     <h2 class="sub-header">Supprimer une catégorie</h2>
-    <form action="../api/categorie/delete" method="POST" class="form-inline">
-        <select name="id" class="select form-control"></select>
+    <form id="delete" class="form-inline">
+        <select class="select form-control id"></select>
         <input type="submit" value="Supprimer" name="submit" class="btn btn-danger" />
     </form>
 </div>
@@ -52,26 +52,67 @@ include('header.php');
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $.ajax({
-            url: "/TenAsMarreDeTonWallpaper/api/categorie/getAll",
-            type: "POST",
-            success: function(data, textStatus, jqXHR) {
-                var chaine = "";
-                var res = JSON.parse(data);
-                for(var i=0; i<res.data.length; i++) {
-                    chaine += '<tr><td>' + res.data[i].id + '</td>';
-                    chaine += '<td>' + res.data[i].nom + '</td></tr>';
+        reload();
+        
+        function reload() {
+            $.ajax({
+                url: "/TenAsMarreDeTonWallpaper/api/categorie/getAll",
+                type: "POST",
+                success: function(data, textStatus, jqXHR) {
+                    var chaine = "";
+                    var res = JSON.parse(data);
+                    for(var i=0; i<res.data.length; i++) {
+                        chaine += '<tr><td>' + res.data[i].id + '</td>';
+                        chaine += '<td>' + res.data[i].nom + '</td></tr>';
+                    }
+                    $("#req1").html(chaine);
+
+                    chaine = "";
+
+                    for(var i=0; i<res.data.length; i++) {
+                        chaine += "<option value='" + res.data[i].id + "'>" + res.data[i].nom + "</option>";
+                    }
+
+                    $(".select").html(chaine);
                 }
-                $("#req1").html(chaine);
-                
-                chaine = "";
-                
-                for(var i=0; i<res.data.length; i++) {
-                    chaine += "<option value='" + res.data[i].id + "'>" + res.data[i].nom + "</option>";
+            });
+        }
+
+        $("body #add").submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "/TenAsMarreDeTonWallpaper/api/categorie/add",
+                type: "POST",
+                data: {
+                    nom: $("#add .nom").val()
                 }
-                
-                $(".select").html(chaine);
-            }
+            });
+            reload();
+        });
+
+        $("body #change").submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "/TenAsMarreDeTonWallpaper/api/categorie/change",
+                type: "POST",
+                data: {
+                    id: $("#change .select").val(),
+                    nom: $("#change .nom").val()
+                }
+            });
+            reload();
+        });
+
+        $("body #delete").submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "/TenAsMarreDeTonWallpaper/api/categorie/delete",
+                type: "POST",
+                data: {
+                    id: $("#delete .select").val()
+                }
+            });
+            reload();
         });
     });
 
