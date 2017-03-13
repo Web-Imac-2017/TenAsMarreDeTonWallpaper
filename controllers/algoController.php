@@ -3,6 +3,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
 require_once KERNEL . 'kernel.php';
 require_once MODEL_DIR . 'algo.php';
+require_once MODEL_DIR . 'wallpaper.php';
 
 class AlgoController extends Controller {
 
@@ -188,5 +189,20 @@ class AlgoController extends Controller {
 			$data = ["returnCode" => 1, 'data' => $_SESSION['question'][$_SESSION['num_question']-1], "continue" => true, "returnMessage" => "On revient à la question ".$_SESSION['num_question']];
 			echo json_encode($data);
 		}
+	}
+	
+	public function updateDL($wallpaper_id)
+	{
+		$wallpaper = new Wallpaper();
+		if(isset($wallpaper_id)
+		{
+			$wallpaper->incrementer_nb_telechargement($wallpaper_id);
+			$data = ["returnCode" => 1, 'data' => '', "continue" => false, "returnMessage" => "Le wallpaper a bien été téléchargé";
+		}
+		else
+		{
+			$data = ["returnCode" => 0, 'data' => '', "continue" => false, "returnMessage" => "Aucun id de wallpaper sélectionné";
+		}
+		echo json_encode($data);
 	}
 }
