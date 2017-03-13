@@ -8,7 +8,7 @@ include('header.php');
 </div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6 col-sm-12">
         <h2 class="sub-header">Questions</h2>
         <div class="table-responsive">
             <table class="table table-striped">
@@ -24,7 +24,7 @@ include('header.php');
         </div>
     </div>
     
-    <div class="col-md-4">
+    <div class="col-md-6 col-sm-12">
         <h2 class="sub-header">Catégories</h2>
         <div class="table-responsive">
             <table class="table table-striped">
@@ -53,7 +53,7 @@ include('header.php');
                 var res = JSON.parse(data);
                 for(var i=0; i<res.data.length; i++) {
                     chaine += '<div class="col-xs-6 col-sm-3 placeholder">';
-                    chaine += '<img src="' + res.data[i].url + '" width="200" height="200" class="img-responsive" />';
+                    chaine += '<img src="../' + res.data[i].url + '" width="200" height="200" class="img-responsive" />';
                     chaine += '<h4>' + res.data[i].nom + '</h4>';
                     chaine += '<span class="text-muted">' + res.data[i].auteur + '</span></div>';
                 }
