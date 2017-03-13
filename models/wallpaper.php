@@ -327,6 +327,43 @@ class Wallpaper extends Model {
             return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
     }
+    
+    public function latest($nb) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM wallpaper ORDER BY id DESC';
+
+            try {
+                $req = $bdd->prepare($sqlQuery);
+                $req->execute();
+                $selection = $req->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($nb <= 1) {
+                    $nb = 1;
+                }
+                else if ($nb > count($selection)) {
+                    $nb = count($selection);
+                }
+
+                for ($i=0; $i<$nb; $i++){
+                    $wallpapers[$i] = $selection[$i];
+                }
+
+                $data = $wallpapers;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
 
     public function getUrl($id) {
         $bdd = Database::get();

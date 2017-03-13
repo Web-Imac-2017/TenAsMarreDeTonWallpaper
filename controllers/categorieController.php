@@ -45,9 +45,49 @@ class categorieController extends Controller {
         echo json_encode($data);
     }
 
-    public function delete($id) {
+    public function delete() {
         $categorie = new Categorie();
-        $data = $categorie->delete($id);
+
+        if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+            if(isset($_POST['id']) && !empty($_POST['id'])) {
+                if($_SESSION['user']['moderateur'] || $_SESSION['user']['admin']) {
+                    $data = $categorie->delete($_POST['id']);
+                }
+                else {
+                    $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas autorisé'];
+                }
+            }
+            else {
+                $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants'];
+            }
+        }
+        else {
+            $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté'];
+        }
+
+        echo json_encode($data);
+    }
+
+    public function change() {
+        $categorie = new Categorie();
+
+        if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+            if(isset($_POST['nom']) && !empty($_POST['nom']) && isset($_POST['id']) && !empty($_POST['id'])) {
+                if($_SESSION['user']['moderateur'] || $_SESSION['user']['admin']) {
+                    $data = $categorie->change($_POST['id'], $_POST['nom']);
+                }
+                else {
+                    $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas autorisé'];
+                }
+            }
+            else {
+                $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants'];
+            }
+        }
+        else {
+            $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté'];
+        }
+
         echo json_encode($data);
     }
 

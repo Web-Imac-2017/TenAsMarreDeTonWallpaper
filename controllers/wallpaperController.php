@@ -108,6 +108,12 @@ class wallpaperController extends Controller {
         $data = $wallpaper->getMostDL($nb);
         echo json_encode($data);
     }
+    
+    public function latest($nb) {
+        $wallpaper = new Wallpaper();
+        $data = $wallpaper->latest($nb);
+        echo json_encode($data);
+    }
 
     public function getMostAP($nb) {
         $wallpaper = new Wallpaper();

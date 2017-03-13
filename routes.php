@@ -25,6 +25,7 @@ Router::connect('/membre/add', 'membre/add', array());
 Router::connect('/membre/login', 'membre/login', array());
 Router::connect('/membre/logout', 'membre/logout', array());
 Router::connect('/membre/getInfo', 'membre/getInfo', array());
+Router::connect('/membre/getAll', 'membre/getAll', array());
 Router::connect('/membre/edit', 'membre/edit', array());
 Router::connect('/membre/get/:id', 'membre/get/:id', array('id' => '[0-9]+'));
 Router::connect('/membre/delete/:id', 'membre/delete/:id', array('id' => '[0-9]+'));
@@ -39,6 +40,7 @@ Router::connect('/wallpaper/getMines/:nb', 'wallpaper/getMines/:nb', array('nb' 
 Router::connect('/wallpaper/getByCategorie/:id', 'wallpaper/getByCategorie/:id', array('id' => '[0-9]+'));
 Router::connect('/wallpaper/getMostDL/:nb', 'wallpaper/getMostDL/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/getMostAP/:nb', 'wallpaper/getMostAP/:nb', array('nb' => '[0-9]+'));
+Router::connect('/wallpaper/latest/:nb', 'wallpaper/latest/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/delete/:id', 'wallpaper/delete/:id', array('id' => '[0-9]+'));
 Router::connect('/wallpaper/resize/:id/:width/:heigth', 'wallpaper/resize/:id/:width/:heigth', array('id' => '[0-9]+', 'width' => '[0-9]+', 'height' => '[0-9]+'));
 
@@ -52,7 +54,8 @@ Router::connect('/question/delete', 'question/delete', array());
 Router::connect('/categorie/add', 'categorie/add', array());
 Router::connect('/categorie/get/:id', 'categorie/get/:id', array('id' => '[0-9]+'));
 Router::connect('/categorie/getAll', 'categorie/getAll', array());
-Router::connect('/categorie/delete/:id', 'categorie/delete/:id', array('id' => '[0-9]+'));
+Router::connect('/categorie/delete', 'categorie/delete', array());
+Router::connect('/categorie/change', 'categorie/change', array());
 
 // Algo (Conversation)
 Router::connect('/algo/getFirstQuestion', 'algo/getFirstQuestion', array());
