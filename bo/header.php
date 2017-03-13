@@ -33,7 +33,7 @@ session_start();
                     <ul class="nav navbar-nav navbar-right">
                        <?php if(isset($_SESSION['user'])) { ?>
                         <li><a href="profil.php"><?php echo $_SESSION['user']['pseudo'] ?></a></li>
-                        <li><a href="/Tenasmarredetonwallpaper/api/membre/logout">Déconnexion</a></li>
+                        <li><a href="" id="deco">Déconnexion</a></li>
                         <?php } else { ?>
                         <li><a href="formulaire_connexion.php">Se connecter</a></li>
                         <li><a href="formulaire_inscription.php">S'inscrire</a></li>
