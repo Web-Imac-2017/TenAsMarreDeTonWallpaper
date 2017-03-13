@@ -10,6 +10,7 @@ include('header.php');
                 <tr>
                     <th>#</th>
                     <th>Pseudo</th>
+                    <th>Mail</th>
                 </tr>
             </thead>
             <tbody id="req1">
@@ -53,7 +54,7 @@ include('header.php');
 <script type="text/javascript">
     $(document).ready(function() {
         reload();
-        
+
         function reload() {
             $.ajax({
                 url: "/TenAsMarreDeTonWallpaper/api/membre/getAll",
@@ -62,15 +63,18 @@ include('header.php');
                     var chaine = "";
                     var res = JSON.parse(data);
                     for(var i=0; i<res.data.length; i++) {
-                        chaine += '<tr><td>' + res.data[i].id + '</td>';
-                        chaine += '<td>' + res.data[i].nom + '</td></tr>';
+                        chaine += "<tr>";
+                        chaine += "<td>" + res.data[i].id + "</td>";
+                        chaine += "<td>" + res.data[i].pseudo + "</td>";
+                        chaine += "<td>" + res.data[i].mail + "</td>";
+                        chaine += "</tr>";
                     }
                     $("#req1").html(chaine);
 
                     chaine = "";
 
                     for(var i=0; i<res.data.length; i++) {
-                        chaine += "<option value='" + res.data[i].id + "'>" + res.data[i].nom + "</option>";
+                        chaine += "<option value='" + res.data[i].id + "'>" + res.data[i].pseudo + "</option>";
                     }
 
                     $(".select").html(chaine);
