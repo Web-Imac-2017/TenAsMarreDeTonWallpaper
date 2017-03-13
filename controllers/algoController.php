@@ -194,14 +194,14 @@ class AlgoController extends Controller {
 	public function updateDL($wallpaper_id)
 	{
 		$wallpaper = new Wallpaper();
-		if(isset($wallpaper_id)
+		if(isset($wallpaper_id))
 		{
 			$wallpaper->incrementer_nb_telechargement($wallpaper_id);
-			$data = ["returnCode" => 1, 'data' => '', "continue" => false, "returnMessage" => "Le wallpaper a bien été téléchargé";
+			$data = ["returnCode" => 1, 'data' => '', "continue" => false, "returnMessage" => "Le wallpaper a bien été téléchargé"];
 		}
 		else
 		{
-			$data = ["returnCode" => 0, 'data' => '', "continue" => false, "returnMessage" => "Aucun id de wallpaper sélectionné";
+			$data = ["returnCode" => 0, 'data' => '', "continue" => false, "returnMessage" => "Aucun id de wallpaper sélectionné"];
 		}
 		echo json_encode($data);
 	}
