@@ -32,7 +32,11 @@ class membreController extends Controller {
 			$password2 = $_POST['password2'];
 			$mailAdress = $_POST['mailAdress'];
 
-			if (strcmp($password, $password2) != 0) {
+			if (!preg_match('#^[A-Za-z][A-Za-z0-9]+#', $_POST['pseudo'])) {
+				$data = ['returnCode' => '0', 'data' => '', 'returnMessage' => 'Nom d\'utilisateur invalide !'];
+			}
+
+			else if (strcmp($password, $password2) != 0) {
 				$data = ['returnCode' => '0', 'data' => '', 'returnMessage' => 'Les mots de passe ne sont pas identiques !'];	
 			}
 			else if (!filter_var($mailAdress, FILTER_VALIDATE_EMAIL)) {	
