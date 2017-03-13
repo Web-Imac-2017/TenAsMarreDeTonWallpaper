@@ -28,7 +28,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                       <?php if(!isset($_SESSION['user'])) {?>
+                       <?php if(isset($_SESSION['user'])) { ?>
                         <li><a href="profil.php"><?php echo $_SESSION['user']['pseudo'] ?></a></li>
                         <?php } else { ?>
                         <li><a href="formulaire_connexion.php">Se connecter</a></li>

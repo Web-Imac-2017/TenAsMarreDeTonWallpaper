@@ -6,7 +6,7 @@ require_once MODEL_DIR . 'question.php';
 
 class questionController extends Controller {
 
-    public function __construct(){
+    public function __construct() {
         parent::__construct();
     }
 
