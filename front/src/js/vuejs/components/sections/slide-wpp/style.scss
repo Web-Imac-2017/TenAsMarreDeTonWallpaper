@@ -1,13 +1,11 @@
 
-.images_slider{
-	margin-left: 2rem;
+.images_slide{
+	margin-left: 8rem;
       display: flex; flex-flow: row nowrap;
 
       .image_frame{
-          box-shadow: #000 0px 0.2rem 0.5rem;
           padding: .8rem;
           margin-right: 6rem;
-          opacity: 0.8;
 
           .image_frame_picture{
               background-size: cover;
@@ -15,4 +13,40 @@
       }
   }
 
+.slide-next-enter-active {
+  animation: slideNextIn 1s;
+}
 
+.slide-next-leave-active {
+  animation: slideNextOut 1s;
+  position: absolute; left: 0;
+}
+
+@keyframes slideNextIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0%); }
+}
+
+@keyframes slideNextOut {
+  from { transform: translateX(0%); }
+  to { transform: translateX(-100%); }
+}
+
+.slide-prev-enter-active {
+  animation: slidePrevIn 1s;
+}
+
+.slide-prev-leave-active {
+  animation: slidePrevOut 1s;
+  position: absolute; left: 0; top:2.5rem;
+}
+
+@keyframes slidePrevIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0%); }
+}
+
+@keyframes slidePrevOut {
+  from { transform: translateX(0%); }
+  to { transform: translateX(100%); }
+}
