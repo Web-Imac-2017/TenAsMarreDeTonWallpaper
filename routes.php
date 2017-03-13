@@ -51,7 +51,8 @@ Router::connect('/question/delete', 'question/delete', array());
 Router::connect('/categorie/add', 'categorie/add', array());
 Router::connect('/categorie/get/:id', 'categorie/get/:id', array('id' => '[0-9]+'));
 Router::connect('/categorie/getAll', 'categorie/getAll', array());
-Router::connect('/categorie/delete/:id', 'categorie/delete/:id', array('id' => '[0-9]+'));
+Router::connect('/categorie/delete', 'categorie/delete', array());
+Router::connect('/categorie/change', 'categorie/change', array());
 
 // Algo (Conversation)
 Router::connect('/algo/getFirstQuestion', 'algo/getFirstQuestion', array());
