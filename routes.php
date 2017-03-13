@@ -59,3 +59,4 @@ Router::connect('/algo/getNextQuestion/:reponse', 'algo/getNextQuestion/:reponse
 Router::connect('/algo/currentQuestion', 'algo/currentQuestion', array());
 Router::connect('/algo/restart', 'algo/restart', array());
 Router::connect('/algo/undo', 'algo/undo', array());
+Router::connect('/algo/updateDL/:id', 'algo/updateDL/:id', array('id' => '[0-9]+'));
