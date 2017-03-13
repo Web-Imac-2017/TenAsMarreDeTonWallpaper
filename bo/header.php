@@ -1,3 +1,6 @@
+<?php 
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -30,6 +33,7 @@
                     <ul class="nav navbar-nav navbar-right">
                        <?php if(isset($_SESSION['user'])) { ?>
                         <li><a href="profil.php"><?php echo $_SESSION['user']['pseudo'] ?></a></li>
+                        <li><a href="/Tenasmarredetonwallpaper/api/membre/logout">Déconnexion</a></li>
                         <?php } else { ?>
                         <li><a href="formulaire_connexion.php">Se connecter</a></li>
                         <li><a href="formulaire_inscription.php">S'inscrire</a></li>
@@ -51,24 +55,37 @@
                         <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
                         <li><a href="formulaire_question.php">Question</a></li>
                         <li><a href="formulaire_categorie.php">Catégorie</a></li>
-                        <?php } ?>
-                        <?php if($page['title'] == "Wallpaper") { ?>
+                        <li><a href="formulaire_membre.php">Membre</a></li>
+                        <?php } else if($page['title'] == "Wallpaper") { ?>
                         <li><a href="dashboard.php">Tableau de bord</a></li>
                         <li class="active"><a href="formulaire_wallpaper.php">Wallpaper</a></li>
                         <li><a href="formulaire_question.php">Question</a></li>
                         <li><a href="formulaire_categorie.php">Catégorie</a></li>
-                        <?php } ?>
-                        <?php if($page['title'] == "Question") { ?>
+                        <li><a href="formulaire_membre.php">Membre</a></li>
+                        <?php } else if($page['title'] == "Question") { ?>
                         <li><a href="dashboard.php">Tableau de bord</a></li>
                         <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
                         <li class="active"><a href="formulaire_question.php">Question</a></li>
                         <li><a href="formulaire_categorie.php">Catégorie</a></li>
-                        <?php } ?>
-                        <?php if($page['title'] == "Catégorie") { ?>
+                        <li><a href="formulaire_membre.php">Membre</a></li>
+                        <?php } else if($page['title'] == "Catégorie") { ?>
                         <li><a href="dashboard.php">Tableau de bord</a></li>
                         <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
                         <li><a href="formulaire_question.php">Question</a></li>
                         <li class="active"><a href="formulaire_categorie.php">Catégorie</a></li>
+                        <li><a href="formulaire_membre.php">Membre</a></li>
+                        <?php } else if($page['title'] == "Membre") { ?>
+                        <li><a href="dashboard.php">Tableau de bord</a></li>
+                        <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
+                        <li><a href="formulaire_question.php">Question</a></li>
+                        <li><a href="formulaire_categorie.php">Catégorie</a></li>
+                        <li class="active"><a href="formulaire_membre.php">Membre</a></li>
+                        <?php } else { ?>
+                        <li><a href="dashboard.php">Tableau de bord</a></li>
+                        <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
+                        <li><a href="formulaire_question.php">Question</a></li>
+                        <li><a href="formulaire_categorie.php">Catégorie</a></li>
+                        <li><a href="formulaire_membre.php">Membre</a></li>
                         <?php } ?>
                     </ul>
                 </div>
