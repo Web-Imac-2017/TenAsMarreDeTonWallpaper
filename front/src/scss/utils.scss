@@ -1,3 +1,10 @@
+/* Tailles d'écran ------------------------------------------------------------------------- */
+$width-xxsmall : 480px;
+$width-xsmall : 800px;
+$width-small : 1024px;
+$width-medium : 1440px;
+$width-large : 1920px;
+$width-xlarge : 2048px;
 
 /* Palette de couleurs --------------------------------------------------------------------- */
 
@@ -160,6 +167,9 @@ $color-light-orange: #fb9553;
 $header-nav-height: (64rem / 24);
 $rainbow-bar-height: (6rem / 24);
 $header-main-height: $header-nav-height + $rainbow-bar-height;
+
+// Height of question choices
+$question-choices-height: 25vh;
 
 /* Margins ----------------------------------------------------------------------------- */
 

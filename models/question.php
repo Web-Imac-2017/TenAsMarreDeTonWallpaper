@@ -291,6 +291,3 @@ class Question extends Model {
     }
 
 }
-
-$question = new Question();
-var_dump($question->getAll());

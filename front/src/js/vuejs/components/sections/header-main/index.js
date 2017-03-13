@@ -15,14 +15,21 @@ const HeaderMain = Vue.extend({
     'rainbow-bar': RainbowBar
   },
 
+  props:{
+    'links': {type: Object, default: function(){ return {}; }}
+  },
+
   computed:{
     bus: function(){ return bus; },
-    links: function(){ return bus.headerLinks; }
   },
 
   methods:{
     onToggleSidebarButton : function(){
       this.$emit('toggle-sidebar');
+    },
+    onClickHeaderLink: function(curlink){
+      if('url' in curlink){ router.push(curlink.url); return; }
+      if('callback' in curlink){ curlink.callback(); return; }
     }
   }
 });

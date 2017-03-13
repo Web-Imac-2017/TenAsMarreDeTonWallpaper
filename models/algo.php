@@ -76,20 +76,23 @@ class Algo extends Model {
 		// On renseigne le texte des réponses possibles
 		$reponses = array (
 			"Non",
-			"Probablement pas",
+			"Pas vraiment",
 			"Peu importe",
-			"Probablement oui",
+			"Éventuellement",
 			"Oui"
 		);
 		
 		// On effectue la requete SQL qui récupére la question
 		$bdd = Database::get();
 		// On select les questions qui ont les categories choisies et l'importance demandée
-		$sql = "SELECT DISTINCT id, nb_apparition AS nb_a, q_longue FROM question AS q 
+		$sql = "SELECT DISTINCT q.id, q.nb_apparition AS nb_a, q.q_longue FROM question AS q 
 				INNER JOIN categorie_question AS c_q 
 				ON q.id = c_q.question_id
+				INNER JOIN mise_en_ligne AS mel
+				ON q.mise_en_ligne_id = mel.id
 				WHERE (q.importance >= :importance AND q.importance < ".$importanceUp.")
-				AND (c_q.categorie_id = :categorie)";
+				AND (c_q.categorie_id = :categorie)
+				AND (mel.statut = 'Validé')";
 		$req = $bdd->prepare($sql);
 		$req->bindParam(':importance', $_SESSION['importance']);
 		$req->bindParam(':categorie', $categorie);
@@ -166,8 +169,13 @@ class Algo extends Model {
 		
 		$bdd = Database::get();
 		// On select les wpp qui correspondent aux reponses choisies de la question actuelle
-		$sql = "SELECT DISTINCT wallpaper_id FROM reponse AS r 
+		$sql = "SELECT DISTINCT wallpaper_id FROM reponse AS r
+				INNER JOIN wallpaper AS w
+				ON r.wallpaper_id = w.id
+				INNER JOIN mise_en_ligne AS mel
+				ON w.id = mel.id		
 				WHERE question_id =".$question_id."
+				AND (mel.statut = 'Validé')
 				AND (val_min <=".$reponse." AND val_max>=".$reponse.")";
 		// On utilise l'opérateur IN avec les anciens select s'il y en a déjà eu
 		if ($requete)

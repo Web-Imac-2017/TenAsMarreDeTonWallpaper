@@ -1,0 +1,18 @@
+
+.images_slider{
+	margin-left: 2rem;
+      display: flex; flex-flow: row nowrap;
+
+      .image_frame{
+          box-shadow: #000 0px 0.2rem 0.5rem;
+          padding: .8rem;
+          margin-right: 6rem;
+          opacity: 0.8;
+
+          .image_frame_picture{
+              background-size: cover;
+          }
+      }
+  }
+
+

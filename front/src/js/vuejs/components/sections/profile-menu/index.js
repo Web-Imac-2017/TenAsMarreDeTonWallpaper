@@ -20,7 +20,8 @@ const ProfileMenu = Vue.extend({
       let _this = this;
 
       fetch("/TenAsMarreDeTonWallpaper/api/membre/logout", {
-            method: 'get'
+            method: 'get',
+            credentials: 'include'
           }
         )
         // Handle bad http response
