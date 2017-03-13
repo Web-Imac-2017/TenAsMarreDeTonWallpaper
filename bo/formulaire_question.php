@@ -2,7 +2,7 @@
     session_start();
     require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
     require_once KERNEL . 'kernel.php';
-    require_once MODELS . 'question.php';
+    require_once MODEL_DIR . 'question.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
