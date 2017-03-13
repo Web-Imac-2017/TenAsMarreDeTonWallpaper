@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
 
-        <title>BO <?php echo $page['title'] ?></title>
+        <title>BO - <?php echo $page['title'] ?></title>
     </head>
 
     <body>
@@ -28,9 +28,12 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="profil.php">Profil</a></li>
+                       <?php if(!isset($_SESSION['user'])) {?>
+                        <li><a href="profil.php"><?php echo $_SESSION['user']['pseudo'] ?></a></li>
+                        <?php } else { ?>
                         <li><a href="formulaire_connexion.php">Se connecter</a></li>
                         <li><a href="formulaire_inscription.php">S'inscrire</a></li>
+                        <?php } ?>
                     </ul>
                     <form class="navbar-form navbar-right">
                         <input type="text" class="form-control" placeholder="Rechercher...">
@@ -43,7 +46,7 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-                       <?php if($page['title'] == "Dashboard") { ?>
+                       <?php if($page['title'] == "Tableau de bord") { ?>
                         <li class="active"><a href="dashboard.php">Tableau de bord</a></li>
                         <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
                         <li><a href="formulaire_question.php">Question</a></li>
