@@ -39,6 +39,7 @@ Router::connect('/wallpaper/getMines/:nb', 'wallpaper/getMines/:nb', array('nb' 
 Router::connect('/wallpaper/getByCategorie/:id', 'wallpaper/getByCategorie/:id', array('id' => '[0-9]+'));
 Router::connect('/wallpaper/getMostDL/:nb', 'wallpaper/getMostDL/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/getMostAP/:nb', 'wallpaper/getMostAP/:nb', array('nb' => '[0-9]+'));
+Router::connect('/wallpaper/latest/:nb', 'wallpaper/latest/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/delete/:id', 'wallpaper/delete/:id', array('id' => '[0-9]+'));
 
 // Question
