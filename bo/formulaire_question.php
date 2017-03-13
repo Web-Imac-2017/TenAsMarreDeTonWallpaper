@@ -7,21 +7,6 @@
     require_once MODEL_DIR . 'categorie.php';
 
 ?>
-
-<?php
-try{
-    $bdd = Database::get();
-    $query='SELECT * FROM Categorie ';
-    $res=$bdd->prepare($query);
-    $res->execute();
-}catch (Exception $e){
-    die('Erreur : ' . $e->getMessage());
-}
-$entries=$res->fetchAll(PDO::FETCH_ASSOC);
-$nb=$res->rowCount();
-$res->closeCursor();
-?>
-
 <?php
 $page['title'] = "Question";
 include('header.php');
