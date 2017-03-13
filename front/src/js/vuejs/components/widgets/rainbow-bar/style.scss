@@ -1,22 +1,6 @@
 .rainbow-bar{
     height: $rainbow-bar-height;
 
-    background: -webkit-linear-gradient(left,
-        #{$color-sunset-purple} 0%, #{$color-sunset-purple} 20%,
-        #{$color-sunset-pink} 20%, #{$color-sunset-pink} 40%,
-        #{$color-sunset-red} 40%, #{$color-sunset-red} 60%,
-        #{$color-sunset-orange} 60%, #{$color-sunset-orange} 80%,
-        #{$color-sunset-yellow} 80%, #{$color-sunset-yellow} 100%
-    );
-
-    background: -o-linear-gradient(left,
-        #{$color-sunset-purple} 0%, #{$color-sunset-purple} 20%,
-        #{$color-sunset-pink} 20%, #{$color-sunset-pink} 40%,
-        #{$color-sunset-red} 40%, #{$color-sunset-red} 60%,
-        #{$color-sunset-orange} 60%, #{$color-sunset-orange} 80%,
-        #{$color-sunset-yellow} 80%, #{$color-sunset-yellow} 100%
-    );
-
     background: linear-gradient(to right,
         #{$color-sunset-purple} 0%, #{$color-sunset-purple} 20%,
         #{$color-sunset-pink} 20%, #{$color-sunset-pink} 40%,

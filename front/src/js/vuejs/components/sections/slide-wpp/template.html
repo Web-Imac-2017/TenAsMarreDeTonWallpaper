@@ -1,0 +1,13 @@
+<div v-show="visible">
+
+	<slot> </slot>
+
+	<div class="images_slider">
+    	<div v-for="picture in wallpapers" class="image_frame">
+    		<div class="image_frame_picture"
+                 v-bind:style="getThumbnailCss(picture)"
+            ></div>
+        </div>
+    </div>
+
+</div>

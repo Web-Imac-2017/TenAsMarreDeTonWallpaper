@@ -33,7 +33,7 @@
                 }
             }
         }
-        .site-logo{ margin-right: 0.8rem; }
+        .site-logo{ margin-right: 0.8rem; width: auto; height: (32rem/24);}
         .site-title{ @include typo-brandon-sc-black(); @include font-size-larger(); }
         .login-arrow{
             display: block;

@@ -3,12 +3,23 @@ RewriteEngine On
 
 RewriteBase /TenAsMarreDeTonWallpaper
 
-# On gère les appels à l'aAPI
+# On gère les appels à l'API
 RewriteRule ^api/(.*)$ api.php?url=$1 [QSA,L]
 
+# Les formulaires du back-office (semble marcher. Valentin, tu peux test ? x) ).
+# RewriteRule ^bo/(.*)$ bo/$1 [QSA,L]
+
 # On raccourci le front
+<<<<<<< HEAD
 RewriteCond %{REQUEST_URI} !www/index.html
 RewriteRule ^www/(.*)$ front/www/$1 [L]
 
 # Pour les autres requetes, on renvoie sur index.php
 RewriteRule ^((?!api).)*$ index.php/$1 [END]
+=======
+# RewriteCond %{REQUEST_URI} !www/index.html
+# RewriteRule ^www/(.*)$ front/www/$1 [L]
+
+# Pour les autres requetes, on renvoie sur index.php
+# RewriteRule ^((?!api).)*$ index.php/$1 [END]
+>>>>>>> 66a7b2fbf8983cb4da891fca4da66cfb4e986b9a
