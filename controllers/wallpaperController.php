@@ -142,4 +142,23 @@ class wallpaperController extends Controller {
         $data = $wallpaper->getByCategorie($id);
         echo json_encode($data);
     }
+
+    public function resize() {
+        $wallpaper = new Wallpaper();
+        $gdObject = new Gd();
+
+        if (isset($_POST['wallpaperId']) && !empty($_POST['wallpaperId']) && isset($_POST['width']) && !empty($_POST['width']) && isset($_POST['height']) && !empty($_POST['hieght'])) {
+            $wallpaperId = $_POST['wallpaperId'];
+            $width = $_POST['width'];
+            $height = $_POST['height'];
+
+            $image = $wallpaper->getUrl($wallpaperId);
+            gdresize($image, $width, $height);
+        }
+        else {
+            $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants !'];
+        }
+
+        echo json_encode($data);
+    }
 }
