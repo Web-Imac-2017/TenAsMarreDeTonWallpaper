@@ -34,4 +34,4 @@ define('BASE_URL_S', 'https://' . $_SERVER['HTTP_HOST'] . '/' . MAINDIR);
 
 // Start session
 
-session_start();
+session_status() == PHP_SESSION_ACTIVE ? "" : session_start();

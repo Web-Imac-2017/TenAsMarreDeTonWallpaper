@@ -15,7 +15,7 @@ const ecran = {l:window.screen.width, h:window.screen.height};
 const DlWpp = Vue.extend({
     template,
 
-    props: ['titre','pseudo','genre','url','l','h'],
+    props: ['titre','auteur','genre','url','l','h'],
 
     data: () => ({
         // Pas 0, sinon le placeholder ne s'affiche pas.
@@ -28,7 +28,7 @@ const DlWpp = Vue.extend({
         wpp: function() {
             return {
                 titre:this.titre,
-                uploadeur:{pseudo:this.pseudo},
+                auteur:this.auteur,
                 genre:this.genre,
                 url:this.url,
                 l:this.l,

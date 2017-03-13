@@ -27,11 +27,13 @@ class wallpaperController extends Controller {
 
         if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
             if(isset($_POST['nom']) && !empty($_POST['nom']) && isset($_FILES['image']) && !empty($_FILES['image']) && isset($_POST['categories']) && !empty($_POST['categories'])) {
-                if($_SESSION['user']['moderateur'] || $_SESSION['user']['admin'])
+                if($_SESSION['user']['moderateur'] || $_SESSION['user']['admin']) {
                     $data = $mel->add("Validé", $_SESSION['user']['id'], $_SESSION['user']['id']);
-                else
-                    $data = $mel->add("En attente", $_SESSION['user']['id'], 0);
-                
+                }
+                else {
+                    $data = $mel->add("En attente", $_SESSION['user']['id'], NULL);
+                }
+
                 $mel_id = $data['data']['id'];
 
                 $extensions = array('.jpg', '.jpeg', '.png', '.tiff', '.bmp', '.gif', '.JPG', '.JPEG', '.PNG', '.TIFF', '.BMP', '.GIF');
@@ -61,12 +63,10 @@ class wallpaperController extends Controller {
 
                         $membre->incrementer_nb_wallpapers_ajoutes($_SESSION['user']['id']);
 
-                        $i=1;
-                        foreach($_POST['rep'] as $rep) {
-                            $reponse->add($i, $wallpaper_id, $rep[0], $rep[1]);
-                            $i++;
+                        foreach($_POST['rep'] as $key=>$rep) {
+                            $reponse->add($key, $wallpaper_id, $rep[0], $rep[1]);
                         }
-                        
+
                         $wallpaper->setCategories($wallpaper_id, $_POST['categories']);
                     }
                     else {
@@ -108,7 +108,7 @@ class wallpaperController extends Controller {
         $data = $wallpaper->getMostDL($nb);
         echo json_encode($data);
     }
-    
+
     public function getMostAP($nb) {
         $wallpaper = new Wallpaper();
         $data = $wallpaper->getMostAP($nb);
@@ -136,7 +136,7 @@ class wallpaperController extends Controller {
         $data = $wallpaper->random($nb);
         echo json_encode($data);
     }
-    
+
     public function getByCategorie($id) {
         $wallpaper = new Wallpaper();
         $data = $wallpaper->getByCategorie($id);
