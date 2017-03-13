@@ -1,5 +1,5 @@
 <?php
-$page['title'] = "Catégorie";
+$page['title'] = "Membre";
 include('header.php');
 ?>
 
@@ -9,7 +9,8 @@ include('header.php');
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Nom</th>
+                    <th>Pseudo</th>
+                    <th>Mail</th>
                 </tr>
             </thead>
             <tbody id="req1">
@@ -19,10 +20,10 @@ include('header.php');
 </div>
 
 <div class="col-md-6 col-sm-12">
-    <h2 class="sub-header">Ajouter une catégorie</h2>
+    <h2 class="sub-header">Ajouter un membre</h2>
     <form id="add" class="form-inline">
         <div class="form-group">
-            <label>Nom<span style="color:red;">*</span> :</label>
+            <label>Pseudo<span style="color:red;">*</span> :</label>
             <input type="text" class="form-control nom" />
         </div>
         <input type="submit" value="Ajouter" name="submit" class="btn btn-success" />
@@ -30,7 +31,7 @@ include('header.php');
 </div>
 
 <div class="col-md-6 col-sm-12">
-    <h2 class="sub-header">Modifier une catégorie</h2>
+    <h2 class="sub-header">Modifier un membre</h2>
     <form id="change" class="form-inline">
         <div class="form-group">
             <select class="select form-control"></select>
@@ -42,7 +43,7 @@ include('header.php');
 </div>
 
 <div class="col-md-6 col-sm-12">
-    <h2 class="sub-header">Supprimer une catégorie</h2>
+    <h2 class="sub-header">Supprimer un membre</h2>
     <form id="delete" class="form-inline">
         <select class="select form-control id"></select>
         <input type="submit" value="Supprimer" name="submit" class="btn btn-danger" />
@@ -53,24 +54,27 @@ include('header.php');
 <script type="text/javascript">
     $(document).ready(function() {
         reload();
-        
+
         function reload() {
             $.ajax({
-                url: "/TenAsMarreDeTonWallpaper/api/categorie/getAll",
+                url: "/TenAsMarreDeTonWallpaper/api/membre/getAll",
                 type: "POST",
                 success: function(data, textStatus, jqXHR) {
                     var chaine = "";
                     var res = JSON.parse(data);
                     for(var i=0; i<res.data.length; i++) {
-                        chaine += '<tr><td>' + res.data[i].id + '</td>';
-                        chaine += '<td>' + res.data[i].nom + '</td></tr>';
+                        chaine += "<tr>";
+                        chaine += "<td>" + res.data[i].id + "</td>";
+                        chaine += "<td>" + res.data[i].pseudo + "</td>";
+                        chaine += "<td>" + res.data[i].mail + "</td>";
+                        chaine += "</tr>";
                     }
                     $("#req1").html(chaine);
 
                     chaine = "";
 
                     for(var i=0; i<res.data.length; i++) {
-                        chaine += "<option value='" + res.data[i].id + "'>" + res.data[i].nom + "</option>";
+                        chaine += "<option value='" + res.data[i].id + "'>" + res.data[i].pseudo + "</option>";
                     }
 
                     $(".select").html(chaine);
@@ -81,7 +85,7 @@ include('header.php');
         $("body #add").submit(function(event) {
             event.preventDefault();
             $.ajax({
-                url: "/TenAsMarreDeTonWallpaper/api/categorie/add",
+                url: "/TenAsMarreDeTonWallpaper/api/membre/add",
                 type: "POST",
                 data: {
                     nom: $("#add .nom").val()
@@ -93,7 +97,7 @@ include('header.php');
         $("body #change").submit(function(event) {
             event.preventDefault();
             $.ajax({
-                url: "/TenAsMarreDeTonWallpaper/api/categorie/change",
+                url: "/TenAsMarreDeTonWallpaper/api/membre/change",
                 type: "POST",
                 data: {
                     id: $("#change .select").val(),
@@ -106,7 +110,7 @@ include('header.php');
         $("body #delete").submit(function(event) {
             event.preventDefault();
             $.ajax({
-                url: "/TenAsMarreDeTonWallpaper/api/categorie/delete",
+                url: "/TenAsMarreDeTonWallpaper/api/membre/delete",
                 type: "POST",
                 data: {
                     id: $("#delete .select").val()
