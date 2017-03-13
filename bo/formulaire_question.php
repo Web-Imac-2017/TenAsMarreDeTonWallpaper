@@ -7,9 +7,26 @@
     require_once MODEL_DIR . 'categorie.php';
 
 ?>
+
 <?php
-require('header.php');
+try{
+    $bdd = Database::get();
+    $query='SELECT * FROM Categorie ';
+    $res=$bdd->prepare($query);
+    $res->execute();
+}catch (Exception $e){
+    die('Erreur : ' . $e->getMessage());
+}
+$entries=$res->fetchAll(PDO::FETCH_ASSOC);
+$nb=$res->rowCount();
+$res->closeCursor();
 ?>
+
+<?php
+$page['title'] = "Question";
+include('header.php');
+?>
+
 <body>
     <fieldset>
             <legend>DISPLAY QUESTIONS</legend>
@@ -216,3 +233,8 @@ require('header.php');
         </fieldset>
 </body>
 </html>
+
+<?php
+include('footer.php');
+?>
+

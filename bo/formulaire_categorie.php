@@ -1,8 +1,7 @@
 <?php
-require('header.php');
+$page['title'] = "Catégorie";
+include('header.php');
 ?>
-<body>
-    <div class="container">
 
         <!--<h1>Formulaire catégorie</h1>-->
         <h4>Ajouter une nouvelle catégorie</h4>
@@ -71,3 +70,8 @@ require('header.php');
         </fieldset>
 </body>
 </html>
+
+<?php
+include('footer.php');
+?>
+
