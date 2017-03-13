@@ -2,7 +2,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
 require_once KERNEL . 'kernel.php';
-
+require_once MODEL_DIR . 'categorie.php';
 class Question extends Model {
 
     public function __construct(){
@@ -128,11 +128,11 @@ class Question extends Model {
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
         try {
-            foreach ($categoriesID as $cat) {
+            foreach ($categoriesID as $cat):
                 $sql = 'INSERT INTO categorie_question VALUES(?, ?)';
                 $req = $bdd->prepare($sql);
                 $req->execute(array($questionID, $cat));
-            }
+            endforeach;
             $result['returnCode'] = 1;
             $result['returnMessage'] = 'Insertion des catégories pour la question réussie';
         }
@@ -248,14 +248,17 @@ class Question extends Model {
         $i = 0;
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-
+        $c= new Categorie();
         try {
-            $sql = 'SELECT categorie_id AS cat_id FROM categorie_question WHERE question_id =?';
+            $sql = 'SELECT * FROM categorie_question WHERE question_id =?';
             $req = $bdd->prepare($sql);
             $req->execute(array($questionID));
-            $categories = [];
-            while ($cat_id = $req->fetch()) {
-                $categories[$i] = getCategorie($cat_id['cat_id']);
+            $categories = array();
+            $bddres=$req->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach($bddres as $cat_id) {
+
+                $categories[$i] = $c->get($cat_id['categorie_id']);
                 $i++;
             }
 
