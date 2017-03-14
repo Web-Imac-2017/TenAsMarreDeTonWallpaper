@@ -1,0 +1,19 @@
+<div class="slider-wallpapers">
+    <div class="slider-container" :style="{left: -this.offset + 'px'}">
+        <a v-for="picture in wallpapers" href="#" class="slider-wallpaper-item" :style="getThumbnailCss(picture)">
+            <div class="slider-wallpaper-info">
+                <h3 class="slider-wallpaper-title">{{ picture.title }}</h3>
+                <span class="slider-wallpaper-author">par {{ picture.author }}</span>
+            </div>
+        </a>
+    </div>
+    <div class="left-gradient" :class="{hidden: hideLeftArrow}"></div>
+    <div class="right-gradient" :class="{hidden: hideRightArrow}"></div>
+    <a class="left-arrow-wrapper" :class="{hidden: hideLeftArrow}" v-on:click="onClickArrow(-1)">
+        <div class="left-arrow"></div>
+    </a>
+    <a class="right-arrow-wrapper" :class="{hidden: hideRightArrow}" v-on:click="onClickArrow(1)">
+        <span>Encore</span>
+        <div class="right-arrow"></div>
+    </a>
+</div>

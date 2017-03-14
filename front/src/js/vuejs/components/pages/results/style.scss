@@ -1,3 +1,8 @@
 .results-page{
     @extend .question-page;
+
+    .slider-wrapper{
+        position: fixed; bottom: 0;
+        width: 100%;
+    }
 }

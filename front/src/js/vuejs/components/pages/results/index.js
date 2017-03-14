@@ -8,6 +8,8 @@ template     = eval(`\`${template}\``);
 import bus from '../../bus/index.js';
 import DefaultLayout from '../../layouts/default-layout/index.js';
 import MrWallmatchContent from '../../layouts/mr-wallmatch-content/index.js';
+import Slider from '../../widgets/slider/index.js';
+import RainbowBar from '../../widgets/rainbow-bar/index.js';
 
 const Results = Vue.extend({
   template,
@@ -22,6 +24,8 @@ const Results = Vue.extend({
   components: {
       'default-layout': DefaultLayout,
       'mr-wallmatch-content': MrWallmatchContent,
+      'slider': Slider,
+      'rainbow-bar': RainbowBar,
   },
 
   methods:{

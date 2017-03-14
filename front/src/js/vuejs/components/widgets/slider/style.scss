@@ -1,0 +1,79 @@
+.slider-wallpapers{
+    display: flex; flex-flow: row nowrap; align-items: stretch;
+    background: rgba($color-foreground, $opacity-overlay);
+    padding: 0 $base-margin/2;
+    position: relative;
+
+    .slider-container{
+        display: flex; flex-flow: row nowrap; align-items: stretch;
+        transition: left $timing-function $transition-duration;
+        position: relative;
+
+        .slider-wallpaper-item{
+            margin: $base-margin $base-margin/2;
+            background-size: cover;
+            flex: 0 0 auto;
+
+            display: flex; flex-flow: column nowrap; justify-content: flex-end; align-items: stretch;
+            padding: $base-margin;
+
+            color: $color-foreground;
+            &:hover{
+                box-shadow: none;
+                .slider-wallpaper-info{
+                    opacity: 1;
+                }
+            }
+
+            .slider-wallpaper-info{
+
+                opacity: 0;
+                transition: opacity $timing-function $transition-duration;
+                background: $color-background;
+                padding: 0.5rem;
+                &>*{
+                    margin: 0;
+                }
+                .slider-wallpaper-title{
+                    @include typo-brandon-up-black();
+                    @include font-size-larger();
+                }
+            }
+        }
+    }
+
+    .left-arrow-wrapper, .right-arrow-wrapper{
+        position: absolute;
+        height: 2rem; width: auto;
+        top: calc(50% - 1rem);
+        display: flex; flex-flow: row nowrap; align-items: center;
+        @include typo-brandon-up-black;
+        color: $color-background;
+        cursor: pointer;
+    }
+    .left-arrow-wrapper{ left: 0; }
+    .right-arrow-wrapper{ right: 0; }
+
+    .left-arrow, .right-arrow{
+        height: 2rem; width: 2rem;
+        transform: rotate(45deg);
+    }
+    .left-arrow{ border-bottom: solid 3px $color-background; border-left: solid 3px $color-background; margin-left: cos(45deg) * 2rem}
+    .right-arrow{ border-top: solid 3px $color-background; border-right: solid 3px $color-background; margin-right: cos(45deg) * 2rem}
+
+    .left-gradient, .right-gradient{
+        position: absolute; top: 0; height: 100%; width: 4rem;
+    }
+    .left-gradient{left: 0; background: linear-gradient(to left, rgba($color-foreground, 0) 0%, rgba($color-foreground, 1) 100%);}
+    .right-gradient{right: 0; background: linear-gradient(to right, rgba($color-foreground, 0) 0%, rgba($color-foreground, 1) 100%);}
+
+    .left-gradient, .right-gradient, .left-arrow-wrapper, .right-arrow-wrapper{
+        opacity: 1;
+        transition: opacity $timing-function $transition-duration;
+        &.hidden{
+            opacity: 0;
+            z-index: -1;
+        }
+    }
+
+}
