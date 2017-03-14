@@ -114,26 +114,34 @@ class Wallpaper extends Model {
         $bdd = Database::get();
         $data = "";
 
-        $sqlQuery = 'SELECT mise_en_ligne_id FROM wallpaper WHERE id=?';
-        $stmt = $bdd->prepare($sqlQuery);
-        $stmt->execute([$id]);
-        $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $mel_id = $bddResult[0]['mise_en_ligne_id'];
-
         try {
-            $sqlQuery = 'DELETE FROM mise_en_ligne WHERE id=?';
+            $sqlQuery = 'SELECT mise_en_ligne_id FROM wallpaper WHERE id=?';
 
             try {
                 $stmt = $bdd->prepare($sqlQuery);
-                $stmt->execute([$mel_id]);
+                $stmt->execute([$id]);
                 $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                $data = $bddResult[0];
+                $mel_id = $bddResult[0]['mise_en_ligne_id'];
 
-                return array("returnCode" => 1, "returnMessage" => "Wallpaper supprimé",  "data" => $data);
+                try {
+                    $sqlQuery = 'DELETE FROM mise_en_ligne WHERE id=?';
+
+                    try {
+                        $stmt = $bdd->prepare($sqlQuery);
+                        $stmt->execute([$mel_id]);
+
+                        return array("returnCode" => 1, "returnMessage" => "Wallpaper supprimé",  "data" => $data);
+                    }
+
+                    catch (PDOException $e) {
+                        return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+                    }
+                }
+                catch (PDOException $e) {
+                    return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+                }
             }
-
             catch (PDOException $e) {
                 return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
             }
@@ -327,7 +335,7 @@ class Wallpaper extends Model {
             return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
     }
-    
+
     public function latest($nb) {
         $bdd = Database::get();
         $data = "";

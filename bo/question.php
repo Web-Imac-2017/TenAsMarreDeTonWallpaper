@@ -2,61 +2,64 @@
 $page['title'] = "Question";
 include('header.php');
 ?>
-
-<div class="col-md-12">
-    <p>Dernières questions ajoutées</p>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Q_courte</th>
-                    <th>Q_longue</th>
-                    <th>Mise_en_ligne_id</th>
-                    <th>Importance</th>
-                    <th>Nb_apparition</th>
-                </tr>
-            </thead>
-            <tbody id="req1">
-            </tbody>
-        </table>
+<div class="row">
+    <div class="col-md-12">
+        <p>Dernières questions ajoutées</p>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Q_courte</th>
+                        <th>Q_longue</th>
+                        <th>Mise_en_ligne_id</th>
+                        <th>Importance</th>
+                        <th>Nb_apparition</th>
+                    </tr>
+                </thead>
+                <tbody id="req1">
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-<div class="col-md-6 col-sm-12">
-    <h2 class="sub-header">Ajouter une question</h2>
-    <form id="add">
-        <table>
-            <tr>
-                <td>Question courte<span style="color:red;">*</span> : </td>
-                <td><input type="text" class="form-control q_courte" /></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Question longue<span style="color:red;">*</span> : </td>
-                <td><input type="text" class="form-control q_longue" /></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Catégories<span style="color:red;">*</span> : </td>
-                <td id="cat"></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Ajouter" name="submit" class="btn btn-success"/></td>
-                <td></td>
-            </tr>
-        </table>
-    </form>
-</div>
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <h2 class="sub-header">Ajouter une question</h2>
+        <form id="add">
+            <table>
+                <tr>
+                    <td>Question courte<span style="color:red;">*</span> : </td>
+                    <td><input type="text" class="form-control q_courte" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Question longue<span style="color:red;">*</span> : </td>
+                    <td><input type="text" class="form-control q_longue" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Catégories<span style="color:red;">*</span> : </td>
+                    <td id="cat"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Ajouter" name="submit" class="btn btn-success"/></td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
 
-<div class="col-md-6 col-sm-12">
-    <h2 class="sub-header">Supprimer une question</h2>
-    <form id="delete" class="form-inline">
-        <select class="select form-control id"></select>
-        <input type="submit" value="Supprimer" name="submit" class="btn btn-danger" />
-    </form>
+    <div class="col-md-6 col-sm-12">
+        <h2 class="sub-header">Supprimer une question</h2>
+        <form id="delete" class="form-inline">
+            <select class="select form-control id"></select>
+            <input type="submit" value="Supprimer" name="submit" class="btn btn-danger" />
+        </form>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -76,8 +79,12 @@ include('header.php');
 
             }
         });
+        
+        function hideErrors() {
+            $(".alert").remove();
+        };
 
-        var reload = function () {
+        function reload() {
             $.ajax({
                 url: "/TenAsMarreDeTonWallpaper/api/question/latest/10",
                 type: "POST",
@@ -124,7 +131,14 @@ include('header.php');
                     categories: categories
                 },
                 success: function(data) {
-                    reload();
+                    hideErrors();
+                    var res = JSON.parse(data);
+                    if(res.returnCode != 1) {
+                        $("#add").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.returnMessage + '</strong></div>');
+                    }
+                    else {
+                        reload();
+                    }
                 }
             });  
         });
@@ -138,7 +152,14 @@ include('header.php');
                     id: $("#delete .select").val()
                 },
                 success: function(data) {
-                    reload();
+                    hideErrors();
+                    var res = JSON.parse(data);
+                    if(res.returnCode != 1) {
+                        $("#delete").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.returnMessage + '</strong></div>');
+                    }
+                    else {
+                        reload();
+                    }
                 }
             });
         });
