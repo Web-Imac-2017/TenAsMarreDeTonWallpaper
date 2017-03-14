@@ -49,30 +49,13 @@ include('header.php');
             </table>
         </form>
     </div>
-
-    <div class="col-md-6 col-sm-12">
-        <h2 class="sub-header">Modifier un membre</h2>
-        <form id="change" class="form-inline">
-            <div class="form-group">
-                <select class="form-control id"></select>
-                <label>Nouveau nom<span style="color:red;">*</span> :</label>
-                <input type="text" class="form-control nom" />
-            </div>
-            <input type="submit" value="Modifier" name="submit" class="btn btn-info" />
-        </form>
-    </div>
-</div>
-
-<div class="row">
+    
     <div class="col-md-6 col-sm-12">
         <h2 class="sub-header">Supprimer un membre</h2>
         <form id="delete" class="form-inline">
             <select class="form-control id"></select>
             <input type="submit" value="Supprimer" name="submit" class="btn btn-danger" />
         </form>
-    </div>
-    <div class="col-md-6 col-sm-12">
-
     </div>
 </div>
 
@@ -127,28 +110,6 @@ include('header.php');
                     var res = JSON.parse(data);
                     if(res.returnCode != 1) {
                         $("#add").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.returnMessage + '</strong></div>');
-                    }
-                    else {
-                        reload();
-                    }
-                }
-            });
-        });
-
-        $("body #change").submit(function(event) {
-            event.preventDefault();
-            $.ajax({
-                url: "/TenAsMarreDeTonWallpaper/api/membre/change",
-                type: "POST",
-                data: {
-                    id: $("#change .id").val(),
-                    nom: $("#change .nom").val()
-                },
-                success: function(data) {
-                    hideErrors();
-                    var res = JSON.parse(data);
-                    if(res.returnCode != 1) {
-                        $("#change").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.returnMessage + '</strong></div>');
                     }
                     else {
                         reload();

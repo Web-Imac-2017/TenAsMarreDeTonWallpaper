@@ -2,7 +2,7 @@
 $page['title'] = "Profil";
 include('header.php');
 ?>
-
+<span id="userId" style="display:none"><?php echo $_SESSION['user']['id'] ?></span>
 <div class="row">
     <h2 class="sub-header"></h2>
     <div class="col-md-4">
@@ -40,23 +40,24 @@ include('header.php');
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function() {
+        var url = "/TenAsMarreDeTonWallpaper/api/membre/get/" + $("#userId").text();
         reload();
 
         function reload() {
             $.ajax({
-                url: "/TenAsMarreDeTonWallpaper/api/membre/getInfo",
+                url: url,
                 type: "POST",
                 success: function(data, textStatus, jqXHR) {
                     var chaine = "";
                     var res = JSON.parse(data);
-                    $(".sub-header").html("Bonjour " + res.data.pseudo);
-                    $("#change .pseudo").attr('value', res.data.pseudo);
-                    $("#change .mail").attr('value', res.data.mail);
-                    $("#nb_questions .circle").html(res.data.nb_questions_ajoutees);
-                    $("#nb_wallpapers .circle").html(res.data.nb_wallpapers_ajoutes);
+                    $(".sub-header").html("Bonjour " + res.data[0].pseudo);
+                    $("#change .pseudo").attr('value', res.data[0].pseudo);
+                    $("#change .mail").attr('value', res.data[0].mail);
+                    $("#nb_questions .circle").html(res.data[0].nb_questions_ajoutees);
+                    $("#nb_wallpapers .circle").html(res.data[0].nb_wallpapers_ajoutes);
                 }
             });
-        }
+        };
     });
 
 </script>
