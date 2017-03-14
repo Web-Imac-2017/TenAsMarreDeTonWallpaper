@@ -48,6 +48,7 @@ Router::connect('/question/add', 'question/add', array());
 Router::connect('/question/get/:id', 'question/get/:id', array('id' => '[0-9]+'));
 Router::connect('/question/getAll', 'question/getAll', array());
 Router::connect('/question/delete', 'question/delete', array());
+Router::connect('/question/latest/:nb', 'question/latest/:nb', array('nb' => '[0-9]+'));
 
 // Catégorie
 Router::connect('/categorie/add', 'categorie/add', array());
