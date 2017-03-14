@@ -6,9 +6,11 @@
     $(document).ready(function() {
         $("body #deco").on("click", function() {
             $.ajax({
-                url: "/Tenasmarredetonwallpaper/api/membre/logout"
+                url: "/Tenasmarredetonwallpaper/api/membre/logout",
+                success: function(data) {
+                    location.reload();
+                }
             });
-            location.reload();
         });
     });
 
