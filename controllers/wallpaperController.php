@@ -65,8 +65,9 @@ class wallpaperController extends Controller {
 
                         foreach($_POST['rep'] as $key=>$rep) {
                             $reponse->add($key, $wallpaper_id, $rep[0], $rep[1]);
+                            $reponse->importance($key);
                         }
-
+                        
                         $wallpaper->setCategories($wallpaper_id, $_POST['categories']);
                     }
                     else {

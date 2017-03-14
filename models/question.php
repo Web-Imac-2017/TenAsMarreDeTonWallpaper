@@ -104,25 +104,6 @@ class Question extends Model {
         }
     }
 
-    function setImportance($questionID) {
-        $bdd = getBdd();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-
-        try {
-            $sql = 'SELECT wallpaper_id, COUNT(*) AS nb_wpp FROM categorie_wallpaper AS c_w INNER JOIN c_w.categorie_question ON categorie_id = categorie_question.categorie_id WHERE question_id=? GROUP BY wallpaper_id';
-            $importance = $bdd->prepare($sql);
-            $importance->execute(array($questionID));
-            $result['data'] = $importance->fetchAll(PDO::FETCH_ASSOC)[0]['nb_wpp'];
-            $result['returnCode'] = 1;
-            $result['returnMessage'] = 'Mise à jour de l\'importance OK';
-        }
-        catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la mise à jour";
-        }
-        return $result;
-    }
-
     // Supprime une question
     function delete($id) {
         $bdd = Database::get();
