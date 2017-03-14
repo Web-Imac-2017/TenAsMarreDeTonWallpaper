@@ -50,7 +50,7 @@ class Reponse extends Model {
             $req1->execute(array($qid));
             $res1 = $req1->fetchAll(PDO::FETCH_ASSOC);
             if($res1) {
-                $val1=$res1['nb'];
+                $val1=$res1[0]['nb'];
             }
         }
         catch (PDOException $e) {
@@ -63,7 +63,7 @@ class Reponse extends Model {
             $req2->execute(array($qid));
             $res2 = $req2->fetchAll(PDO::FETCH_ASSOC);
             if($res2) {
-                $val2=$res2['nb'];
+                $val2=$res2[0]['nb'];
             }
         }
         catch (PDOException $e) {
@@ -73,9 +73,10 @@ class Reponse extends Model {
         //3rd req
         try {
             $req3 = $bdd->prepare($query3);
+			$req3->execute();
             $res3 = $req3->fetchAll(PDO::FETCH_ASSOC);
             if($res3) {
-                $val3=$res3['nb'];
+                $val3=$res3[0]['nb'];
             }
         }
         catch (PDOException $e) {
