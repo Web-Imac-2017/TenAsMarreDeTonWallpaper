@@ -33,7 +33,7 @@ include('header.php');
                     password: $("#add .password").val()
                 },
                 success: function(data) {
-                    document.location.href='/TenAsMarreDeTonWallpaper/bo/dashboard.php';
+                    document.location.href='/TenAsMarreDeTonWallpaper/bo/';
                 }
             });
         });

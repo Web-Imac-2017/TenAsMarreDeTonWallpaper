@@ -2,7 +2,7 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
 require_once KERNEL . 'kernel.php';
-
+require_once MODEL_DIR . 'categorie.php';
 class Question extends Model {
 
     public function __construct(){
@@ -13,7 +13,7 @@ class Question extends Model {
     public function getAll() {
         $bdd = Database::get();
         $data = "";
-        
+
         $sqlQuery = 'SELECT * FROM question';
 
         try {
@@ -63,116 +63,57 @@ class Question extends Model {
     }
 
     // Ajoute une question
-    function add($q_courte, $q_longue, $importance, $idUser, $categories) {
+    function add($q_courte, $q_longue, $mel_id) {
         $bdd = Database::get();
-
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+        $data = "";
 
         try {
-            $sqlQuery = 'SELECT COUNT(*) FROM membre WHERE id = ? and (moderateur = 1 or admin = 1)';
-            $stmt = $bdd->prepare($sqlQuery);
-            $stmt->execute([$idUser]);
-            $validationAuto = $stmt->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT(*)'];
-            if ($validationAuto)
-                $statut = "Validé";
-            else
-                $statut = "En attente";
+            $sqlQuery = 'INSERT INTO question VALUES(NULL, ?, ?, ?, 25, 0)';
 
             try {
-
-                // Création de la mise en ligne
-                $sqlQuery = 'INSERT INTO mise_en_ligne(statut, membre_id, moderateur_id) VALUES(?,?, 1)';
                 $stmt = $bdd->prepare($sqlQuery);
-                $stmt->execute([$statut,$idUser]);
-                $miseEnLigneId = $bdd->lastInsertId();
+                $success = $stmt->execute([$q_courte, $q_longue, $mel_id]);
+                $lastInsertId = $bdd->lastInsertId();
 
-                try {
-                    $sqlQuery = 'INSERT INTO question(q_courte, q_longue, mise_en_ligne_id, importance, nb_apparition ) VALUES(?, ?, ?, ?, 0)';
-                    $stmt = $bdd->prepare($sqlQuery);
-                    $stmt->execute([$q_courte, $q_longue, $miseEnLigneId, $importance]);
+                $sqlQuery = "SELECT * FROM question WHERE id=?";
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$lastInsertId]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                    $id_nouveau = $bdd->lastInsertId();
+                $data = $bddResult[0];
 
-                    $stmt = $bdd->prepare('SELECT * FROM question WHERE id = ?');
-                    $stmt->execute([$id_nouveau]);
-                    $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $result['data'] = $bddResult[0];
-                    $result['returnCode'] = 1;
-                    $result['returnMessage'] = 'Insertion de la question réussie';
-
-                    $this->addQuestionCategorie($id_nouveau, $categories);
-                }
-
-                catch (PDOException $e) {
-                    $result['returnCode'] = -1;
-                    $result['returnMessage'] = "Echec de la mise en ligne : " . $e->getMessage(); 
-                }
+                return array("returnCode" => 1, "returnMessage" => "Question ajoutée",  "data" => $data);
             }
 
             catch (PDOException $e) {
-                $result['returnCode'] = -1;
-                $result['returnMessage'] = "Echec de la mise en ligne : " . $e->getMessage(); 
-            } 
-        }
-        catch (PDOException $e) {
-                $result['returnCode'] = -1;
-                $result['returnMessage'] = "Echec de la mise en ligne : " . $e->getMessage();
-        }
-
-        return $result;
-    }
-
-    // Associe une catégorie à une question
-    function addQuestionCategorie($questionID, $categoriesID) {
-        $bdd = Database::get();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-
-        try {
-            foreach ($categoriesID as $cat) {
-                $sql = 'INSERT INTO categorie_question VALUES(?, ?)';
-                $req = $bdd->prepare($sql);
-                $req->execute(array($questionID, $cat));
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
             }
-            $result['returnCode'] = 1;
-            $result['returnMessage'] = 'Insertion des catégories pour la question réussie';
         }
         catch (PDOException $e) {
-                $result['returnCode'] = -1;
-                $result['returnMessage'] = "Echec de l'ajout de la catégorie à la question' : " . $e->getMessage(); 
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
-        return $result;
     }
-    
-    function setImportance($questionID) {
-        $bdd = getBdd();
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
 
-        try {
-            $sql = 'SELECT wallpaper_id, COUNT(*) AS nb_wpp FROM categorie_wallpaper AS c_w INNER JOIN c_w.categorie_question ON categorie_id = categorie_question.categorie_id WHERE question_id=? GROUP BY wallpaper_id';
-            $importance = $bdd->prepare($sql);
-            $importance->execute(array($questionID));
-            $result['data'] = $importance->fetchAll(PDO::FETCH_ASSOC)[0]['nb_wpp'];
-            $result['returnCode'] = 1;
-            $result['returnMessage'] = 'Mise à jour de l\'importance OK';
+    // Associe des catégories à une question
+    public function setCategories($id, $categories) {
+        foreach ($categories as $cat) {
+            $bdd = Database::get();
+            $sql = 'INSERT INTO categorie_question VALUES(?,?)';
+            $req = $bdd->prepare($sql);
+            $req->execute([$cat, $id]);
         }
-        catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage'] = "Echec de la mise à jour";
-        }
-
-        return $result;
     }
 
     // Supprime une question
-    function deleteQuestion($questionID) {
+    function delete($id) {
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
         try {
             $sql = 'DELETE FROM question WHERE id = ?';
             $req = $bdd->prepare($sql);
-            $req->execute([$questionID]);
+            $req->execute([$id]);
             $result['returnCode'] = 1;
-            $result['returnMessage'] = 'Suppression de la question OK';
+            $result['returnMessage'] = 'Question supprimée';
         }
         catch (PDOException $e) {
             $result['returnCode'] = -1;
@@ -248,14 +189,17 @@ class Question extends Model {
         $i = 0;
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
-
+        $c= new Categorie();
         try {
-            $sql = 'SELECT categorie_id AS cat_id FROM categorie_question WHERE question_id =?';
+            $sql = 'SELECT * FROM categorie_question WHERE question_id =?';
             $req = $bdd->prepare($sql);
             $req->execute(array($questionID));
-            $categories = [];
-            while ($cat_id = $req->fetch()) {
-                $categories[$i] = getCategorie($cat_id['cat_id']);
+            $categories = array();
+            $bddres=$req->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach($bddres as $cat_id) {
+
+                $categories[$i] = $c->get($cat_id['categorie_id']);
                 $i++;
             }
 
@@ -305,6 +249,43 @@ class Question extends Model {
         }
         return $result;
 
+    }
+
+    public function latest($nb) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM question ORDER BY id DESC';
+
+            try {
+                $req = $bdd->prepare($sqlQuery);
+                $req->execute();
+                $selection = $req->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($nb <= 1) {
+                    $nb = 1;
+                }
+                else if ($nb > count($selection)) {
+                    $nb = count($selection);
+                }
+
+                for ($i=0; $i<$nb; $i++){
+                    $wallpapers[$i] = $selection[$i];
+                }
+
+                $data = $wallpapers;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
     }
 
 }

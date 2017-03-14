@@ -59,7 +59,7 @@ class Membre extends Model {
 
         if ($this->getCountOfPseudo($pseudo) != 0) {
 
-            return array("returnCode" => 0, "returnMessage" => "Pseudo existant",  "data" => $data);
+            return array("returnCode" => 0, "returnMessage" => "Pseudo déjà existant",  "data" => $data);
         }
 
         $password = password_hash($password, PASSWORD_DEFAULT);
@@ -188,21 +188,29 @@ class Membre extends Model {
 
     }
 
-    public function deleteMember($id) {
+    // Supprime un membre
+    public function delete($id) {
         $bdd = Database::get();
-
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+        $data = "";
 
         try {
-            $sqlQuery = "DELETE FROM membre WHERE id = ?";
-            $stmt = $bdd->prepare($sqlQuery);
-            $stmt->execute([$id]);		
-            $result['returnCode'] = 1;
-            $result['returnMessage']  = "Supression effectuée";	
+            $sqlQuery = 'DELETE FROM membre WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $bddResult = $stmt->execute([$id]);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Membre supprimé",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
         }
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage']  = "Supression échouée :";	
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
     }
 
@@ -212,9 +220,30 @@ class Membre extends Model {
     }
 
     // Obtenir les informations sur un membre avec son id
-    public function getMemberById($id) {
+    public function get($id) {
+        $bdd = Database::get();
+        $data = "";
 
+        try {
+            $sqlQuery = 'SELECT * FROM membre WHERE id=?';
 
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
     }
 
     // Incrémente la colonne nb_wallpapers_ajoutes
@@ -230,7 +259,7 @@ class Membre extends Model {
         $bdd = Database::get();
         $sqlQuery = "UPDATE membre SET nb_questions_ajoutees=nb_questions_ajoutees+1 WHERE id=?";
         $stmt = $bdd->prepare($sqlQuery);
-        $stmt->execute([$id]);		
+        $stmt->execute([$id]);	
     }
 
 }
