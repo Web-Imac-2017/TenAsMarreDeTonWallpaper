@@ -188,6 +188,7 @@ class Membre extends Model {
 
     }
 
+    // Supprime un membre
     public function delete($id) {
         $bdd = Database::get();
         $data = "";
@@ -197,10 +198,9 @@ class Membre extends Model {
 
             try {
                 $stmt = $bdd->prepare($sqlQuery);
-                $stmt->execute([$id]);
-                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $bddResult = $stmt->execute([$id]);
 
-                $data = $bddResult[0];
+                $data = $bddResult;
 
                 return array("returnCode" => 1, "returnMessage" => "Membre supprimé",  "data" => $data);
             }

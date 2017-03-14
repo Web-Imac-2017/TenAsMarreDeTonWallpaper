@@ -137,7 +137,6 @@ include('header.php');
                     id: $("#delete .id").val()
                 },
                 success: function(data) {
-                    alert(data);
                     reload();
                 }
             });
