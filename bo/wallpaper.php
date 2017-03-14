@@ -54,7 +54,6 @@ include('header.php');
             <tr>
                 <td>Questions :</td>
                 <td id="rep"></td>
-                <td></td>
             </tr>
             <tr>
                 <td></td>
@@ -68,9 +67,31 @@ include('header.php');
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        var min = [0, 25, 50, 75];
-        var max = [24, 49, 74, 100];
-        $.ajax({
+        var rep =
+            [
+                {
+                    value: 100,
+                    text: 'Oui'
+                },
+                {
+                    value: 75,
+                    text: 'Eventuellement'
+                },
+                {
+                    value: 50,
+                    text: 'Peu importe'
+                },
+                {
+                    value: 25,
+                    text: 'Pas vraiment'
+                },
+                {
+                    value: 0,
+                    text: 'Non'
+                }
+            ];
+            
+            $.ajax({
             url: "/TenAsMarreDeTonWallpaper/api/categorie/getAll",
             type: "POST",
             success: function(data, textStatus, jqXHR) {
@@ -88,23 +109,23 @@ include('header.php');
             url: "/TenAsMarreDeTonWallpaper/api/question/getAll",
             type: "POST",
             success: function(data, textStatus, jqXHR) {
-                var chaine = "";
+                var chaine = "<tr><td></td><td>Min</td><td>Max</td></tr>";
                 var res = JSON.parse(data);
                 for(var i=0; i<res.data.length; i++) {
                     chaine += "<tr><td>" + res.data[i].q_courte + "</td>";
                     chaine += "<td><select name='rep[" + res.data[i].id + "][0]'>";
-                    for(var j=0; j<min.length; j++) {
-                        selected = (j==0 ? "selected" : "");
-                        chaine += "<option " + selected + " value='" + min[j] + "'>" + min[j] + "</option>";
+                    for(var j=0; j<rep.length; j++) {
+                        selected = (j==2 ? "selected" : "");
+                        chaine += "<option " + selected + " value='" + rep[j].value + "'>" + rep[j].text + "</option>";
                     }
                     chaine += "</select></td><td><select name='rep[" + res.data[i].id + "][1]'>";
-                    for(var j=0; j<max.length; j++) {
-                        selected = (j==1 ? "selected" : "");
-                        chaine += "<option " + selected + " value='" + max[j] + "'>" + max[j] + "</option>";
+                    for(var j=0; j<rep.length; j++) {
+                        selected = (j==2 ? "selected" : "");
+                        chaine += "<option " + selected + " value='" + rep[j].value + "'>" + rep[j].text + "</option>";
                     }
                     chaine += "</select></td></tr>";
                 }
-                $("#rep").append(chaine);
+                $("#rep").html(chaine);
             }
         });
         

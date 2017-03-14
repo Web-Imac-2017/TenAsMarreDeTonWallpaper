@@ -27,7 +27,7 @@ session_start();
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="dashboard.php">Back Office</a>
+                    <a class="navbar-brand" href="index.php">Back Office</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -35,8 +35,8 @@ session_start();
                         <li><a href="profil.php"><?php echo $_SESSION['user']['pseudo'] ?></a></li>
                         <li><a href="" id="deco">Déconnexion</a></li>
                         <?php } else { ?>
-                        <li><a href="formulaire_connexion.php">Se connecter</a></li>
-                        <li><a href="formulaire_inscription.php">S'inscrire</a></li>
+                        <li><a href="connexion.php">Se connecter</a></li>
+                        <li><a href="inscription.php">S'inscrire</a></li>
                         <?php } ?>
                     </ul>
                     <form class="navbar-form navbar-right">
@@ -51,41 +51,41 @@ session_start();
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
                        <?php if($page['title'] == "Tableau de bord") { ?>
-                        <li class="active"><a href="dashboard.php">Tableau de bord</a></li>
-                        <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
-                        <li><a href="formulaire_question.php">Question</a></li>
-                        <li><a href="formulaire_categorie.php">Catégorie</a></li>
-                        <li><a href="formulaire_membre.php">Membre</a></li>
+                        <li class="active"><a href="index.php">Tableau de bord</a></li>
+                        <li><a href="wallpaper.php">Wallpaper</a></li>
+                        <li><a href="question.php">Question</a></li>
+                        <li><a href="categorie.php">Catégorie</a></li>
+                        <li><a href="membre.php">Membre</a></li>
                         <?php } else if($page['title'] == "Wallpaper") { ?>
-                        <li><a href="dashboard.php">Tableau de bord</a></li>
-                        <li class="active"><a href="formulaire_wallpaper.php">Wallpaper</a></li>
-                        <li><a href="formulaire_question.php">Question</a></li>
-                        <li><a href="formulaire_categorie.php">Catégorie</a></li>
-                        <li><a href="formulaire_membre.php">Membre</a></li>
+                        <li><a href="index.php">Tableau de bord</a></li>
+                        <li class="active"><a href="wallpaper.php">Wallpaper</a></li>
+                        <li><a href="question.php">Question</a></li>
+                        <li><a href="categorie.php">Catégorie</a></li>
+                        <li><a href="membre.php">Membre</a></li>
                         <?php } else if($page['title'] == "Question") { ?>
-                        <li><a href="dashboard.php">Tableau de bord</a></li>
-                        <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
-                        <li class="active"><a href="formulaire_question.php">Question</a></li>
-                        <li><a href="formulaire_categorie.php">Catégorie</a></li>
-                        <li><a href="formulaire_membre.php">Membre</a></li>
+                        <li><a href="index.php">Tableau de bord</a></li>
+                        <li><a href="wallpaper.php">Wallpaper</a></li>
+                        <li class="active"><a href="question.php">Question</a></li>
+                        <li><a href="categorie.php">Catégorie</a></li>
+                        <li><a href="membre.php">Membre</a></li>
                         <?php } else if($page['title'] == "Catégorie") { ?>
-                        <li><a href="dashboard.php">Tableau de bord</a></li>
-                        <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
-                        <li><a href="formulaire_question.php">Question</a></li>
-                        <li class="active"><a href="formulaire_categorie.php">Catégorie</a></li>
-                        <li><a href="formulaire_membre.php">Membre</a></li>
+                        <li><a href="index.php">Tableau de bord</a></li>
+                        <li><a href="wallpaper.php">Wallpaper</a></li>
+                        <li><a href="question.php">Question</a></li>
+                        <li class="active"><a href="categorie.php">Catégorie</a></li>
+                        <li><a href="membre.php">Membre</a></li>
                         <?php } else if($page['title'] == "Membre") { ?>
-                        <li><a href="dashboard.php">Tableau de bord</a></li>
-                        <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
-                        <li><a href="formulaire_question.php">Question</a></li>
-                        <li><a href="formulaire_categorie.php">Catégorie</a></li>
-                        <li class="active"><a href="formulaire_membre.php">Membre</a></li>
+                        <li><a href="index.php">Tableau de bord</a></li>
+                        <li><a href="wallpaper.php">Wallpaper</a></li>
+                        <li><a href="question.php">Question</a></li>
+                        <li><a href="categorie.php">Catégorie</a></li>
+                        <li class="active"><a href="membre.php">Membre</a></li>
                         <?php } else { ?>
-                        <li><a href="dashboard.php">Tableau de bord</a></li>
-                        <li><a href="formulaire_wallpaper.php">Wallpaper</a></li>
-                        <li><a href="formulaire_question.php">Question</a></li>
-                        <li><a href="formulaire_categorie.php">Catégorie</a></li>
-                        <li><a href="formulaire_membre.php">Membre</a></li>
+                        <li><a href="index.php">Tableau de bord</a></li>
+                        <li><a href="wallpaper.php">Wallpaper</a></li>
+                        <li><a href="question.php">Question</a></li>
+                        <li><a href="categorie.php">Catégorie</a></li>
+                        <li><a href="membre.php">Membre</a></li>
                         <?php } ?>
                     </ul>
                 </div>

@@ -188,21 +188,29 @@ class Membre extends Model {
 
     }
 
-    public function deleteMember($id) {
+    public function delete($id) {
         $bdd = Database::get();
-
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+        $data = "";
 
         try {
-            $sqlQuery = "DELETE FROM membre WHERE id = ?";
-            $stmt = $bdd->prepare($sqlQuery);
-            $stmt->execute([$id]);		
-            $result['returnCode'] = 1;
-            $result['returnMessage']  = "Supression effectuée";	
+            $sqlQuery = 'DELETE FROM membre WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult[0];
+
+                return array("returnCode" => 1, "returnMessage" => "Membre supprimé",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
         }
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage']  = "Supression échouée :";	
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
     }
 
