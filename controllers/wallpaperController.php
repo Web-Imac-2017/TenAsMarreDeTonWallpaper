@@ -71,7 +71,7 @@ class wallpaperController extends Controller {
                             $reponse->add($key, $wallpaper_id, $rep[0], $rep[1]);
                             $reponse->importance($key);
                         }
-                        
+
                         $wallpaper->setCategories($wallpaper_id, $_POST['categories']);
                     }
                     else {
@@ -113,7 +113,7 @@ class wallpaperController extends Controller {
         $data = $wallpaper->getMostDL($nb);
         echo json_encode($data);
     }
-    
+
     public function latest($nb) {
         $wallpaper = new Wallpaper();
         $data = $wallpaper->latest($nb);
@@ -126,11 +126,16 @@ class wallpaperController extends Controller {
         echo json_encode($data);
     }
 
-    public function delete($id) {
+    public function delete() {
         if(isset($_SESSION['user'])) {
             if($_SESSION['user']['admin'] || $_SESSION['user']['moderateur']) {
-                $wallpaper = new Wallpaper();
-                $data = $wallpaper->delete($id);
+                if(isset($_POST['id']) && !empty($_POST['id'])) {
+                    $wallpaper = new Wallpaper();
+                    $data = $wallpaper->delete($_POST['id']);
+                }
+                else {
+                    $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants, veuillez vérifier'];
+                }
             }
             else {
                 $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas autorisé'];

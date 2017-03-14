@@ -160,12 +160,11 @@ class membreController extends Controller {
     }
 
     public function delete() {
-        $membre = new Membre();
-        
         if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
             if(isset($_POST['id']) && !empty($_POST['id'])) {
                 if($_SESSION['user']['moderateur'] || $_SESSION['user']['admin']) {
-                    $data = $membre->delete($id);
+                    $membre = new Membre();
+                    $data = $membre->delete($_POST['id']);
                     echo json_encode($data);
                 }
                 else {

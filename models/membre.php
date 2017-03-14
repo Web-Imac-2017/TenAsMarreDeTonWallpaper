@@ -59,7 +59,7 @@ class Membre extends Model {
 
         if ($this->getCountOfPseudo($pseudo) != 0) {
 
-            return array("returnCode" => 0, "returnMessage" => "Pseudo existant",  "data" => $data);
+            return array("returnCode" => 0, "returnMessage" => "Pseudo déjà existant",  "data" => $data);
         }
 
         $password = password_hash($password, PASSWORD_DEFAULT);
