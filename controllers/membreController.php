@@ -110,6 +110,12 @@ class membreController extends Controller {
             echo json_encode($data);
         }
     }
+    
+    public function get($id) {
+        $membre = new Membre();
+        $data = $membre->get($id);
+        echo json_encode($data);
+    }
 
     public function getAll() {
         $membre = new Membre();

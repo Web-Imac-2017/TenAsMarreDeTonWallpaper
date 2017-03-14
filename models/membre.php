@@ -220,9 +220,30 @@ class Membre extends Model {
     }
 
     // Obtenir les informations sur un membre avec son id
-    public function getMemberById($id) {
+    public function get($id) {
+        $bdd = Database::get();
+        $data = "";
 
+        try {
+            $sqlQuery = 'SELECT * FROM membre WHERE id=?';
 
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
     }
 
     // Incrémente la colonne nb_wallpapers_ajoutes
@@ -238,7 +259,7 @@ class Membre extends Model {
         $bdd = Database::get();
         $sqlQuery = "UPDATE membre SET nb_questions_ajoutees=nb_questions_ajoutees+1 WHERE id=?";
         $stmt = $bdd->prepare($sqlQuery);
-        $stmt->execute([$id]);		
+        $stmt->execute([$id]);	
     }
 
 }
