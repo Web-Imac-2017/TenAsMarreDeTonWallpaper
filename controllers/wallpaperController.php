@@ -158,8 +158,9 @@ class wallpaperController extends Controller {
             $width = $_POST['width'];
             $height = $_POST['height'];
 
-            $image = $wallpaper->getUrl($wallpaperId);
-            gdresize($image, $width, $height);
+            $urlImage = $wallpaper->getUrl($wallpaperId)['data'];
+            $info = $gdObject->gdcollect($urlImage);
+            $image = $gdObject->gdresize($info['image'], $width, $height);
         }
         else {
             $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants !'];
