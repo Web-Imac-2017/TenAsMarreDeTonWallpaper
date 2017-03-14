@@ -152,6 +152,8 @@ class wallpaperController extends Controller {
     public function resize() {
         $wallpaper = new Wallpaper();
         $gdObject = new Gd();
+        
+        $data = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
         if (isset($_POST['wallpaperId']) && !empty($_POST['wallpaperId']) && isset($_POST['width']) && !empty($_POST['width']) && isset($_POST['height']) && !empty($_POST['hieght'])) {
             $wallpaperId = $_POST['wallpaperId'];
@@ -161,6 +163,11 @@ class wallpaperController extends Controller {
             $urlImage = $wallpaper->getUrl($wallpaperId)['data'];
             $info = $gdObject->gdcollect($urlImage);
             $image = $gdObject->gdresize($info['image'], $width, $height);
+            $data['returnCode'] = 1;
+            $data['returnMessage'] = 'Image redimensionnée !';
+
+
+            $data['data'] = $image;
         }
         else {
             $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants !'];
