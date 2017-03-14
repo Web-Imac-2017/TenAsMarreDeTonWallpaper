@@ -9,6 +9,34 @@ class Membre extends Model {
 
     }
 
+    // Renvoie tous les membres
+    public function getAll() {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT * FROM membre';
+
+            try {
+
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute();
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
     // Retourne le nombre d'apparition du pseudo dans la base
     public function getCountOfPseudo($pseudo) {
         $bdd = Database::get();
@@ -160,21 +188,29 @@ class Membre extends Model {
 
     }
 
-    public function deleteMember($id) {
+    // Supprime un membre
+    public function delete($id) {
         $bdd = Database::get();
-
-        $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
+        $data = "";
 
         try {
-            $sqlQuery = "DELETE FROM membre WHERE id = ?";
-            $stmt = $bdd->prepare($sqlQuery);
-            $stmt->execute([$id]);		
-            $result['returnCode'] = 1;
-            $result['returnMessage']  = "Supression effectuée";	
+            $sqlQuery = 'DELETE FROM membre WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $bddResult = $stmt->execute([$id]);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Membre supprimé",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
         }
         catch (PDOException $e) {
-            $result['returnCode'] = -1;
-            $result['returnMessage']  = "Supression échouée :";	
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
     }
 
@@ -188,7 +224,7 @@ class Membre extends Model {
 
 
     }
-    
+
     // Incrémente la colonne nb_wallpapers_ajoutes
     public function incrementer_nb_wallpapers_ajoutes($id) {
         $bdd = Database::get();
@@ -196,7 +232,7 @@ class Membre extends Model {
         $stmt = $bdd->prepare($sqlQuery);
         $stmt->execute([$id]);		
     }
-    
+
     // Incrémente la colonne nb_questions_ajoutees
     public function incrementer_nb_questions_ajoutees($id) {
         $bdd = Database::get();

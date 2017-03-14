@@ -67,38 +67,11 @@ class wallpaperController extends Controller {
 
                         $membre->incrementer_nb_wallpapers_ajoutes($_SESSION['user']['id']);
 
-                        $min = 0;
-                        $max = 0;
                         foreach($_POST['rep'] as $key=>$rep) {
-                            switch($rep) {
-                                case 0: // Oui
-                                    $min = 100;
-                                    $max = 100;
-                                    break;
-                                case 1: // Eventuellement
-                                    $min = 75;
-                                    $max = 99;
-                                    break;
-                                case 2: // Peu importe
-                                    $min = 50;
-                                    $max = 74;
-                                    break;
-                                case 3: // Pas vraiment
-                                    $min = 25;
-                                    $max = 49;
-                                    break;
-                                case 4: // Non
-                                    $min = 0;
-                                    $max = 24;
-                                    break;
-                                default:
-                                    $min = 0;
-                                    $max = 50;
-                                    break;
-                            }
-                            $reponse->add($key, $wallpaper_id, $min, $max);
+                            $reponse->add($key, $wallpaper_id, $rep[0], $rep[1]);
+                            $reponse->importance($key);
                         }
-
+                        
                         $wallpaper->setCategories($wallpaper_id, $_POST['categories']);
                     }
                     else {
@@ -138,6 +111,12 @@ class wallpaperController extends Controller {
     public function getMostDL($nb) {
         $wallpaper = new Wallpaper();
         $data = $wallpaper->getMostDL($nb);
+        echo json_encode($data);
+    }
+    
+    public function latest($nb) {
+        $wallpaper = new Wallpaper();
+        $data = $wallpaper->latest($nb);
         echo json_encode($data);
     }
 

@@ -23,6 +23,7 @@ session_start();
             <legend>DISPLAY QUESTIONS</legend>
 			<?php
 				require('models/categorie_question.php');
+				$q=new Question();
 			?>
 			<form action="" method="post">
                 <table>
@@ -30,10 +31,10 @@ session_start();
                         <td> <label>Question courte :</label></td>
 						<select name="question_id">
 						<?php
-						$questions = getQuestions();
+						$questions = $q->getAll()['data'];
 						foreach ($questions as $questions):
 						?>
-						<option value="<?= $questions['q_id'] ?>"><?php echo $questions['q_courte'] ?></option>
+						<option value="<?= $questions['id'] ?>"><?php echo $questions['q_courte'] ?></option>
 						<?php
 							endforeach;
 						?>
@@ -49,7 +50,7 @@ session_start();
 			<?php
 				if(isset($_POST['search']))
 				{
-					$question = getQuestion($_POST['question_id']);
+					$question = $q->get($_POST['question_id']);
 					$q_categories = getQuestionCategories($_POST['question_id']);
 					$occurences = sizeof($q_categories);
 					$_SESSION['q_id'] = $question['q_id'];
@@ -79,7 +80,8 @@ session_start();
                         <td> <label for="categorie">Catégories :</label></td>
 						<td>						
 						<?php
-							$allCategories = getCategories();
+							$c=new Categorie();
+							$allCategories = $c->getAll();
 							$i = 0;
 							foreach ($allCategories as $allCategories):
 
@@ -91,7 +93,7 @@ session_start();
 							{
 								if($q_categories[$i]['nom'] == $allCategories['nom'])
 								{
-									echo 'checked';
+									echo 'checked="checked"';
 								}
 							}
 						?>/>
@@ -128,9 +130,9 @@ session_start();
 					$_SESSION['importance'] = $_POST['importance'];
 					$_SESSION['nb_apparition'] = $_POST['nb_apparition'];
 					$_SESSION['q_categories'] = $_POST['q_categories'];
-					changeQuestion($_SESSION['q_id'], $_SESSION['q_courte'], $_SESSION['q_longue'], $_SESSION['importance'], $_SESSION['nb_apparition']);
-					deleteQuestionCategorie($_SESSION['q_id']);
-					addQuestionCategorie($_SESSION['q_id'], $_SESSION['q_categories']);
+					$q->changeQuestion($_SESSION['q_id'], $_SESSION['q_courte'], $_SESSION['q_longue'], $_SESSION['importance'], $_SESSION['nb_apparition']);
+					$q->deleteQuestionCategorie($_SESSION['q_id']);
+					$q->addQuestionCategorie($_SESSION['q_id'], $_SESSION['q_categories']);
 					
 					echo "<h3>Bravo ta question a bien été modifiée !</h3>";
 				}
@@ -141,7 +143,7 @@ session_start();
 			}
 			else if(isset($_POST['delete']))
 			{
-				deleteQuestion($_SESSION['q_id']);
+				$q->deleteQuestion($_SESSION['q_id']);
 				echo "<h3>Bravo ta question a bien été supprimée !</h3>";
 			}
 		?>
@@ -180,12 +182,13 @@ session_start();
                         <td> <label for="categorie">Catégories :</label></td>
 						<td>						
 						<?php
-							$categories = getCategories();
-							foreach ($categories as $categories):
+							$allCategories = $c->getAll();
+							$i = 0;
+							foreach ($allCategories as $allCategories):
 
 						?>
-						<input type="checkbox" name="add_categories[]" value="<?= $categories['id'] ?>"/>
-						<?php echo $categories['nom']; ?>
+						<input type="checkbox" name="add_categories[]" value="<?= $allCategories['id'] ?>"/>
+						<?php echo $allCategories['nom']; ?>
 						<?php
 						endforeach;
 						?>
@@ -212,7 +215,7 @@ session_start();
 					$_SESSION['add_importance'] = $_POST['add_importance'];
 					$_SESSION['add_categories'] = $_POST['add_categories'];
 					
-					addQuestion($_SESSION['add_q_courte'], $_SESSION['add_q_longue'], $_SESSION['add_importance'], 0, $_SESSION['add_categories']);
+					$q->add($_SESSION['add_q_courte'], $_SESSION['add_q_longue'], $_SESSION['add_importance'], 0, $_SESSION['add_categories']);
 					echo "<h3>Bravo ta question a bien été enregistrée !</h3>";
 				}
 				else
@@ -256,7 +259,7 @@ session_start();
 				{
 					$_SESSION['new_cat'] = $_POST['new_cat'];
 					
-					addCategorie($_SESSION['new_cat']);
+					$c->add($_SESSION['new_cat']);
 					echo "<h3>Bravo ta catégorie a bien été rajoutée !</h3>";
 				}
 				else
@@ -275,8 +278,9 @@ session_start();
                         <td> <label for="new_cat">Nom de la catégorie :</label></td>
 						<select name="categorie_id">
 							<?php
-							$cat = getCategories();
-							foreach ($cat as $cat):
+							$allCategories = $c->getAll();
+							
+							foreach ($allCategories as $cat):
 							?>
 							<option value="<?= $cat['id'] ?>"><?php echo $cat['nom'] ?></option>
 							<?php
@@ -292,7 +296,7 @@ session_start();
 			<?php
 				if(isset($_POST['deleteCat']))
 				{
-					deleteCategorie($cat['id']);
+					$c->delete($cat['id']);
 					echo "<h3>Bravo ta catégorie a bien été supprimée !</h3>";
 				}
 			?>
