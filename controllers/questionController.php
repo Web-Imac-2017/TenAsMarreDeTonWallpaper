@@ -40,8 +40,7 @@ class questionController extends Controller {
                 }
 
                 $mel_id = $data['data']['id'];
-                echo "Mise en ligne id : ".$mel_id;
-                
+
                 $data = $question->add($_POST['q_courte'], $_POST['q_longue'], $mel_id);
 
                 $question_id = $data['data']['id'];
@@ -49,7 +48,8 @@ class questionController extends Controller {
                 $membre->incrementer_nb_questions_ajoutees($_SESSION['user']['id']);
 
                 $question->setCategories($question_id, $_POST['categories']);
-
+                
+                echo json_encode($data);
             }
             else {
                 $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants, veuillez vérifier'];
@@ -64,20 +64,27 @@ class questionController extends Controller {
 
     public function delete() {
         $question = new Question();
-        if (!(isset($_SESSION['user']) && ($_SESSION['user']['moderateur'] == 1 || $_SESSION['user']['admin'] == 1))) {
-            $data = ['returnCode' => '0', 'data' => '', 'returnMessage' => 'Vous n\'etes pas connecté !'];	
-        }
-        else {
-            if (isset($_POST['id']) && !empty($_POST['id'])) {
-                $data = $question->delete($_POST['id']);
+
+        if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+            if(isset($_POST['id']) && !empty($_POST['id'])) {
+                if($_SESSION['user']['moderateur'] || $_SESSION['user']['admin']) {
+                    $data = $question->delete($_POST['id']);
+                    echo json_encode($data);
+                }
+                else {
+                    $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas autorisé !'];
+                    echo json_encode($data);
+                }
             }
             else {
                 $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants, veuillez vérifier'];
+                echo json_encode($data);
             }
-
         }
-        echo json_encode($data);
-
+        else {
+            $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté'];
+            echo json_encode($data);
+        }
     }
 
     public function latest($nb) {

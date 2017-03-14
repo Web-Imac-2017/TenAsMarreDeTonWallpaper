@@ -23,7 +23,7 @@ include('header.php');
     </div>
 </div>
 
-<div class="col-md-12">
+<div class="col-md-6 col-sm-12">
     <h2 class="sub-header">Ajouter une question</h2>
     <form id="add">
         <table>
@@ -51,6 +51,14 @@ include('header.php');
     </form>
 </div>
 
+<div class="col-md-6 col-sm-12">
+    <h2 class="sub-header">Supprimer une question</h2>
+    <form id="delete" class="form-inline">
+        <select class="select form-control id"></select>
+        <input type="submit" value="Supprimer" name="submit" class="btn btn-danger" />
+    </form>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -68,7 +76,7 @@ include('header.php');
 
             }
         });
-        
+
         var reload = function () {
             $.ajax({
                 url: "/TenAsMarreDeTonWallpaper/api/question/latest/10",
@@ -87,10 +95,18 @@ include('header.php');
                         chaine += "</tr>";
                     }
                     $("#req1").html(chaine);
+
+                    chaine = "";
+
+                    for(var i=0; i<res.data.length; i++) {
+                        chaine += "<option value='" + res.data[i].id + "'>" + res.data[i].q_courte + "</option>";
+                    }
+
+                    $(".select").html(chaine);
                 }
             });
         };
-        
+
         reload();
 
         $("body #add").submit(function(event) {
@@ -110,8 +126,21 @@ include('header.php');
                 success: function(data) {
                     reload();
                 }
+            });  
+        });
+
+        $("body #delete").submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "/TenAsMarreDeTonWallpaper/api/question/delete",
+                type: "POST",
+                data: {
+                    id: $("#delete .select").val()
+                },
+                success: function(data) {
+                    reload();
+                }
             });
-            
         });
     });
 

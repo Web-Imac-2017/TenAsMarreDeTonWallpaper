@@ -85,9 +85,11 @@ include('header.php');
                 type: "POST",
                 data: {
                     nom: $("#add .nom").val()
+                },
+                success: function(data) {
+                    reload();
                 }
             });
-            reload();
         });
 
         $("body #change").submit(function(event) {
@@ -98,9 +100,11 @@ include('header.php');
                 data: {
                     id: $("#change .select").val(),
                     nom: $("#change .nom").val()
+                },
+                success: function(data) {
+                    reload();
                 }
             });
-            reload();
         });
 
         $("body #delete").submit(function(event) {
@@ -110,9 +114,11 @@ include('header.php');
                 type: "POST",
                 data: {
                     id: $("#delete .select").val()
+                },
+                success: function(data) {
+                    reload();
                 }
             });
-            reload();
         });
     });
 

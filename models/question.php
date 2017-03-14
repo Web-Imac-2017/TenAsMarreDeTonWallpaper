@@ -120,20 +120,19 @@ class Question extends Model {
             $result['returnCode'] = -1;
             $result['returnMessage'] = "Echec de la mise à jour";
         }
-
         return $result;
     }
 
     // Supprime une question
-    function deleteQuestion($questionID) {
+    function delete($id) {
         $bdd = Database::get();
         $result = ['returnCode' => '', 'returnMessage' => '', 'data' => ''];
         try {
             $sql = 'DELETE FROM question WHERE id = ?';
             $req = $bdd->prepare($sql);
-            $req->execute([$questionID]);
+            $req->execute([$id]);
             $result['returnCode'] = 1;
-            $result['returnMessage'] = 'Suppression de la question OK';
+            $result['returnMessage'] = 'Question supprimée';
         }
         catch (PDOException $e) {
             $result['returnCode'] = -1;
