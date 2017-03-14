@@ -46,8 +46,9 @@ class Categorie extends Model {
 
             try {
                 $stmt = $bdd->prepare($sqlQuery);
-                $success = $stmt->execute([$id]);
+                $success = $stmt->execute(array($id));
                 $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
                 $data = $bddResult;
 

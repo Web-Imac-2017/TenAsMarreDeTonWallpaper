@@ -1,27 +1,10 @@
 <?php
-
-    session_start();
     require_once $_SERVER['DOCUMENT_ROOT'] . '/TenAsMarreDeTonWallpaper/config.php';
     require_once KERNEL . 'kernel.php';
     require_once MODEL_DIR . 'question.php';
     require_once MODEL_DIR . 'categorie.php';
 
 ?>
-
-<?php
-try{
-    $bdd = Database::get();
-    $query='SELECT * FROM Categorie ';
-    $res=$bdd->prepare($query);
-    $res->execute();
-}catch (Exception $e){
-    die('Erreur : ' . $e->getMessage());
-}
-$entries=$res->fetchAll(PDO::FETCH_ASSOC);
-$nb=$res->rowCount();
-$res->closeCursor();
-?>
-
 <?php
 $page['title'] = "Question";
 include('header.php');
@@ -56,10 +39,12 @@ include('header.php');
             <?php
                 if(isset($_POST['search']))
                 {
-                    $question = $q->get($_POST['question_id']);
-                    $q_categories = getQuestionCategories($_POST['question_id']);
+                    $question = $q->get($_POST['question_id'])['data'];
+;
+                    $q_categories = $q->getQuestionCategories($question['id'])['data'];
+                    
                     $occurences = sizeof($q_categories);
-                    $_SESSION['q_id'] = $question['q_id'];
+                    $_SESSION['q_id'] = $question['id'];
                     $_SESSION['importance'] = $question['importance'];
                     $_SESSION['nb_apparition'] = $question['nb_apparition'];
             ?>
@@ -87,17 +72,17 @@ include('header.php');
                         <td>                        
                         <?php
                             $c=new Categorie();
-                            $allCategories = $c->getAll();
+                            $allCategories = $c->getAll()['data'];
                             $i = 0;
                             foreach ($allCategories as $allCategories):
 
                         ?>
-                        <input type="checkbox" name="q_categories[]" value="<?= $allCategories['id'] ?>"
+                        <input type="checkbox" name="case[]" value="<?= $allCategories['id'] ?>"
                         <?php 
                             // Vérifie pour chaque categorie si elle appartient à la question
                             for ($i = 0; $i < $occurences; $i++)
                             {
-                                if($q_categories[$i]['nom'] == $allCategories['nom'])
+                                if($q_categories[$i] == $allCategories['nom'])
                                 {
                                     echo 'checked="checked"';
                                 }
@@ -108,7 +93,7 @@ include('header.php');
                         endforeach;
                         ?>
                     </tr>
-                    <p>ID : <?= $question['q_id'] ?></p>
+                    <p>ID : <?= $question['id'] ?></p>
                     <tr>
                         <td></td>
                         <td><input type="submit" value="Modifier la question" name="change" /></td>
@@ -135,11 +120,11 @@ include('header.php');
                     $_SESSION['q_longue'] = $_POST['q_longue'];
                     $_SESSION['importance'] = $_POST['importance'];
                     $_SESSION['nb_apparition'] = $_POST['nb_apparition'];
-                    $_SESSION['q_categories'] = $_POST['q_categories'];
+                    $_SESSION['case'] = $_POST['case'];
                     $q->changeQuestion($_SESSION['q_id'], $_SESSION['q_courte'], $_SESSION['q_longue'], $_SESSION['importance'], $_SESSION['nb_apparition']);
                     $q->deleteQuestionCategorie($_SESSION['q_id']);
-                    $q->addQuestionCategorie($_SESSION['q_id'], $_SESSION['q_categories']);
-                    
+                    $b=$q->addQuestionCategorie($_SESSION['q_id'], $_SESSION['case']);
+                    print_r($b);
                     echo "<h3>Bravo ta question a bien été modifiée !</h3>";
                 }
                 else
@@ -188,7 +173,8 @@ include('header.php');
                         <td> <label for="categorie">Catégories :</label></td>
                         <td>                        
                         <?php
-                            $allCategories = $c->getAll();
+                            $c=new Categorie();
+                            $allCategories = $c->getAll()['data'];
                             $i = 0;
                             foreach ($allCategories as $allCategories):
 
@@ -221,7 +207,8 @@ include('header.php');
                     $_SESSION['add_importance'] = $_POST['add_importance'];
                     $_SESSION['add_categories'] = $_POST['add_categories'];
                     
-                    $q->add($_SESSION['add_q_courte'], $_SESSION['add_q_longue'], $_SESSION['add_importance'], 0, $_SESSION['add_categories']);
+                    $d=$q->add($_SESSION['add_q_courte'], $_SESSION['add_q_longue'], $_SESSION['add_importance'], 0, $_SESSION['add_categories']);
+                    print_r($d);
                     echo "<h3>Bravo ta question a bien été enregistrée !</h3>";
                 }
                 else
