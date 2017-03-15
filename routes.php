@@ -41,7 +41,7 @@ Router::connect('/wallpaper/getByCategorie/:id', 'wallpaper/getByCategorie/:id',
 Router::connect('/wallpaper/getMostDL/:nb', 'wallpaper/getMostDL/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/getMostAP/:nb', 'wallpaper/getMostAP/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/latest/:nb', 'wallpaper/latest/:nb', array('nb' => '[0-9]+'));
-Router::connect('/wallpaper/resize/:id/:width/:height', 'wallpaper/resize/:id/:width/:height', array('id' => '[0-9]+', 'width' => '[0-9]+', 'height' => '[0-9]+'));
+Router::connect('/wallpaper/download/:id/:width/:height', 'wallpaper/download/:id/:width/:height', array('id' => '[0-9]+', 'width' => '[0-9]+', 'height' => '[0-9]+'));
 Router::connect('/wallpaper/delete', 'wallpaper/delete', array());
 
 

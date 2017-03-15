@@ -383,9 +383,15 @@ class Wallpaper extends Model {
             $stmt = $bdd->prepare($sqlQuery);
             $stmt->execute([$id]);
             $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $result['data'] = $bddResult[0]['url'];
-            $result['returnMessage'] = "Récupération de l'url OK";
-            $result['returnCode'] = 1;
+            if (!empty($bddResult)) {
+                $result['data'] = $bddResult[0]['url'];
+                $result['returnMessage'] = "Récupération de l'url OK";
+                $result['returnCode'] = 1;
+            }
+            else {
+                $result['returnMessage'] = "Echech de récupération de l'url";
+                $result['returnCode'] = 0;
+            }
         }
         catch (PDOException $e) {
             $result['returnMessage'] = $e->getMessage();
