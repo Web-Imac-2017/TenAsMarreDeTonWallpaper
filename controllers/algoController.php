@@ -121,7 +121,7 @@ class AlgoController extends Controller {
 			$this->restart();
 		}
 		// Si c'est la 1ère question, on appelle getFirstQuestion qui va renvoyer la 1ère question (et la générer si pas fait)
-		if($_SESSION['num_question'] == 1)
+		else if($_SESSION['num_question'] == 1)
 		{
 			$this->getFirstQuestion();
 		}
