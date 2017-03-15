@@ -20,12 +20,13 @@ const Results = Vue.extend({
       'results-retry': { text: 'Recommencer', url:{name: 'findYourWallpaper'} },
     },
     randomInt: 0,
-    selectedWallpaper: null
+    selectedWallpaper: null,
   };},
 
   computed:{
     hasSelectedWallpaper: function() { return this.selectedWallpaper != null; },
-    passedWallpaper: function(){ return this.hasSelectedWallpaper ? this.selectedWallpaper : {}; }
+    passedWallpaper: function(){ return this.hasSelectedWallpaper ? this.selectedWallpaper : {}; },
+    wallpapers: function(){ return bus.results; }
   },
 
   components: {
@@ -42,6 +43,9 @@ const Results = Vue.extend({
       },
       selectWallpaper(wallpaper){
         this.selectedWallpaper = wallpaper;
+      },
+      onCloseDlwpp(){
+        this.selectedWallpaper = null;
       }
   }
 });

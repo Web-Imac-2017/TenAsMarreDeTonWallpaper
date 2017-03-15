@@ -9,7 +9,7 @@
     </div>
     <div class="slider-wrapper">
         <rainbow-bar></rainbow-bar>
-        <slider v-on:select-wallpaper="(value) => selectWallpaper(value)"></slider>
+        <slider v-on:select-wallpaper="(value) => selectWallpaper(value)" :wallpapers="wallpapers"></slider>
     </div>
-    <dlwpp v-if="hasSelectedWallpaper" :wallpaper="passedWallpaper"></dlwpp>
+    <dlwpp v-if="hasSelectedWallpaper" :wallpaper="passedWallpaper" v-on:close="onCloseDlwpp"></dlwpp>
 </default-layout>

@@ -29,12 +29,12 @@ const DlWpp = Vue.extend({
     computed: {
         wpp: function() {
             return {
-                titre:this.wallpaper.title,
-                auteur:this.wallpaper.author,
+                titre:this.wallpaper.nom,
+                auteur:this.wallpaper.auteur,
                 genre:this.wallpaper.category,
                 url:this.wallpaper.url,
-                l:this.wallpaper.width,
-                h:this.wallpaper.height
+                l:this.wallpaper.largeur,
+                h:this.wallpaper.hauteur
             }
         },
         sections: function() {
@@ -57,7 +57,7 @@ const DlWpp = Vue.extend({
     },
 
     methods: {
-      fermer: function() { alert("TODO fermer ce widget !"); },
+      fermer: function() { this.$emit('close'); },
       prev: function() { alert("TODO Wallpaper précédent !"); },
       next: function() { alert("TODO Wallpaper suivant !"); },
       on_dim_custom: function(e, min, max) {

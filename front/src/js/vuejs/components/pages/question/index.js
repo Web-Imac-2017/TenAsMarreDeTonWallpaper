@@ -93,6 +93,8 @@ const QuestionPage = Vue.extend({
         // Next Question ok
         .then(function(response){
           if('continue' in response && response.continue == false){
+            if(!('data' in response)) throw Error('Données de résultats manquantes.');
+            bus.results = response.data.wallpapers;
             router.push({name: 'results'}); return;
           }
           if(!('data' in response)) throw Error('Données de question manquantes.');

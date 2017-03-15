@@ -2,8 +2,8 @@
     <div class="slider-container" :style="{left: -this.offset + 'px'}">
         <a v-for="picture in wallpapers" href="#" class="slider-wallpaper-item" :style="getThumbnailCss(picture)" v-on:click="openWallpaper(picture)">
             <div class="slider-wallpaper-info">
-                <h3 class="slider-wallpaper-title">{{ picture.title }}</h3>
-                <span class="slider-wallpaper-author">par {{ picture.author }}</span>
+                <h3 class="slider-wallpaper-title">{{ picture.nom }}</h3>
+                <span class="slider-wallpaper-author">par {{ picture.auteur }}</span>
             </div>
         </a>
     </div>
