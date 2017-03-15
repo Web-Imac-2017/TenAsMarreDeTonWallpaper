@@ -15,24 +15,26 @@ const ecran = {l:window.screen.width, h:window.screen.height};
 const DlWpp = Vue.extend({
     template,
 
-    props: ['titre','auteur','genre','url','l','h'],
+    props: {
+        'wallpaper': {type: Object, default: function(){ return {}; }}
+    },
 
     data: () => ({
         // Pas 0, sinon le placeholder ne s'affiche pas.
         custom:{l:"", h:""},
         ecran:ecran,
-        afficher_fleches:true // Mettre à false si on n'implémente pas prev et next
+        afficher_fleches:false // Mettre à false si on n'implémente pas prev et next
     }),
 
     computed: {
         wpp: function() {
             return {
-                titre:this.titre,
-                auteur:this.auteur,
-                genre:this.genre,
-                url:this.url,
-                l:this.l,
-                h:this.h
+                titre:this.wallpaper.title,
+                auteur:this.wallpaper.author,
+                genre:this.wallpaper.category,
+                url:this.wallpaper.url,
+                l:this.wallpaper.width,
+                h:this.wallpaper.height
             }
         },
         sections: function() {

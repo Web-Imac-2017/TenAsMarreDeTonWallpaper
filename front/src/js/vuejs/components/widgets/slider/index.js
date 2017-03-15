@@ -12,21 +12,22 @@ const Slider = Vue.extend({
     'wallpapers-height-rem': { type: Number, default: function(){ return 12; }},
     //'wallpapers': {type: Array, default: function(){ return []; }}, // liste des wallpapers sous la forme d'un tableaux d'objets.
     'wallpapers': {type: Array, default: function(){ return [
-        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', width: 1920, height: 1080, title: "Sunset", author: "Jeandas la menace"},
-        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/nyan-cat.jpg', width: 1920, height: 1080, title: "Rainbow Nyan Cat", author: "Houguelluque" },
-        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', width: 2000, height: 1500, title: "Rain", author: "Jean-Guillain" },
-        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png', width: 2560, height: 1440, title: "The guardian of the stars", author: "Marcelle la pucelle" },
-        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', width: 1920, height: 1080, title: "Sunset", author: "Jeandas la menace"},
-        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/nyan-cat.jpg', width: 1920, height: 1080, title: "Rainbow Nyan Cat", author: "Houguelluque" },
-        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', width: 2000, height: 1500, title: "Rain", author: "Jean-Guillain" },
-        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png', width: 2560, height: 1440, title: "The guardian of the stars", author: "Marcelle la pucelle" }
+        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', url: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', width: 1920, height: 1080, title: "Sunset", author: "Jeandas la menace"},
+        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/nyan-cat.jpg', url: '/TenAsMarreDeTonWallpaper/media/wallpapers/nyan-cat.jpg', width: 1920, height: 1080, title: "Rainbow Nyan Cat", author: "Houguelluque" },
+        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', url: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', width: 2000, height: 1500, title: "Rain", author: "Jean-Guillain" },
+        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png', url: '/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png', width: 2560, height: 1440, title: "The guardian of the stars", author: "Marcelle la pucelle" },
+        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', url: '/TenAsMarreDeTonWallpaper/media/wallpapers/sunset.jpg', width: 1920, height: 1080, title: "Sunset", author: "Jeandas la menace"},
+        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/nyan-cat.jpg', url: '/TenAsMarreDeTonWallpaper/media/wallpapers/nyan-cat.jpg', width: 1920, height: 1080, title: "Rainbow Nyan Cat", author: "Houguelluque" },
+        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', url: '/TenAsMarreDeTonWallpaper/media/wallpapers/rain.png', width: 2000, height: 1500, title: "Rain", author: "Jean-Guillain" },
+        { thumbnail: '/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png', url: '/TenAsMarreDeTonWallpaper/media/wallpapers/the_guardian_of_the_stars.png', width: 2560, height: 1440, title: "The guardian of the stars", author: "Marcelle la pucelle" },
     ]; }}
   },
 
   data() {
     return {
     	offset: 0,
-        pas: screen.width * 2 / 3
+        pas: screen.width * 2 / 3,
+        openWallPicture: null
     };
   },
 
@@ -43,6 +44,9 @@ const Slider = Vue.extend({
       },
       hideRightArrow: function(){
           return this.offset >= this.totalwidth - screen.width;
+      },
+      showOverlay: function(){
+          return this.openWallPicture != null;
       }
   },
 
@@ -59,6 +63,9 @@ const Slider = Vue.extend({
         this.offset += direction * this.pas;
         if(this.offset > this.totalwidth - screen.width) this.offset = this.totalwidth - screen.width;
         if(this.offset < 0) this.offset = 0;
+    },
+    openWallpaper(wallpaper){
+        this.$emit('select-wallpaper', wallpaper);
     }
   }
 
