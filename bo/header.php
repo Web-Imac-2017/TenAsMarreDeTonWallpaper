@@ -12,6 +12,8 @@ session_start();
         <meta name="author" content="">
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
+        
+        <script src="https://use.fontawesome.com/86f5ffa99f.js"></script>
 
         <title>BO - <?php echo $page['title'] ?></title>
     </head>
@@ -32,11 +34,11 @@ session_start();
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                        <?php if(isset($_SESSION['user'])) { ?>
-                        <li><a href="profil.php"><?php echo $_SESSION['user']['pseudo'] ?></a></li>
-                        <li><a href="#" id="deco">Déconnexion</a></li>
+                        <li><a href="profil.php"><i class="fa fa-user" aria-hidden="true"></i> <?php echo $_SESSION['user']['pseudo'] ?></a></li>
+                        <li><a href="#" id="deco"><i class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a></li>
                         <?php } else { ?>
-                        <li><a href="connexion.php">Se connecter</a></li>
-                        <li><a href="inscription.php">S'inscrire</a></li>
+                        <li><a href="connexion.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Se connecter</a></li>
+                        <li><a href="inscription.php"><i class="fa fa-user-plus" aria-hidden="true"></i> S'inscrire</a></li>
                         <?php } ?>
                     </ul>
                     <form class="navbar-form navbar-right">
@@ -51,41 +53,41 @@ session_start();
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
                        <?php if($page['title'] == "Tableau de bord") { ?>
-                        <li class="active"><a href="index.php">Tableau de bord</a></li>
-                        <li><a href="wallpaper.php">Wallpaper</a></li>
-                        <li><a href="question.php">Question</a></li>
-                        <li><a href="categorie.php">Catégorie</a></li>
-                        <li><a href="membre.php">Membre</a></li>
+                        <li class="active"><a href="index.php"><i class="fa fa-table" aria-hidden="true"></i> Tableau de bord</a></li>
+                        <li><a href="wallpaper.php"><i class="fa fa-picture-o" aria-hidden="true"></i> Wallpaper</a></li>
+                        <li><a href="question.php"><i class="fa fa-question-circle" aria-hidden="true"></i> Question</a></li>
+                        <li><a href="categorie.php"><i class="fa fa-tags" aria-hidden="true"></i> Catégorie</a></li>
+                        <li><a href="membre.php"><i class="fa fa-users" aria-hidden="true"></i> Membre</a></li>
                         <?php } else if($page['title'] == "Wallpaper") { ?>
-                        <li><a href="index.php">Tableau de bord</a></li>
-                        <li class="active"><a href="wallpaper.php">Wallpaper</a></li>
-                        <li><a href="question.php">Question</a></li>
-                        <li><a href="categorie.php">Catégorie</a></li>
-                        <li><a href="membre.php">Membre</a></li>
+                        <li><a href="index.php"><i class="fa fa-table" aria-hidden="true"></i> Tableau de bord</a></li>
+                        <li class="active"><a href="wallpaper.php"><i class="fa fa-picture-o" aria-hidden="true"></i> Wallpaper</a></li>
+                        <li><a href="question.php"><i class="fa fa-question-circle" aria-hidden="true"></i> Question</a></li>
+                        <li><a href="categorie.php"><i class="fa fa-tags" aria-hidden="true"></i> Catégorie</a></li>
+                        <li><a href="membre.php"><i class="fa fa-users" aria-hidden="true"></i> Membre</a></li>
                         <?php } else if($page['title'] == "Question") { ?>
-                        <li><a href="index.php">Tableau de bord</a></li>
-                        <li><a href="wallpaper.php">Wallpaper</a></li>
-                        <li class="active"><a href="question.php">Question</a></li>
-                        <li><a href="categorie.php">Catégorie</a></li>
-                        <li><a href="membre.php">Membre</a></li>
+                        <li><a href="index.php"><i class="fa fa-table" aria-hidden="true"></i> Tableau de bord</a></li>
+                        <li><a href="wallpaper.php"><i class="fa fa-picture-o" aria-hidden="true"></i> Wallpaper</a></li>
+                        <li class="active"><a href="question.php"><i class="fa fa-question-circle" aria-hidden="true"></i> Question</a></li>
+                        <li><a href="categorie.php"><i class="fa fa-tags" aria-hidden="true"></i> Catégorie</a></li>
+                        <li><a href="membre.php"><i class="fa fa-users" aria-hidden="true"></i> Membre</a></li>
                         <?php } else if($page['title'] == "Catégorie") { ?>
-                        <li><a href="index.php">Tableau de bord</a></li>
-                        <li><a href="wallpaper.php">Wallpaper</a></li>
-                        <li><a href="question.php">Question</a></li>
-                        <li class="active"><a href="categorie.php">Catégorie</a></li>
-                        <li><a href="membre.php">Membre</a></li>
+                        <li><a href="index.php"><i class="fa fa-table" aria-hidden="true"></i> Tableau de bord</a></li>
+                        <li><a href="wallpaper.php"><i class="fa fa-picture-o" aria-hidden="true"></i> Wallpaper</a></li>
+                        <li><a href="question.php"><i class="fa fa-question-circle" aria-hidden="true"></i> Question</a></li>
+                        <li class="active"><a href="categorie.php"><i class="fa fa-tags" aria-hidden="true"></i> Catégorie</a></li>
+                        <li><a href="membre.php"><i class="fa fa-users" aria-hidden="true"></i> Membre</a></li>
                         <?php } else if($page['title'] == "Membre") { ?>
-                        <li><a href="index.php">Tableau de bord</a></li>
-                        <li><a href="wallpaper.php">Wallpaper</a></li>
-                        <li><a href="question.php">Question</a></li>
-                        <li><a href="categorie.php">Catégorie</a></li>
-                        <li class="active"><a href="membre.php">Membre</a></li>
+                        <li><a href="index.php"><i class="fa fa-table" aria-hidden="true"></i> Tableau de bord</a></li>
+                        <li><a href="wallpaper.php"><i class="fa fa-picture-o" aria-hidden="true"></i> Wallpaper</a></li>
+                        <li><a href="question.php"><i class="fa fa-question-circle" aria-hidden="true"></i> Question</a></li>
+                        <li><a href="categorie.php"><i class="fa fa-tags" aria-hidden="true"></i> Catégorie</a></li>
+                        <li class="active"><a href="membre.php"><i class="fa fa-users" aria-hidden="true"></i> Membre</a></li>
                         <?php } else { ?>
-                        <li><a href="index.php">Tableau de bord</a></li>
-                        <li><a href="wallpaper.php">Wallpaper</a></li>
-                        <li><a href="question.php">Question</a></li>
-                        <li><a href="categorie.php">Catégorie</a></li>
-                        <li><a href="membre.php">Membre</a></li>
+                        <li><a href="index.php"><i class="fa fa-table" aria-hidden="true"></i> Tableau de bord</a></li>
+                        <li><a href="wallpaper.php"><i class="fa fa-picture-o" aria-hidden="true"></i> Wallpaper</a></li>
+                        <li><a href="question.php"><i class="fa fa-question-circle" aria-hidden="true"></i> Question</a></li>
+                        <li><a href="categorie.php"><i class="fa fa-tags" aria-hidden="true"></i> Catégorie</a></li>
+                        <li><a href="membre.php"><i class="fa fa-users" aria-hidden="true"></i> Membre</a></li>
                         <?php } ?>
                     </ul>
                 </div>
