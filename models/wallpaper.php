@@ -11,11 +11,66 @@ class Wallpaper extends Model {
 
     // Renvoie les informations d'un seul wallpaper
     public function get($id) {
+        //test();
         $bdd = Database::get();
         $data = "";
 
         try {
             $sqlQuery = 'SELECT * FROM wallpaper WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+    // Renvoie les catégories d'un wallpaper
+    public function getCategories($id) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT id, nom FROM categorie INNER JOIN categorie_wallpaper ON categorie.id=categorie_id WHERE wallpaper_id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+    
+    // Renvoie les réponses aux questions d'un wallpaper
+    public function getReponses($id) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT question_id, val_min, val_max FROM reponse INNER JOIN wallpaper ON wallpaper_id=wallpaper.id WHERE wallpaper_id=?';
 
             try {
                 $stmt = $bdd->prepare($sqlQuery);

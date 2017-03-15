@@ -93,7 +93,9 @@ class wallpaperController extends Controller {
 
     public function get($id) {
         $wallpaper = new Wallpaper();
-        $data = $wallpaper->get($id);
+        $data['wallpaper'] = $wallpaper->get($id);
+        $data['categories'] = $wallpaper->getCategories($id);
+        $data['reponses'] = $wallpaper->getReponses($id);
         echo json_encode($data);
     }
 
