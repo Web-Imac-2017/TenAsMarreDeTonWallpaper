@@ -126,7 +126,7 @@ include('header.php');
                     chaine += "<tr><td>" + res.data[i].q_courte + "</td>";
                     chaine += "<td><select name='rep[" + res.data[i].id + "][0]'>";
                     for(var j=0; j<rep.length; j++) {
-                        selected = (j==2 ? "selected" : "");
+                        selected = (j==4 ? "selected" : "");
                         chaine += "<option " + selected + " value='" + rep[j].value + "'>" + rep[j].text + "</option>";
                     }
                     chaine += "</select></td><td><select name='rep[" + res.data[i].id + "][1]'>";
