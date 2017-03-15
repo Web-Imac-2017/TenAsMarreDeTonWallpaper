@@ -6,6 +6,7 @@ let template = require('./template.html');
 template     = eval(`\`${template}\``);
 
 import bus from '../../bus/index.js';
+import router from '../../../router/index.js';
 import RainbowBar from '../../widgets/rainbow-bar/index.js';
 
 const HeaderMain = Vue.extend({
