@@ -116,3 +116,7 @@ body {
     border-radius: 50%;
     text-align: center;
 }
+
+.sidebar i {
+    margin-right: 10px;
+}

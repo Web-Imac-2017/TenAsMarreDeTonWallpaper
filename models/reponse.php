@@ -35,7 +35,30 @@ class Reponse extends Model {
         }
 
     }
-    
+    public function change($question_id, $wallpaper_id, $val_min, $val_max) {
+        $bdd = Database::get();
+
+
+        try {
+            $sql = 'UPDATE reponse SET val_min=?, val_max=? WHERE question_id = ? AND $wallpaper_id=?';
+            
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$val_min, $val_max,$question_id,$wallpaper_id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                return array("returnCode" => 1, "returnMessage" => "Réponse modifiée",  "data" => "");
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => "");
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => "");
+        }
+
+    }
     // Met à jour de l'importance de la question
     function importance($qid) {
         $bdd = Database::get();
@@ -50,7 +73,7 @@ class Reponse extends Model {
             $req1->execute(array($qid));
             $res1 = $req1->fetchAll(PDO::FETCH_ASSOC);
             if($res1) {
-                $val1=$res1['nb'];
+                $val1=$res1[0]['nb'];
             }
         }
         catch (PDOException $e) {
@@ -63,7 +86,7 @@ class Reponse extends Model {
             $req2->execute(array($qid));
             $res2 = $req2->fetchAll(PDO::FETCH_ASSOC);
             if($res2) {
-                $val2=$res2['nb'];
+                $val2=$res2[0]['nb'];
             }
         }
         catch (PDOException $e) {
@@ -73,9 +96,10 @@ class Reponse extends Model {
         //3rd req
         try {
             $req3 = $bdd->prepare($query3);
+			$req3->execute();
             $res3 = $req3->fetchAll(PDO::FETCH_ASSOC);
             if($res3) {
-                $val3=$res3['nb'];
+                $val3=$res3[0]['nb'];
             }
         }
         catch (PDOException $e) {

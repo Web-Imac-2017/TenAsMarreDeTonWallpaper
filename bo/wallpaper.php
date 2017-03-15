@@ -27,7 +27,7 @@ include('header.php');
     </div>
 </div>
 
-<div class="col-md-12">
+<div class="col-md-6">
     <h2 class="sub-header">Ajouter un wallpaper</h2>
     <form action="../api/wallpaper/add" enctype="multipart/form-data" method="post">
         <table>
@@ -64,9 +64,24 @@ include('header.php');
     </form>
 </div>
 
+<div class="col-md-6 col-sm-12">
+    <h2 class="sub-header">Supprimer un wallpaper</h2>
+    <form id="delete" class="form-inline">
+        <div class="form-group">
+            <label>Id<span style="color:red;">*</span> :</label>
+            <input type="text" class="form-control id" />
+        </div>
+        <input type="submit" value="Supprimer" name="submit" class="btn btn-danger" />
+    </form>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function() {
+        function hideErrors() {
+            $(".alert").remove();
+        };
+        
         var rep =
             [
                 {
@@ -90,8 +105,8 @@ include('header.php');
                     text: 'Non'
                 }
             ];
-            
-            $.ajax({
+
+        $.ajax({
             url: "/TenAsMarreDeTonWallpaper/api/categorie/getAll",
             type: "POST",
             success: function(data, textStatus, jqXHR) {
@@ -115,7 +130,7 @@ include('header.php');
                     chaine += "<tr><td>" + res.data[i].q_courte + "</td>";
                     chaine += "<td><select name='rep[" + res.data[i].id + "][0]'>";
                     for(var j=0; j<rep.length; j++) {
-                        selected = (j==2 ? "selected" : "");
+                        selected = (j==4 ? "selected" : "");
                         chaine += "<option " + selected + " value='" + rep[j].value + "'>" + rep[j].text + "</option>";
                     }
                     chaine += "</select></td><td><select name='rep[" + res.data[i].id + "][1]'>";
@@ -128,29 +143,54 @@ include('header.php');
                 $("#rep").html(chaine);
             }
         });
-        
-        $.ajax({
-            url: "/TenAsMarreDeTonWallpaper/api/wallpaper/latest/10",
-            type: "POST",
-            success: function(data, textStatus, jqXHR) {
-                var chaine = "";
-                var res = JSON.parse(data);
-                for(var i=0; i<res.data.length; i++) {
-                    chaine += "<tr>";
-                    chaine += "<td>" + res.data[i].id + "</td>";
-                    chaine += "<td>" + res.data[i].nom + "</td>";
-                    chaine += "<td>" + res.data[i].auteur + "</td>";
-                    chaine += "<td>" + res.data[i].url + "</td>";
-                    chaine += "<td>" + res.data[i].largeur + "</td>";
-                    chaine += "<td>" + res.data[i].hauteur + "</td>";
-                    chaine += "<td>" + res.data[i].format + "</td>";
-                    chaine += "<td>" + res.data[i].date + "</td>";
-                    chaine += "<td>" + res.data[i].nb_apparition + "</td>";
-                    chaine += "<td>" + res.data[i].nb_telechargement + "</td>";
-                    chaine += "</tr>";
+
+        function reload() {
+            $.ajax({
+                url: "/TenAsMarreDeTonWallpaper/api/wallpaper/latest/10",
+                type: "POST",
+                success: function(data, textStatus, jqXHR) {
+                    var chaine = "";
+                    var res = JSON.parse(data);
+                    for(var i=0; i<res.data.length; i++) {
+                        chaine += "<tr>";
+                        chaine += "<td>" + res.data[i].id + "</td>";
+                        chaine += "<td>" + res.data[i].nom + "</td>";
+                        chaine += "<td>" + res.data[i].auteur + "</td>";
+                        chaine += "<td>" + res.data[i].url + "</td>";
+                        chaine += "<td>" + res.data[i].largeur + "</td>";
+                        chaine += "<td>" + res.data[i].hauteur + "</td>";
+                        chaine += "<td>" + res.data[i].format + "</td>";
+                        chaine += "<td>" + res.data[i].date + "</td>";
+                        chaine += "<td>" + res.data[i].nb_apparition + "</td>";
+                        chaine += "<td>" + res.data[i].nb_telechargement + "</td>";
+                        chaine += "</tr>";
+                    }
+                    $("#req1").html(chaine);
                 }
-                $("#req1").append(chaine);
-            }
+            });
+        };
+        
+        reload();
+
+        $("body #delete").submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: "/TenAsMarreDeTonWallpaper/api/wallpaper/delete",
+                type: "POST",
+                data: {
+                    id: $("#delete .id").val()
+                },
+                success: function(data) {
+                    hideErrors();
+                    var res = JSON.parse(data);
+                    if(res.returnCode != 1) {
+                        $("#delete").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.returnMessage + '</strong></div>');
+                    }
+                    else {
+                        reload();
+                    }
+                }
+            });
         });
     });
 
