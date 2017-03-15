@@ -181,6 +181,7 @@ class wallpaperController extends Controller {
                 $fileName = explode("/", $urlImage);
                 $fileName = explode(".", $fileName[1]);
                 $fileName = $fileName[0] . "_" . $width . "_" . $height . "." . $fileName[1];
+                $wallpaper->incrementer_nb_telechargement($wallpaperId);
 
                 if (strcmp(strtolower($info['extension']), ".png") == 0) {
                     header('Content-Type: image/png');

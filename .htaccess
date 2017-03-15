@@ -7,11 +7,11 @@ RewriteBase /TenAsMarreDeTonWallpaper
 RewriteRule ^api/(.*)$ api.php?url=$1 [QSA,L]
 
 # Les formulaires du back-office (semble marcher. Valentin, tu peux test ? x) ).
-#RewriteRule ^bo/(.*)$ bo/$1 [QSA,L]
+RewriteRule ^bo/(.*)$ bo/$1 [QSA,L]
 
 # On raccourci le front
-#RewriteCond %{REQUEST_URI} !www/index.html
-#RewriteRule ^www/(.*)$ front/www/$1 [L]
+RewriteCond %{REQUEST_URI} !www/index.html
+RewriteRule ^www/(.*)$ front/www/$1 [L]
 
 # Pour les autres requetes, on renvoie sur index.php
-#RewriteRule ^((?!api).)*$ index.php/$1 [END]
+RewriteRule ^((?!api).)*$ index.php/$1 [END]
