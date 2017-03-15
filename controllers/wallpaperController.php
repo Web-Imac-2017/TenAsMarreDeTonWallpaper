@@ -159,7 +159,7 @@ class wallpaperController extends Controller {
         echo json_encode($data);
     }
 
-    public function resize() {
+    public function resize($id, $width, $height) {
         $wallpaper = new Wallpaper();
         $gdObject = new Gd();
         
