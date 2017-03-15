@@ -78,6 +78,10 @@ include('header.php');
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function() {
+        function hideErrors() {
+            $(".alert").remove();
+        };
+        
         var rep =
             [
                 {
@@ -177,9 +181,10 @@ include('header.php');
                     id: $("#delete .id").val()
                 },
                 success: function(data) {
+                    hideErrors();
                     var res = JSON.parse(data);
                     if(res.returnCode != 1) {
-                        alert(data);
+                        $("#delete").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.returnMessage + '</strong></div>');
                     }
                     else {
                         reload();
