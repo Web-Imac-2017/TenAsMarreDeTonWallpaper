@@ -6,6 +6,7 @@ require_once MODEL_DIR . 'wallpaper.php';
 require_once MODEL_DIR . 'mel.php';
 require_once MODEL_DIR . 'reponse.php';
 require_once MODEL_DIR . 'membre.php';
+require_once MODEL_DIR . 'gd.php';
 
 /**
 * Classe : wallpaperController
@@ -159,26 +160,51 @@ class wallpaperController extends Controller {
         echo json_encode($data);
     }
 
-    public function resize($id, $width, $height) {
+    /* Cette fonction prend en paramètre l'id d'un wallpaper
+    *  width : la largeur voulue
+    *  height : la hauteur voulue
+    *  Telecharge dans le dossier "telechargement" / "download" du client le wallpaper redimensionné
+    */
+    public function download($wallpaperId, $width, $height) {
         $wallpaper = new Wallpaper();
         $gdObject = new Gd();
         
         $data = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
-        if (isset($_POST['wallpaperId']) && !empty($_POST['wallpaperId']) && isset($_POST['width']) && !empty($_POST['width']) && isset($_POST['height']) && !empty($_POST['hieght'])) {
-            $wallpaperId = $_POST['wallpaperId'];
-            $width = $_POST['width'];
-            $height = $_POST['height'];
+        // Si tous les paramètres sont OK
+        if (!empty($wallpaperId) && !empty($width) && !empty($height)) {
 
             $urlImage = $wallpaper->getUrl($wallpaperId)['data'];
-            $info = $gdObject->gdcollect($urlImage);
-            $image = $gdObject->gdresize($info['image'], $width, $height);
-            $data['returnCode'] = 1;
-            $data['returnMessage'] = 'Image redimensionnée !';
+            // Si on a pu obtenir l'url
+            if (!empty($urlImage)) {
+                $info = $gdObject->gdcollect($urlImage);
+                $fileName = explode("/", $urlImage);
+                $fileName = explode(".", $fileName[1]);
+                $fileName = $fileName[0] . "_" . $width . "_" . $height . "." . $fileName[1];
+                $wallpaper->incrementer_nb_telechargement($wallpaperId);
 
+                if (strcmp(strtolower($info['extension']), ".png") == 0) {
+                    header('Content-Type: image/png');
+                    header('Content-Disposition: attachment; filename=' . $fileName);
+                    $gdObject->gdresize($info['image'], $width, $height, ".png");
+                }
+                else if (strcmp(strtolower($info['extension']), ".jpg") == 0 || strcmp(strtolower($info['extension']), ".jpeg") == 0){
+                    header('Content-Type: image/jpg');
+                    header('Content-Disposition: attachment; filename=' . $fileName);
+                    $gdObject->gdresize($info['image'], $width, $height, ".jpg");
+                    exit();
+                }
+                else {
+                    $data['returnCode'] = 0;
+                    $data['returnMessage'] = 'Echec : le format de l\'image n\'est pas supporté';    
+                }
+            }
+            else {
+                    $data['returnCode'] = 0;
+                    $data['returnMessage'] = 'L\'id du wallpaper est invalide'; 
+            }
 
-            $data['data'] = $image;
-        }
+         }
         else {
             $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants !'];
         }
