@@ -24,7 +24,8 @@ const router = new VueRouter({
     {
       name    : 'results',
       path    : '/results',
-      component: Results
+      component: Results,
+      props   : true
     },
     {
       name     : 'test-dlwpp',

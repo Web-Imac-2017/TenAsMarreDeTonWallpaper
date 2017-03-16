@@ -21,6 +21,13 @@ const Presentation = Vue.extend({
   methods:{
     rollWallmatch(){
       this.randomInt = Math.random();
+    },
+    scrollBottom: function(){
+      window.scrollBy({ 
+        top: 500,
+        left: 0, 
+        behavior: 'smooth' 
+      });
     }
   }
 });

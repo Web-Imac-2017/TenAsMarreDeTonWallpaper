@@ -9,7 +9,7 @@ const Slide_wpp = Vue.extend({
   template,
 
   props: {
-    'wallpapers-height-rem': { type: Number, default: function(){ return 6; }}
+    'wallpapers-height-rem': { type: Number, default: function(){ return 6; }},
   },
 
   data() {

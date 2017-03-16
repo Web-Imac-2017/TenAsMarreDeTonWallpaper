@@ -373,4 +373,33 @@ class Wallpaper extends Model {
         }
     }
 
+    public function getUrl($id) {
+        $bdd = Database::get();
+        $result = ["returnCode" => "", "returnMessage" => "",  "data" =>  ""];
+
+        $sqlQuery = 'SELECT url FROM wallpaper WHERE id = ?';
+
+        try {
+            $stmt = $bdd->prepare($sqlQuery);
+            $stmt->execute([$id]);
+            $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (!empty($bddResult)) {
+                $result['data'] = $bddResult[0]['url'];
+                $result['returnMessage'] = "Récupération de l'url OK";
+                $result['returnCode'] = 1;
+            }
+            else {
+                $result['returnMessage'] = "Echech de récupération de l'url";
+                $result['returnCode'] = 0;
+            }
+        }
+        catch (PDOException $e) {
+            $result['returnMessage'] = $e->getMessage();
+            $result['returnCode'] = 0;
+        }
+
+
+        return $result;
+    }
+
 }

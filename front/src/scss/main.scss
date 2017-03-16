@@ -133,10 +133,11 @@ a{
 	text-decoration: none;
 	display: inline-block;
 	color: $color-sunset-red;
-	:hover{
-		color: $color-sunset-orange;
-		box-shadow: $color-sunset-red 0 -1px inset;
-	}
+	//:hover{
+		// c'est chiant
+		//color: $color-sunset-orange;
+		//box-shadow: $color-sunset-red 0 -1px inset;
+	//}
 }
 
 /**********************************************************************
@@ -170,3 +171,4 @@ LOAD COMPONENTS
 @import '../js/vuejs/components/widgets/rainbow-answer/style';
 @import '../js/vuejs/components/widgets/rainbow-bar/style';
 @import '../js/vuejs/components/widgets/dlwpp/style';
+@import '../js/vuejs/components/widgets/slider/style';

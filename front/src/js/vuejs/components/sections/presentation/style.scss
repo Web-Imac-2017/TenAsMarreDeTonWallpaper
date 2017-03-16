@@ -1,5 +1,7 @@
 .presentation{
 
+    flex: 1 0 calc(100vh - #{$header-main-height});
+
     .presentation-find-wallpaper .abutton{
         @include typo-brandon-up-black();
     }
@@ -38,6 +40,7 @@
             border-right: solid 2px $color-foreground;
             border-bottom: solid 2px $color-foreground;
             transform: rotate(45deg);
+            cursor: pointer;
         }
     }
 

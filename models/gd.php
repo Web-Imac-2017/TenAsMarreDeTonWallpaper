@@ -14,9 +14,9 @@ class Gd extends Model {
     }
 
     public function gdcollect($url) {
-        $image=gdgetpic($url);
-        $info=getimagesize($url);
-        $format=image_type_to_extension($info[2]);
+        $image = $this->gdgetpic($url);
+        $info = getimagesize($url);
+        $format = image_type_to_extension($info[2]);
 
         return array("image"=>$image, "height"=>$info[1],"width"=>$info[0],"extension"=>$format);
     }
@@ -25,11 +25,9 @@ class Gd extends Model {
         switch($dotextension) {
             case ".jpeg":
             case ".jpg":{
-            //echo "c'est un jpeg";
             ImageJPEG($image,$filename.$dotextension);
         } break;
             case ".png":{
-            //echo "cest un png";
             Imagepng($image,$filename.$dotextension);
         } break;
             default:
@@ -45,12 +43,17 @@ class Gd extends Model {
         return $output;
     }
 
-    public function gdresize($image, $width = 150, $height = true) {
+    public function gdresize($image, $width = 150, $height = true, $format) {
 
         $height=($height === true)? (ImageSY($image)*$width/ImageSX($image)):$height;
 
         $output=ImageCreateTrueColor($width, $height);
+
         ImageCopyResampled($output, $image, 0, 0, 0, 0, $width, $height, ImageSX($image), ImageSY($image));
+        if (strcmp(strtolower($format), ".png") == 0)
+            imagepng($output);
+        if (strcmp(strtolower($format), ".jpg") == 0 || strcmp(strtolower($format), ".jpeg") == 0)
+            imagejpeg($output);
 
         return $output;
     }

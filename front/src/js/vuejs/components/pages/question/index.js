@@ -93,6 +93,8 @@ const QuestionPage = Vue.extend({
         // Next Question ok
         .then(function(response){
           if('continue' in response && response.continue == false){
+            if(!('data' in response)) throw Error('Données de résultats manquantes.');
+            bus.results = response.data.wallpapers;
             router.push({name: 'results'}); return;
           }
           if(!('data' in response)) throw Error('Données de question manquantes.');
@@ -153,9 +155,10 @@ const QuestionPage = Vue.extend({
     prevQuestion(){
         let _this = this;
         if(_this.isRaised) return false;
-        _this.riseUpAnswers(0);
 
-        fetch("/TenAsMarreDeTonWallpaper/api/question/prev/", {
+        Promise.all([ // on promise aussi avec les transitions visuelles, afin que le tout soit fluide
+          _this.riseUpAnswers(0),
+          fetch("/TenAsMarreDeTonWallpaper/api/algo/undo", {
               method: 'get',
               credentials: 'include'
             }
@@ -168,12 +171,14 @@ const QuestionPage = Vue.extend({
           .then(handleRequestError)
           // Next Question ok
           .then(function(response){
-            if(!('question' in response)) throw Error('Données de question manquantes.');
-            _this.setQuestion(response.question);
+            if(!('data' in response)) throw Error('Données de question manquantes.');
+            _this.setQuestion(response.data);
           })
-          .then(function(){ _this.riseDownAnswers(0); })
-          // Error caught
-          .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(id)});
+          .then(function(){return;})
+        ])
+        .then(function(){ _this.riseDownAnswers(0); })
+        // Error caught
+        .catch(function(error){ alert(error.message); console.log(error.message); _this.riseDownAnswers(0)});
     },
     setQuestion(data){
       this.question = {

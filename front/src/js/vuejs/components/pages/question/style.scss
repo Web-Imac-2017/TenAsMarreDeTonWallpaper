@@ -65,7 +65,7 @@
         &.answer-4{background: $color-sunset-orange; left: 60%;}
         &.answer-5{background: $color-sunset-yellow; left: 80%;}
         &.up{
-            @extend :hover;
+            @extend .rainbow-answer:hover;
             height: calc(100vh - #{$header-main-height});
         }
         transition: height $timing-function $transition-duration, box-shadow $timing-function $transition-duration, background-color $timing-function $transition-duration;

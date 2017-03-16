@@ -78,6 +78,10 @@ include('header.php');
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function() {
+        function hideErrors() {
+            $(".alert").remove();
+        };
+        
         var rep =
             [
                 {
@@ -126,7 +130,7 @@ include('header.php');
                     chaine += "<tr><td>" + res.data[i].q_courte + "</td>";
                     chaine += "<td><select name='rep[" + res.data[i].id + "][0]'>";
                     for(var j=0; j<rep.length; j++) {
-                        selected = (j==2 ? "selected" : "");
+                        selected = (j==4 ? "selected" : "");
                         chaine += "<option " + selected + " value='" + rep[j].value + "'>" + rep[j].text + "</option>";
                     }
                     chaine += "</select></td><td><select name='rep[" + res.data[i].id + "][1]'>";
@@ -177,9 +181,10 @@ include('header.php');
                     id: $("#delete .id").val()
                 },
                 success: function(data) {
+                    hideErrors();
                     var res = JSON.parse(data);
                     if(res.returnCode != 1) {
-                        alert(data);
+                        $("#delete").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.returnMessage + '</strong></div>');
                     }
                     else {
                         reload();

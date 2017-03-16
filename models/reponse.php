@@ -35,7 +35,30 @@ class Reponse extends Model {
         }
 
     }
-    
+    public function change($question_id, $wallpaper_id, $val_min, $val_max) {
+        $bdd = Database::get();
+
+
+        try {
+            $sql = 'UPDATE reponse SET val_min=?, val_max=? WHERE question_id = ? AND $wallpaper_id=?';
+            
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$val_min, $val_max,$question_id,$wallpaper_id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                return array("returnCode" => 1, "returnMessage" => "Réponse modifiée",  "data" => "");
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => "");
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => "");
+        }
+
+    }
     // Met à jour de l'importance de la question
     function importance($qid) {
         $bdd = Database::get();

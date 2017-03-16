@@ -115,11 +115,6 @@ class AlgoController extends Controller {
 	
 	public function currentQuestion()
 	{
-		// Si on est arrivé à la fin, on recommence une partie
-		if ($_SESSION['continue'] == false && $_SESSION['num_question'] > 1)
-		{
-			$this->restart();
-		}
 		// Si c'est la 1ère question, on appelle getFirstQuestion qui va renvoyer la 1ère question (et la générer si pas fait)
 		if($_SESSION['num_question'] == 1)
 		{
@@ -137,6 +132,11 @@ class AlgoController extends Controller {
 			{
 				$this->getNextQuestion(2);
 			}
+		}
+		// Si on est arrivé à la fin, on recommence une partie
+		if ($_SESSION['continue'] == false && $_SESSION['num_question'] > 1)
+		{
+			$this->restart();
 		}
 	}
 	

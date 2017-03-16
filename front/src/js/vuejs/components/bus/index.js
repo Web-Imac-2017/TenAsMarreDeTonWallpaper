@@ -11,7 +11,8 @@ const Bus = Vue.extend({
             //userLoggedIn: {id: 42, pseudo: 'Thaledric', admin: true, moderateur: true, mail: 'thaledric@gmail.com', avatar: '/TenAsMarreDeTonWallpaper/media/avatars/thaledric.png'},
             userLoggedIn: null,
             headerLinks: {},
-            altAvatar : "/TenAsMarreDeTonWallpaper/www/assets/icons/user-white.png"
+            altAvatar : "/TenAsMarreDeTonWallpaper/www/assets/icons/user-white.png",
+            results: []
         };
     },
 

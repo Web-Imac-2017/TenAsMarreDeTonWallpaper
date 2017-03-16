@@ -3,6 +3,7 @@
 import Vue from 'vue/dist/vue';
 import {isInt} from '../../../utils/isInt';
 import {rapports, rapport_chercher, rapport_filtrer} from '../../../utils/rapports';
+import router from '../../../router/index.js';
 
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
@@ -15,24 +16,26 @@ const ecran = {l:window.screen.width, h:window.screen.height};
 const DlWpp = Vue.extend({
     template,
 
-    props: ['titre','auteur','genre','url','l','h'],
+    props: {
+        'wallpaper': {type: Object, default: function(){ return {}; }}
+    },
 
     data: () => ({
         // Pas 0, sinon le placeholder ne s'affiche pas.
         custom:{l:"", h:""},
         ecran:ecran,
-        afficher_fleches:true // Mettre à false si on n'implémente pas prev et next
+        afficher_fleches:false // Mettre à false si on n'implémente pas prev et next
     }),
 
     computed: {
         wpp: function() {
             return {
-                titre:this.titre,
-                auteur:this.auteur,
-                genre:this.genre,
-                url:this.url,
-                l:this.l,
-                h:this.h
+                titre:this.wallpaper.nom,
+                auteur:this.wallpaper.auteur,
+                genre:this.wallpaper.category,
+                url:this.wallpaper.url,
+                l:this.wallpaper.largeur,
+                h:this.wallpaper.hauteur
             }
         },
         sections: function() {
@@ -55,7 +58,7 @@ const DlWpp = Vue.extend({
     },
 
     methods: {
-      fermer: function() { alert("TODO fermer ce widget !"); },
+      fermer: function() { this.$emit('close'); },
       prev: function() { alert("TODO Wallpaper précédent !"); },
       next: function() { alert("TODO Wallpaper suivant !"); },
       on_dim_custom: function(e, min, max) {
@@ -73,7 +76,7 @@ const DlWpp = Vue.extend({
               alert("Veuillez entrer des dimensions valides.");
               return;
           }
-          alert("TODO Télécharger wallpaper (" + l + " x " + h + ")");
+          window.location.replace('/TenAsMarreDeTonWallpaper/api/wallpaper/download/'+this.wallpaper.id+'/'+l+'/'+h);
       },
       telecharger_native: function() {
           this.telecharger(this.$data.ecran.l, this.$data.ecran.h);
