@@ -20,7 +20,10 @@ const Slider_wpp_home = Vue.extend({
   data() {
     return {
     	index: 0,
-    	slides: []
+    	slides: [],
+      showPrev: false,
+      showNext: true,
+      direction: null
     };
   },
 
@@ -38,11 +41,15 @@ const Slider_wpp_home = Vue.extend({
   methods: {
     next() {
     	this.index++
-    	if (this.index >= this.slidesCount) { this.index = 0 }
+      this.direction = 'next'
+    	if (this.index >= this.slidesCount - 1) { this.showNext = false }
+      this.showPrev = true
     },
     prev() {
     	this.index--
-    	if (this.index < 0 ) { this.index = this.slidesCount - 1 }
+      this.direction = 'prev'
+    	if (this.index === 0 ) { this.showPrev = false}
+      this.showNext = true
     }
   }
 

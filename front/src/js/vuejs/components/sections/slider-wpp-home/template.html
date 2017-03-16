@@ -5,8 +5,10 @@
 
 	<slide></slide>
 	<slide></slide>
-	
+	<slide></slide>
+
 	<div class="bottom-arrow-wrapper">
-        <button v-on:click.prevent="next" class="bottom-arrow"></button>
+        <button v-if="showNext" v-on:click.prevent="next" class="bottom-arrow bottom-arrow-next"></button>
+        <button v-if="showPrev" v-on:click.prevent="prev" class="bottom-arrow bottom-arrow-prev"></button>
     </div>
 </div>
