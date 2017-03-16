@@ -76,7 +76,7 @@ include('header.php');
             </div>
             <input type="submit" value="Sélectionner" name="submit" class="btn btn-info" />
         </form>
-        <form id="change2" action="../api/wallpaper/change" enctype="multipart/form-data" method="post">
+        <form id="change2" action="../api/wallpaper/change" method="post">
             <table>
                 <tr>
                     <td>Id :</td>
@@ -277,52 +277,22 @@ include('header.php');
                             }
                         });
 
-                        var i = 0;
+                        var reponses = res.reponses.data;
 
-                        $("#rep2 select").each(function() {
-                            var min = res.reponses.data[i].val_min;
-                            var max = res.reponses.data[i].val_max;
-                            
-                            if(i%2 == 0) {
-                                switch(min) {
-                                    case 0:
-                                        $(this).val("0");
-                                        break;
-                                    case 25:
-                                        $(this).val("25");
-                                        break;
-                                    case 50:
-                                        $(this).val("50");
-                                        break;
-                                    case 75:
-                                        $(this).val("75");
-                                        break;
-                                    case 100:
-                                        $(this).val("100");
-                                        break;
-                                }
-                            }
-                            else {
-                                switch(max) {
-                                    case 0:
-                                        $(this).val("0");
-                                        break;
-                                    case 25:
-                                        $(this).val("25");
-                                        break;
-                                    case 50:
-                                        $(this).val("50");
-                                        break;
-                                    case 75:
-                                        $(this).val("75");
-                                        break;
-                                    case 100:
-                                        $(this).val("100");
-                                        break;
-                                }
-                            }
-                            i++;
-                        });
+                        for(var i=0; i<reponses.length; i++) {
+                            var id = reponses[i].question_id;
+                            var val_min = reponses[i].val_min;
+                            var val_max = reponses[i].val_max;
+                            var query_min = "#rep2 select[name='rep[" + id + "][0]'] option";
+                            var query_max = "#rep2 select[name='rep[" + id + "][1]'] option";
+                            $(query_min).filter(function() { 
+                                return ($(this).val() == val_min);
+                            }).prop('selected', true);
+                            $(query_max).filter(function() {
+                                return ($(this).val() == val_max);
+                            }).prop('selected', true);
+                        }
+                        
                         $("#change").hide();
                         $("#change2").show();
                     }
