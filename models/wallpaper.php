@@ -502,30 +502,4 @@ class Wallpaper extends Model {
         return $result;
     }
 
-    public function search($search) {
-        $bdd = Database::get();
-        $data = "";
-
-        try {
-            $sqlQuery = "SELECT * FROM wallpaper WHERE( nom LIKE CONCAT('%', ? ,'%') OR auteur LIKE CONCAT('%', ? ,'%') )";
-
-            try {
-                $stmt = $bdd->prepare($sqlQuery);
-                $success = $stmt->execute([$search, $search]);
-                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                $data = $bddResult;
-
-                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
-            }
-
-            catch (PDOException $e) {
-                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
-            }
-        }
-        catch (PDOException $e) {
-            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
-        }
-    }
-
 }
