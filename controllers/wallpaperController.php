@@ -76,25 +76,70 @@ class wallpaperController extends Controller {
                         $wallpaper->setCategories($wallpaper_id, $_POST['categories']);
                     }
                     else {
-                        $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Problème de transfert de fichier'];
+                        $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Problème de transfert de fichier !'];
                     }
                     echo json_encode($data);
                 }
             }
             else {
-                $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants, veuillez vérifier'];
+                $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants, veuillez vérifier.'];
                 echo json_encode($data);
             }
         }
         else {
-            $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté'];
+            $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté !'];
+            echo json_encode($data);
+        }
+    }
+
+    public function change($id) {
+        $wallpaper = new Wallpaper();
+        $reponse = new Reponse();
+
+        $data = $wallpaper->getMembre($id);
+        $membre_id = $data['data']['membre_id'];
+
+        if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+            if($_SESSION['user']['moderateur'] || $_SESSION['user']['admin'] || $_SESSION['user']['id'] == $membre_id) {
+                if(isset($_POST['nom']) && !empty($_POST['nom']) && isset($_POST['categories']) && !empty($_POST['categories'])) {
+
+                    // Update table wallpaper
+                    $data = $wallpaper->update($id, $_POST['nom'], $_POST['auteur']);
+                    
+                    // Update table reponse
+                    $reponse->delete($id);
+                    foreach($_POST['rep'] as $key=>$rep) {
+                        $reponse->add($key, $id, $rep[0], $rep[1]);
+                        $reponse->importance($key);
+                    }
+
+                    // Update table categorie_wallpaper
+                    $wallpaper->deleteCategories($id);
+                    $wallpaper->setCategories($id, $_POST['categories']);
+
+                    echo json_encode($data);
+                }
+                else {
+                    $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants, veuillez vérifier.'];
+                    echo json_encode($data);
+                }
+            }
+            else {
+                $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas autorisé !'];
+                echo json_encode($data);
+            }
+        }
+        else {
+            $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Vous n\'êtes pas connecté !'];
             echo json_encode($data);
         }
     }
 
     public function get($id) {
         $wallpaper = new Wallpaper();
-        $data = $wallpaper->get($id);
+        $data['wallpaper'] = $wallpaper->get($id);
+        $data['categories'] = $wallpaper->getCategories($id);
+        $data['reponses'] = $wallpaper->getReponses($id);
         echo json_encode($data);
     }
 
@@ -168,7 +213,7 @@ class wallpaperController extends Controller {
     public function download($wallpaperId, $width, $height) {
         $wallpaper = new Wallpaper();
         $gdObject = new Gd();
-        
+
         $data = ['returnCode' => '', 'data' => '', 'returnMessage' => ''];
 
         // Si tous les paramètres sont OK
@@ -200,11 +245,11 @@ class wallpaperController extends Controller {
                 }
             }
             else {
-                    $data['returnCode'] = 0;
-                    $data['returnMessage'] = 'L\'id du wallpaper est invalide'; 
+                $data['returnCode'] = 0;
+                $data['returnMessage'] = 'L\'id du wallpaper est invalide'; 
             }
 
-         }
+        }
         else {
             $data = ['returnCode' => '-2', 'data' => '', 'returnMessage' => 'Certains paramètres sont manquants !'];
         }

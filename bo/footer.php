@@ -6,14 +6,13 @@
     $(document).ready(function() {
         $("body #deco").on("click", function() {
             $.ajax({
-                url: "/Tenasmarredetonwallpaper/api/membre/logout",
+                url: "/TenAsMarreDeTonWallpaper/api/membre/logout",
                 success: function(data) {
                     location.reload();
                 }
             });
         });
     });
-
 </script>
 
 </body>

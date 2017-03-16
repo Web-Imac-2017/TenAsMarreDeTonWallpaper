@@ -17,8 +17,8 @@
 
 
 
-// Index
-Router::connect('/', 'welcome/index', array());
+// Search
+Router::connect('/search/:str', 'welcome/search/:str', array('str' => '[a-z]+'));
 
 // User
 Router::connect('/membre/add', 'membre/add', array());
@@ -43,6 +43,8 @@ Router::connect('/wallpaper/getMostAP/:nb', 'wallpaper/getMostAP/:nb', array('nb
 Router::connect('/wallpaper/latest/:nb', 'wallpaper/latest/:nb', array('nb' => '[0-9]+'));
 Router::connect('/wallpaper/download/:id/:width/:height', 'wallpaper/download/:id/:width/:height', array('id' => '[0-9]+', 'width' => '[0-9]+', 'height' => '[0-9]+'));
 Router::connect('/wallpaper/delete', 'wallpaper/delete', array());
+Router::connect('/wallpaper/change/:id', 'wallpaper/change/:id', array('id' => '[0-9]+'));
+
 
 
 // Question

@@ -142,21 +142,34 @@ class Categorie extends Model {
         }
     }
     
-    /*// Renvoie le nombre d'occurences d'une catégorie dans la table question_categorie
-	function getCategorieOccurences($categorieID) {
-		$bdd = Database::get();
-		$sql = 'SELECT categorie_id AS id, COUNT( categorie_id ) AS nb_cat FROM categorie_question WHERE categorie_id =?';
-		$req = $bdd->prepare($sql);
-		$req->execute(array($categorieID));
-		if ($req->rowCount() >= 1)
-		{
-			$occurences = $req->fetch(); // Accès à la première ligne première colone de résultat (id)
-			return $occurences['nb_cat'];
-		}
-		else
-		{
-			throw new Exception("Aucune question ne correspond à l'identifiant '$categorieID'");
-		}
-	}*/
+    public function search($search) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = "SELECT * FROM categorie WHERE nom LIKE CONCAT('%', ? ,'%')";
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$search]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+     
 }
+
+
+
 ?>
