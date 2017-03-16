@@ -10,4 +10,4 @@
   Ensuite, modifier `DbConfig.php` pour qu'il utilise le host, nom de login, mot de passe et nom de BDD attendus.
 5. `cd front && npm install && gulp`
 6. ????????????
-7. Profit
+7. Profit !
