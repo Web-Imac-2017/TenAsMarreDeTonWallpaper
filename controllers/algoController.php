@@ -121,23 +121,24 @@ class AlgoController extends Controller {
 			$this->getFirstQuestion();
 		}
 		// Sinon on retourne la question actuelle
-		else
+		else if ($_SESSION['num_question'] > 1)
 		{
-			if (isset($_SESSION['question'][$_SESSION['num_question']-1]))
+			if (isset($_SESSION['question'][$_SESSION['num_question']-1]) && $_SESSION['continue'] == true)
 			{
 				$data = ["returnCode" => 1, 'data' => $_SESSION['question'][$_SESSION['num_question']-1], "continue" => true, "returnMessage" => "Question ".$_SESSION['num_question']." envoyee"];
 				echo json_encode($data);
+			}
+			// Si on est arrivé à la fin, on recommence une partie
+			else if ($_SESSION['continue'] == false)
+			{
+				$this->restart();
 			}
 			else
 			{
 				$this->getNextQuestion(2);
 			}
 		}
-		// Si on est arrivé à la fin, on recommence une partie
-		if ($_SESSION['continue'] == false && $_SESSION['num_question'] > 1)
-		{
-			$this->restart();
-		}
+
 	}
 	
 	public function restart()
