@@ -1,5 +1,4 @@
-#Options -MultiViews
-Options +FollowSymLinks
+Options -MultiViews
 RewriteEngine On
 
 RewriteBase /TenAsMarreDeTonWallpaper
