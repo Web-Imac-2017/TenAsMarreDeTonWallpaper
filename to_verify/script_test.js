@@ -6,28 +6,28 @@ function myPage(){
     var me = this;
     this.start = function(){
 
-        var url = "http://localhost/TenAsMarreDeTonWallpaper/api/membre/login";
-
         $('#myForm').submit(function(e){
 
             e.preventDefault();
 
-            var myPseudo = $('#pseudo').val();
-            var myPass = $('#password').val();
-            var myPass2 = $('#password2').val();
-            var myMailAdress = $('#mailAdress').val();
+            var myWidth = $('#width').val();
+            var myHeight = $('#height').val();
+            var myWallpaperId = $('#wallpaperId').val();
+
+            var url = "http://localhost/TenAsMarreDeTonWallpaper/api/wallpaper/resize" + '/' + myWallpaperId  + '/' +  myWidth + '/' + myHeight;
+
+            console.log(url);
 
             var myDatas = { 
-                'pseudo' : myPseudo,
-                'password' : myPass,
-                'password2' : myPass2,
-                'mailAdress' : myMailAdress
+                'width' : myWidth,
+                'height' : myHeight,
+                'wallpaperId' : myWallpaperId
             };
 
             console.log(myDatas);
             
             $.ajax({
-                data: myDatas,
+                //data: myDatas,
                 contentType: 'application/x-www-form-urlencoded',
                 dataType: 'json',
                 type: 'POST',
