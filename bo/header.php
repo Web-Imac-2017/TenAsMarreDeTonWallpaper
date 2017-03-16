@@ -12,7 +12,7 @@ session_start();
         <meta name="author" content="">
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
-        
+
         <script src="https://use.fontawesome.com/86f5ffa99f.js"></script>
 
         <title>BO - <?php echo $page['title'] ?></title>
@@ -33,7 +33,7 @@ session_start();
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                       <?php if(isset($_SESSION['user'])) { ?>
+                        <?php if(isset($_SESSION['user'])) { ?>
                         <li><a href="profil.php"><i class="fa fa-user" aria-hidden="true"></i> <?php echo $_SESSION['user']['pseudo'] ?></a></li>
                         <li><a href="#" id="deco"><i class="fa fa-sign-out" aria-hidden="true"></i> Déconnexion</a></li>
                         <?php } else { ?>
@@ -41,7 +41,7 @@ session_start();
                         <li><a href="inscription.php"><i class="fa fa-user-plus" aria-hidden="true"></i> S'inscrire</a></li>
                         <?php } ?>
                     </ul>
-                    <form class="navbar-form navbar-right">
+                    <form id="search" class="navbar-form navbar-right">
                         <input type="text" class="form-control" placeholder="Rechercher...">
                     </form>
                 </div>
@@ -52,7 +52,7 @@ session_start();
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-                       <?php if($page['title'] == "Tableau de bord") { ?>
+                        <?php if($page['title'] == "Tableau de bord") { ?>
                         <li class="active"><a href="index.php"><i class="fa fa-table" aria-hidden="true"></i> Tableau de bord</a></li>
                         <li><a href="wallpaper.php"><i class="fa fa-picture-o" aria-hidden="true"></i> Wallpaper</a></li>
                         <li><a href="question.php"><i class="fa fa-question-circle" aria-hidden="true"></i> Question</a></li>

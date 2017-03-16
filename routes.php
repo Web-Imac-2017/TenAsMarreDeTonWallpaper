@@ -17,8 +17,8 @@
 
 
 
-// Index
-Router::connect('/', 'welcome/index', array());
+// Search
+Router::connect('/search/:str', 'welcome/search/:str', array('str' => '[a-z]+'));
 
 // User
 Router::connect('/membre/add', 'membre/add', array());

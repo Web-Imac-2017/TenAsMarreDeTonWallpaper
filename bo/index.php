@@ -151,8 +151,7 @@ include('header.php');
                 $("#req4").html(chaine);
             }
         });
-
-
+        
     });
 
 </script>

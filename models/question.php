@@ -287,5 +287,31 @@ class Question extends Model {
             return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
     }
+    
+    public function search($search) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = "SELECT * FROM question WHERE q_longue LIKE CONCAT('%', ? ,'%')";
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$search]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
 
 }
