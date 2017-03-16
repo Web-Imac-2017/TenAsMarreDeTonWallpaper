@@ -33,34 +33,18 @@ class Reponse extends Model {
         catch (PDOException $e) {
             return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
-
     }
-    public function change($question_id, $wallpaper_id, $val_min, $val_max) {
+    
+    // Supprime les réponses d'un wallpaper
+    public function delete($id) {
         $bdd = Database::get();
-
-
-        try {
-            $sql = 'UPDATE reponse SET val_min=?, val_max=? WHERE question_id = ? AND $wallpaper_id=?';
-            
-            try {
-                $stmt = $bdd->prepare($sqlQuery);
-                $stmt->execute([$val_min, $val_max,$question_id,$wallpaper_id]);
-                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                return array("returnCode" => 1, "returnMessage" => "Réponse modifiée",  "data" => "");
-            }
-
-            catch (PDOException $e) {
-                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => "");
-            }
-        }
-        catch (PDOException $e) {
-            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => "");
-        }
-
+        $sql = 'DELETE FROM reponse WHERE wallpaper_id=?';
+        $req = $bdd->prepare($sql);
+        $req->execute([$id]);
     }
+
     // Met à jour de l'importance de la question
-    function importance($qid) {
+    public function importance($qid) {
         $bdd = Database::get();
 
         $query1 = 'SELECT COUNT(DISTINCT wallpaper_id) as nb FROM reponse WHERE question_id = ? AND val_min>=50 AND val_max <=100';

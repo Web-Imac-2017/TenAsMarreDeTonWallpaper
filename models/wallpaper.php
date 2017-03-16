@@ -11,7 +11,6 @@ class Wallpaper extends Model {
 
     // Renvoie les informations d'un seul wallpaper
     public function get($id) {
-        //test();
         $bdd = Database::get();
         $data = "";
 
@@ -24,6 +23,33 @@ class Wallpaper extends Model {
                 $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 $data = $bddResult;
+
+                return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
+            }
+
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
+    // Renvoie l'id du membre du wallpaper
+    public function getMembre($id) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'SELECT membre_id FROM mise_en_ligne INNER JOIN wallpaper ON mise_en_ligne.id=mise_en_ligne_id WHERE wallpaper.id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $success = $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult[0];
 
                 return array("returnCode" => 1, "returnMessage" => "Requête réussie",  "data" => $data);
             }
@@ -63,7 +89,7 @@ class Wallpaper extends Model {
             return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
     }
-    
+
     // Renvoie les réponses aux questions d'un wallpaper
     public function getReponses($id) {
         $bdd = Database::get();
@@ -206,6 +232,36 @@ class Wallpaper extends Model {
         }
     }
 
+    // Modifie un wallpaper
+    public function update($id, $nom, $auteur) {
+        $bdd = Database::get();
+        $data = "";
+
+        try {
+            $sqlQuery = 'UPDATE wallpaper SET nom=?, auteur=? WHERE id=?';
+
+            try {
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$nom, $auteur, $id]);
+
+                $sqlQuery = "SELECT * FROM wallpaper WHERE id=?";
+                $stmt = $bdd->prepare($sqlQuery);
+                $stmt->execute([$id]);
+                $bddResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $data = $bddResult[0];
+
+                return array("returnCode" => 1, "returnMessage" => "Wallpaper modifié",  "data" => $data);
+            }
+            catch (PDOException $e) {
+                return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+            }
+        }
+        catch (PDOException $e) {
+            return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
+        }
+    }
+
     // Associe des catégories à un wallpaper
     public function setCategories($id, $categories) {
         foreach ($categories as $cat) {
@@ -216,23 +272,12 @@ class Wallpaper extends Model {
         }
     }
 
-    // Modifie un wallpaper
-    public function changewallpaper($wallpaperID, $url, $estapparent, $categories) {
-        $bdd = Database::get();
-        $sql = 'UPDATE Wallpaper SET url=?, estapparent=? WHERE id=?';
-        $req = $bdd->prepare($sql);
-        $req->execute(array($url, $estapparent, $wallpaperID));
-
-        deleteWallpaperCategories($wallpaperID);
-        setWallpaperCategories($wallpaperID, $categories);
-    }
-
     // Supprimer toutes les catégories d'un wallpaper
-    public function deleteWallpaperCategories($wallpaperID) {
+    public function deleteCategories($id) {
         $bdd = Database::get();
-        $sql = 'DELETE FROM WallpaperCategories WHERE wallpaper_id=?';
+        $sql = 'DELETE FROM categorie_wallpaper WHERE wallpaper_id=?';
         $req = $bdd->prepare($sql);
-        $req->execute(array($wallpaperID));
+        $req->execute([$id]);
     }	
 
     // Renvoie les wallpapers appartenant à une catégorie

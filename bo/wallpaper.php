@@ -267,6 +267,8 @@ include('header.php');
                     }
                     else {
                         reload();
+                        var link =  '../api/wallpaper/change/' + res.wallpaper.data[0].id;
+                        $("#change2").attr('action', link)
                         $("#change2 .id").attr('value', res.wallpaper.data[0].id);
                         $("#change2 .nom").attr('value', res.wallpaper.data[0].nom);
                         $("#change2 .auteur").attr('value', res.wallpaper.data[0].auteur);
