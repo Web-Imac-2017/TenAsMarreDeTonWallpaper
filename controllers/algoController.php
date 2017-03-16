@@ -148,7 +148,7 @@ class AlgoController extends Controller {
 		// Le numéro de la question actuelle
 		$_SESSION['num_question'] = 1;
 		// L'importance qui sera de plus en plus petite
-		$_SESSION['importance'] = 50;
+		$_SESSION['importance'] = 45;
 		// Un string qui contient les différents SELECT après chaque question
 		$_SESSION['requete'] = array("");
 		// Si ce booléan est 'false', on s'arrête
