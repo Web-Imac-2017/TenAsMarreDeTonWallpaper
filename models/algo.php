@@ -91,7 +91,7 @@ class Algo extends Model {
 				ON q.id = c_q.question_id
 				INNER JOIN mise_en_ligne AS mel
 				ON q.mise_en_ligne_id = mel.id
-				WHERE q.importance < :importance -1
+				WHERE q.importance < :importance
 				AND (c_q.categorie_id = :categorie)
 				AND (mel.statut = 'Validé')
 				ORDER BY importance DESC";
