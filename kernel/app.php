@@ -26,7 +26,7 @@ class App {
 		// Le numéro de la question actuelle
 		if (! isset($_SESSION['num_question'])) $_SESSION['num_question'] = 1;
 		// L'importance qui sera de plus en plus petite
-		if (! isset($_SESSION['importance'])) $_SESSION['importance'] = 45;
+		if (! isset($_SESSION['importance'])) $_SESSION['importance'] = array(46);
 		// Un string qui contient les différents SELECT après chaque question
 		if (! isset($_SESSION['requete'])) $_SESSION['requete'] = array("");
 		// Si ce booléan est 'false', on s'arrête
