@@ -3,6 +3,7 @@
 import Vue from 'vue/dist/vue';
 import {isInt} from '../../../utils/isInt';
 import {rapports, rapport_chercher, rapport_filtrer} from '../../../utils/rapports';
+import router from '../../../router/index.js';
 
 let template = require('./template.html');
 template     = eval(`\`${template}\``);
@@ -75,7 +76,7 @@ const DlWpp = Vue.extend({
               alert("Veuillez entrer des dimensions valides.");
               return;
           }
-          alert("TODO Télécharger wallpaper (" + l + " x " + h + ")");
+          window.location.replace('/TenAsMarreDeTonWallpaper/api/wallpaper/download/'+this.wallpaper.id+'/'+l+'/'+h);
       },
       telecharger_native: function() {
           this.telecharger(this.$data.ecran.l, this.$data.ecran.h);
