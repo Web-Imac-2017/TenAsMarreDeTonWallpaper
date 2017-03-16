@@ -5,19 +5,11 @@ require_once KERNEL . 'kernel.php';
 
 class WelcomeController extends Controller {
 
-	public function __construct(){
-		parent::__construct();
-	}
+    public function __construct(){
+        parent::__construct();
+    }
 
-	public function index() {/*
-        $data['title'] = 'Accueil';
+    public function index() {
         
-        // Récupère les 3 wallpapers les plus populaires
-		$bdd = Database::get();
-		$sql = 'SELECT * FROM wallpaper ORDER BY compteur DESC LIMIT 3';
-		$data['3_populaires'] = $bdd->prepare($sql);
-		$data['3_populaires']->execute(array($id));*/
-        
-        echo json_encode($data);
-	}
+    }
 }

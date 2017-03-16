@@ -3,85 +3,138 @@ $page['title'] = "Wallpaper";
 include('header.php');
 ?>
 
-<div class="col-md-12">
-    <p>Derniers wallpapers ajoutés</p>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nom</th>
-                    <th>Auteur</th>
-                    <th>Url</th>
-                    <th>Largeur</th>
-                    <th>Hauteur</th>
-                    <th>Format</th>
-                    <th>Date</th>
-                    <th>Nb d'apparition</th>
-                    <th>Nb de téléchargement(s)</th>
-                </tr>
-            </thead>
-            <tbody id="req1">
-            </tbody>
-        </table>
+<div class="row">
+    <div class="col-md-12">
+        <p>Derniers wallpapers ajoutés</p>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Auteur</th>
+                        <th>Url</th>
+                        <th>Largeur</th>
+                        <th>Hauteur</th>
+                        <th>Format</th>
+                        <th>Date</th>
+                        <th>Nb d'apparition</th>
+                        <th>Nb de téléchargement(s)</th>
+                    </tr>
+                </thead>
+                <tbody id="req1">
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-<div class="col-md-6">
-    <h2 class="sub-header">Ajouter un wallpaper</h2>
-    <form action="../api/wallpaper/add" enctype="multipart/form-data" method="post">
-        <table>
-            <tr>
-                <td>Nom <span style="color:red;">*</span>:</td>
-                <td><input type="text" name="nom" class="form-control" /></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Auteur :</td>
-                <td><input type="text" name="auteur" class="form-control" /></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Upload <span style="color:red;">*</span> :</td>
-                <td><input type="file" name="image" required /></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Catégories <span style="color:red;">*</span> :</td>
-                <td id="cat"></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Questions :</td>
-                <td id="rep"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Ajouter" name="submit" class="btn btn-success"/></td>
-                <td></td>
-            </tr>
-        </table>
-    </form>
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <h2 class="sub-header">Ajouter un wallpaper</h2>
+        <form action="../api/wallpaper/add" enctype="multipart/form-data" method="post">
+            <table>
+                <tr>
+                    <td>Nom <span style="color:red;">*</span>:</td>
+                    <td><input type="text" name="nom" class="form-control" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Auteur :</td>
+                    <td><input type="text" name="auteur" class="form-control" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Upload <span style="color:red;">*</span> :</td>
+                    <td><input type="file" name="image" required /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Catégories <span style="color:red;">*</span> :</td>
+                    <td id="cat"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Questions :</td>
+                    <td id="rep"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Ajouter" name="submit" class="btn btn-success"/></td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div class="col-md-6 col-sm-12">
+        <h2 class="sub-header">Modifier un wallpaper</h2>
+        <form id="change" class="form-inline">
+            <div class="form-group">
+                <label>Id<span style="color:red;">*</span> :</label>
+                <input type="text" class="form-control id" />
+            </div>
+            <input type="submit" value="Sélectionner" name="submit" class="btn btn-info" />
+        </form>
+        <form id="change2" action="../api/wallpaper/change" method="post">
+            <table>
+                <tr>
+                    <td>Id :</td>
+                    <td><input type="text" disabled="disabled" class="form-control id" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Nom :</td>
+                    <td><input type="text" name="nom" class="form-control nom" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Auteur :</td>
+                    <td><input type="text" name="auteur" class="form-control auteur" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Catégories :</td>
+                    <td id="cat2"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Questions :</td>
+                    <td id="rep2"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Modifier" name="submit" class="btn btn-info"/></td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>
 
-<div class="col-md-6 col-sm-12">
-    <h2 class="sub-header">Supprimer un wallpaper</h2>
-    <form id="delete" class="form-inline">
-        <div class="form-group">
-            <label>Id<span style="color:red;">*</span> :</label>
-            <input type="text" class="form-control id" />
-        </div>
-        <input type="submit" value="Supprimer" name="submit" class="btn btn-danger" />
-    </form>
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <h2 class="sub-header">Supprimer un wallpaper</h2>
+        <form id="delete" class="form-inline">
+            <div class="form-group">
+                <label>Id<span style="color:red;">*</span> :</label>
+                <input type="text" class="form-control id" />
+            </div>
+            <input type="submit" value="Supprimer" name="submit" class="btn btn-danger" />
+        </form>
+    </div>
+    <div class="col-md-6 col-sm-12"></div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(document).ready(function() {
+        $("#change2").hide();
+
         function hideErrors() {
             $(".alert").remove();
         };
-        
+
         var rep =
             [
                 {
@@ -116,7 +169,7 @@ include('header.php');
                     chaine += "<input type='checkbox' value='" + res.data[i].id + "' name='categories[]' /> " + res.data[i].nom + "<br />";
                 }
                 $("#cat").html(chaine);
-
+                $("#cat2").html(chaine);
             }
         });
 
@@ -141,6 +194,7 @@ include('header.php');
                     chaine += "</select></td></tr>";
                 }
                 $("#rep").html(chaine);
+                $("#rep2").html(chaine);
             }
         });
 
@@ -169,7 +223,7 @@ include('header.php');
                 }
             });
         };
-        
+
         reload();
 
         $("body #delete").submit(function(event) {
@@ -188,6 +242,61 @@ include('header.php');
                     }
                     else {
                         reload();
+                    }
+                }
+            });
+        });
+
+        $("body #change").submit(function(event) {
+            var url = "/TenAsMarreDeTonWallpaper/api/wallpaper/get/" + $("#change .id").val();
+            event.preventDefault();
+            $.ajax({
+                url: url,
+                type: "POST",
+                success: function(data) {
+                    hideErrors();
+                    var res = JSON.parse(data);
+                    if(res.wallpaper.returnCode != 1) {
+                        $("#change").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.wallpaper.returnMessage + '</strong></div>');
+                    }
+                    else if(res.categories.returnCode != 1) {
+                        $("#change").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.categories.returnMessage + '</strong></div>');
+                    }
+                    else if(res.reponses.returnCode != 1) {
+                        $("#change").parent().append('<div class="alert alert-danger" role="alert"><strong>' + res.reponses.returnMessage + '</strong></div>');
+                    }
+                    else {
+                        reload();
+                        var link =  '../api/wallpaper/change/' + res.wallpaper.data[0].id;
+                        $("#change2").attr('action', link)
+                        $("#change2 .id").attr('value', res.wallpaper.data[0].id);
+                        $("#change2 .nom").attr('value', res.wallpaper.data[0].nom);
+                        $("#change2 .auteur").attr('value', res.wallpaper.data[0].auteur);
+                        $("#cat2 input").each(function() {
+                            for(var i=0; i<res.categories.data.length; i++) {
+                                if(res.categories.data[i].id == $(this).val())
+                                    $(this).prop('checked', true);
+                            }
+                        });
+
+                        var reponses = res.reponses.data;
+
+                        for(var i=0; i<reponses.length; i++) {
+                            var id = reponses[i].question_id;
+                            var val_min = reponses[i].val_min;
+                            var val_max = reponses[i].val_max;
+                            var query_min = "#rep2 select[name='rep[" + id + "][0]'] option";
+                            var query_max = "#rep2 select[name='rep[" + id + "][1]'] option";
+                            $(query_min).filter(function() { 
+                                return ($(this).val() == val_min);
+                            }).prop('selected', true);
+                            $(query_max).filter(function() {
+                                return ($(this).val() == val_max);
+                            }).prop('selected', true);
+                        }
+                        
+                        $("#change").hide();
+                        $("#change2").show();
                     }
                 }
             });

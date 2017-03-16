@@ -141,22 +141,9 @@ class Categorie extends Model {
             return array("returnCode" => -1, "returnMessage" => $e->getMessage(),  "data" => $data);
         }
     }
-    
-    /*// Renvoie le nombre d'occurences d'une catégorie dans la table question_categorie
-	function getCategorieOccurences($categorieID) {
-		$bdd = Database::get();
-		$sql = 'SELECT categorie_id AS id, COUNT( categorie_id ) AS nb_cat FROM categorie_question WHERE categorie_id =?';
-		$req = $bdd->prepare($sql);
-		$req->execute(array($categorieID));
-		if ($req->rowCount() >= 1)
-		{
-			$occurences = $req->fetch(); // Accès à la première ligne première colone de résultat (id)
-			return $occurences['nb_cat'];
-		}
-		else
-		{
-			throw new Exception("Aucune question ne correspond à l'identifiant '$categorieID'");
-		}
-	}*/
+     
 }
+
+
+
 ?>
