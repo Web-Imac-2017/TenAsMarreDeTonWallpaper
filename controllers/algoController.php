@@ -19,7 +19,7 @@ class AlgoController extends Controller {
 	*	returnCode == 1 et continue == false							*
 	*	"continue" qui indique si on peut continuer(true) ou pas(false)	*
 	*	"returnMessage" qui dit ce qu'il s'est passé					*/
-
+	
 	// Renvoie la data sous forme de : $_SESSION['question']['q_longue', 'reponses', 'values', 'numero']
 	public function getFirstQuestion($restart = NULL)
 	{
@@ -148,7 +148,7 @@ class AlgoController extends Controller {
 		// Le numéro de la question actuelle
 		$_SESSION['num_question'] = 1;
 		// L'importance qui sera de plus en plus petite
-		$_SESSION['importance'] = 46;
+		$_SESSION['importance'] = array(50);
 		// Un string qui contient les différents SELECT après chaque question
 		$_SESSION['requete'] = array("");
 		// Si ce booléan est 'false', on s'arrête
@@ -176,7 +176,7 @@ class AlgoController extends Controller {
 		$_SESSION['continue'] = true;
 		if ($_SESSION['num_question'] > 1)
 		{
-			$algo->updateImportance(1);
+			//$algo->updateImportance(1);
 		}
 		// si question on était à la question 2 au moment de l'appel
 		if($_SESSION['num_question'] == 1)

@@ -71,7 +71,7 @@ class Algo extends Model {
 			$categorie = $_SESSION['categories'];
 		}
 		// On fixe une marge pour l'importance
-		$importanceUp = $_SESSION['importance']+5;
+		//$importanceUp = $_SESSION['importance']+5;
 		
 		// On renseigne le texte des réponses possibles
 		$reponses = array (
@@ -85,23 +85,29 @@ class Algo extends Model {
 		// On effectue la requete SQL qui récupére la question
 		$bdd = Database::get();
 		// On select les questions qui ont les categories choisies et l'importance demandée
-		$sql = "SELECT DISTINCT q.id, q.nb_apparition AS nb_a, q.q_longue FROM question AS q 
+		$sql = "SELECT DISTINCT q.id, q.nb_apparition AS nb_a, q.q_longue, q.importance AS importance
+				FROM question AS q 
 				INNER JOIN categorie_question AS c_q 
 				ON q.id = c_q.question_id
 				INNER JOIN mise_en_ligne AS mel
 				ON q.mise_en_ligne_id = mel.id
-				WHERE (q.importance >= :importance AND q.importance < ".$importanceUp.")
+				WHERE q.importance < :importance
 				AND (c_q.categorie_id = :categorie)
-				AND (mel.statut = 'Validé')";
+				AND (mel.statut = 'Validé')
+				ORDER BY importance DESC";
 		$req = $bdd->prepare($sql);
-		$req->bindParam(':importance', $_SESSION['importance']);
+		//print_r($_SESSION['importance']);
+		if ($_SESSION['num_question'] == 2 && $_SESSION['lock'][$_SESSION['num_question']]==false)
+			$req->bindParam(':importance', $_SESSION['importance'][$_SESSION['num_question']-2]);
+		else
+			$req->bindParam(':importance', $_SESSION['importance'][$_SESSION['num_question']-1]);
 		$req->bindParam(':categorie', $categorie);
 		$req->execute();
 		// On récupére le résultat dans un tableau $selection
 		$selection = $req->fetchAll(PDO::FETCH_ASSOC);
 		// On compte combien de question on a trouvé
 		$nb_q = count($selection);
-		
+
 		// Si on trouve au moins une question on en tire une au hasard et on la renvoie
 		if ($nb_q > 0)
 		{
@@ -114,22 +120,22 @@ class Algo extends Model {
 			// Si on en trouve plus d'une
 			else
 			{
-				// On en tire 2 au hasard
-				$random_question=array_rand($selection,2);
 				// On selectionne la question qui est apparue le moins de fois
-				if ($selection[$random_question[0]]['nb_a'] <= $selection[$random_question[1]]['nb_a'])
+				if ($selection[0]['nb_a'] <= $selection[1]['nb_a'])
 				{
-					$selected = $selection[$random_question[0]];
+					$selected = $selection[0];
 				}
 				else
 				{
-					$selected = $selection[$random_question[1]];	
+					$selected = $selection[1];	
 				}
 			}
+
 			$nextQuestion = array('question'=>$selected, "reponses"=>$reponses, "numero"=>$_SESSION['num_question']);
 			// Si c'est la 2ème question, on update le nombre d'apparition ici, sinon ça se fera dans une autre fonction
-			if ($_SESSION['num_question'] == 2)
+			if ($_SESSION['num_question'] == 2 && $_SESSION['lock'][$_SESSION['num_question']]==false)
 			{
+				$_SESSION['importance'][$_SESSION['num_question']-1] = $selected['importance'];
 				$this->updateNb_aQ($selected['id'],$selected['nb_a']);
 			}
 			$returnCode = 1;
@@ -230,7 +236,16 @@ class Algo extends Model {
 		// On rend la selection aléatoire
 		shuffle($selection);
 		// On renvoie les wpp sélectionnés
-		return $selection;
+		$nb_wpp = count($selection);
+		if ($nb_wpp > $_SESSION['minWPP'])
+		{
+			$wallpapers = array($selection[0], $selection[1], $selection[2]);
+		}
+		else
+		{
+			$wallpapers = $selection;
+		}
+		return $wallpapers;
 	}
 	
 	// Check si la question peut fournir des wpp (appelle la fonction nextQuestion et les fonctions de test)
@@ -303,7 +318,7 @@ class Algo extends Model {
 		else
 		{
 			// On met à jour l'importance
-			$this->updateImportance(-1);
+			//$this->updateImportance(-1);
 						
 			// Si on n'est pas dans le cas "undo", on cherche une nouvelle question (sinon elle a déjà été trouvée)
 			if ($_SESSION['lock'][$_SESSION['num_question']]==false)
@@ -313,6 +328,7 @@ class Algo extends Model {
 				$next = $this->nextQuestion();
 				$tmp = array('q_longue'=>$next['question']['question']['q_longue'], 'reponses'=>$next['question']['reponses'],'numero'=>$next['question']['numero'], 'id'=>$next['question']['question']['id'], 'nb_a'=>$next['question']['question']['nb_a']);
 				$_SESSION['question'][$_SESSION['num_question']] = $tmp;
+				array_push($_SESSION['importance'], $next['question']['question']['importance']);
 			}
 				
 			// On met à jour la requete
@@ -364,7 +380,7 @@ class Algo extends Model {
 		$_SESSION['continue'] = true;
 		if ($_SESSION['num_question'] > 1)
 		{
-			$this->updateImportance(1);
+			//$this->updateImportance(1);
 		}
 		return array("returnCode" => 1, "returnMessage" => "On revient à la question précédente");
 	}
