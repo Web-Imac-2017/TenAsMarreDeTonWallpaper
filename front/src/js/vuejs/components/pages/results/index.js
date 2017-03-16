@@ -46,6 +46,29 @@ const Results = Vue.extend({
       },
       onCloseDlwpp(){
         this.selectedWallpaper = null;
+      },
+      prevQuestion(){
+        let _this = this;
+        if(_this.isRaised) return false;
+
+          fetch("/TenAsMarreDeTonWallpaper/api/algo/undo", {
+              method: 'get',
+              credentials: 'include'
+            }
+          )
+          // Handle bad http response
+          .then(handleHttpError)
+          // Handle Json parse
+          .then(function(response){ return response.json(); })
+          // Handle request errors
+          .then(handleRequestError)
+          // Next Question ok
+          .then(function(response){
+            if(!('data' in response)) throw Error('Données de question manquantes.');
+            router.push({name: 'findYourWallpaper'}); return;
+          })
+          // Error caught
+          .catch(function(error){ alert(error.message); console.log(error.message);});
       }
   }
 });
