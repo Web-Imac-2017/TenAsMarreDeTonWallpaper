@@ -170,23 +170,38 @@ class Algo extends Model {
 	// Renvoie le nombre de wpp correspondant à la requete actuelle
 	function answerQuestion($question_id, $reponse, $requete)
 	{
+		// S'il y a plusieurs catégories, on en sélectionne 1 au hasard
+		if (gettype($_SESSION['categories']) == "array")
+		{
+			$categorie = $_SESSION['categories'][array_rand($_SESSION['categories'],1)];
+		}
+		else
+		{
+			$categorie = $_SESSION['categories'];
+		}
+		
 		// Les valeurs reçues sont comprises entre 0 et 4. On les veut entre 0 et 100
 		$reponse = $reponse*25;
 		
 		$bdd = Database::get();
 		// On select les wpp qui correspondent aux reponses choisies de la question actuelle
-		$sql = "SELECT DISTINCT wallpaper_id FROM reponse AS r
+		$sql = "SELECT DISTINCT r.wallpaper_id FROM reponse AS r
 				INNER JOIN wallpaper AS w
 				ON r.wallpaper_id = w.id
 				INNER JOIN mise_en_ligne AS mel
 				ON w.id = mel.id		
+				INNER JOIN categorie_wallpaper as cw
+				ON w.id = cw.wallpaper_id
+				INNER JOIN categorie as c
+				ON cw.categorie_id = c.id
 				WHERE question_id =".$question_id."
 				AND (mel.statut = 'Validé')
+				AND (c.id =".$categorie.")
 				AND (val_min <=".$reponse." AND val_max>=".$reponse.")";
 		// On utilise l'opérateur IN avec les anciens select s'il y en a déjà eu
 		if ($requete)
 		{
-			$sql .= " AND wallpaper_id IN ( ".$requete." )";
+			$sql .= " AND r.wallpaper_id IN ( ".$requete." )";
 			// Ou alors faire une série de AND ... AND ...  (plus performant)
 			// Après test, le AND ... AND ne fonctionne pas
 		}
@@ -336,7 +351,7 @@ class Algo extends Model {
 
 			// On check si on peut trouver des wpp avec la prochaine question
 			$checkQuestion = $this->checkQuestion($_SESSION['question'][$_SESSION['num_question']]['id'], $_SESSION['requete'][$_SESSION['num_question']-1]);
-
+			print_r($checkQuestion);
 			// Si on ne peut pas, on arrête
 			if($checkQuestion['continue']==false)
 			{
